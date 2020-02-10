@@ -1,0 +1,48 @@
+{
+  "connection": "default",
+  "collectionName": "orders",
+  "info": {
+    "name": "Order"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "address": {
+      "type": "string"
+    },
+    "city": {
+      "type": "string"
+    },
+    "postcode": {
+      "type": "string"
+    },
+    "order": {
+      "type": "json"
+    },
+    "total": {
+      "type": "decimal"
+    },
+    "email": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "additional_info": {
+      "type": "text"
+    },
+    "delivery": {
+      "type": "enumeration",
+      "enum": [
+        "pickup",
+        "delivery"
+      ],
+      "default": "pickup"
+    },
+    "order_date": {
+      "type": "string"
+    }
+  }
+}

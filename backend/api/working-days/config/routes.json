@@ -1,0 +1,52 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/working-days",
+      "handler": "working-days.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/working-days/count",
+      "handler": "working-days.count",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/working-days/:id",
+      "handler": "working-days.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/working-days",
+      "handler": "working-days.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/working-days/:id",
+      "handler": "working-days.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/working-days/:id",
+      "handler": "working-days.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}

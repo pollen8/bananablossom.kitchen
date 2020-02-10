@@ -1,0 +1,4 @@
+/* .gitignore */
+frontend/node_modules  
+frontend/.next
+backend/node_modules  

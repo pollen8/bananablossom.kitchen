@@ -1,0 +1,45 @@
+{
+  "connection": "default",
+  "collectionName": "meals",
+  "info": {
+    "name": "meals"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "image": {
+      "model": "file",
+      "via": "related",
+      "plugin": "upload",
+      "required": false
+    },
+    "vegetarian": {
+      "type": "boolean"
+    },
+    "vegan": {
+      "type": "boolean"
+    },
+    "gluten_free": {
+      "type": "boolean"
+    },
+    "may_contain_nuts": {
+      "type": "boolean"
+    },
+    "price": {
+      "type": "decimal",
+      "required": true
+    },
+    "menu_category": {
+      "model": "menu-category"
+    }
+  }
+}
