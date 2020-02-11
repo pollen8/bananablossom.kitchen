@@ -8,10 +8,10 @@ import styled from 'styled-components';
 import { store } from '../context/cartContext';
 import { formatter } from '../lib/formatter';
 import { ButtonIcon } from './Button';
-import { IMeal } from './MealList';
+import { ISku } from './MealList';
 
 interface IProps {
-  item: IMeal;
+  item: ISku;
 }
 
 const Row = styled.div`
@@ -24,9 +24,9 @@ const CartItem: FC<IProps> = ({ item }) => {
   const { dispatch } = useContext(store);
   return (
     <>
-      <div>{item.title}</div>
+      <div>{item.product.name}</div>
       <div>{item.quantity}</div>
-      <div>{formatter.format(item.quantity * item.price)}</div>
+      <div>{formatter.format(item.quantity / 100 * item.price)}</div>
       <ButtonIcon
         onClick={() => dispatch({ type: 'CART_REMOVE', item })}>
         <AiOutlineMinusCircle />

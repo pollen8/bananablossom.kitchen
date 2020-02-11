@@ -3,10 +3,10 @@ import React, {
   useReducer,
 } from 'react';
 
-import { IMeal } from '../components/MealList';
+import { ISku } from '../components/MealList';
 
 interface IState {
-  items: IMeal[];
+  items: ISku[];
 }
 
 const initialState: IState = {
@@ -16,8 +16,8 @@ const initialState: IState = {
 const store = createContext<any>(initialState);
 const { Provider } = store;
 
-export type Action = { type: 'CART_ADD'; item: IMeal }
-  | { type: 'CART_REMOVE'; item: IMeal }
+export type Action = { type: 'CART_ADD'; item: ISku }
+  | { type: 'CART_REMOVE'; item: ISku }
   | { type: 'CART_CLEAR' };
 
 const StateProvider = ({ children }) => {

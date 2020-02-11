@@ -1,12 +1,9 @@
 
-import 'react-day-picker/lib/style.css';
-
-import { gql } from 'apollo-boost';
 import React, {
+  FC,
   useContext,
   useState,
 } from 'react';
-import { useMutation } from 'react-apollo';
 import { useForm } from 'react-hook-form';
 
 import Button from '../components/Button';
@@ -35,30 +32,11 @@ export interface IOrder {
 
 }
 
-// function parseDate(str, format, locale) {
-//   const parsed = dateFnsParse(str, 'dd-MM-yyyy', new Date(), { locale });
-//   if (DateUtils.isDate(parsed)) {
-//     return parsed;
-//   }
-//   return undefined;
-// }
 
-// function formatDate(date, format, locale) {
-//   return dateFnsFormat(date, format, { locale });
-// }
 
-const CREATE_ORDER = gql`
-mutation createOrder($order: createOrderInput!) {
-  createOrder(input: $order) {
-    order {
-      id
-    }
-  }
-}`;
-
-export default () => {
+const Checkout: FC = () => {
   // const stripe = (window as any).Stripe('pk_test_bvHfxmEQzDAM98SrPyo1WfzG007Jp1mhLx');
-  const [createOrder, { data }] = useMutation(CREATE_ORDER);
+  // const [createOrder] = useMutation(CREATE_ORDER);
   const { state } = useContext(store);
   const [showAddress, setShowAddress] = useState(false);
   const { register, handleSubmit, watch, control, errors } = useForm<IOrder>()
@@ -67,37 +45,32 @@ export default () => {
 
   const deliveryHours = [12, 1, 2];
 
-  const onSubmit = (formData: IOrder) => {
 
-    try {
-      if (formData.order_date && typeof formData.order_date !== 'string') {
-        formData.order_date = formData.order_date.toISOString();
-      }
-      console.log('formdata', formData);
-      createOrder({ variables: { order: { data: formData } } });
+  console.log('state', state);
 
-      // stripe.redirectToCheckout({
-      //   items: [
-      //     // Replace with the ID of your SKU
-      //     { sku: 'prod_Gb4KIiP0VIBuhr', quantity: 1 }
-      //   ],
-      //   successUrl: 'https://example.com/success',
-      //   cancelUrl: 'https://example.com/cancel',
-      // }).then(function (result) {
-      //   console.log(result);
-      //   // If `redirectToCheckout` fails due to a browser or network
-      //   // error, display the localized error message to your customer
-      //   // using `result.error.message`.
-      // });
-    } catch (e) {
-      console.log('error', e);
+  const redirectToCheckout = async (formData: IOrder) => {
+    // event.preventDefault()
+    const stripe = (window as any).Stripe(process.env.STRIPE_PUBLISHABLE_KEY, {
+      betas: ['checkout_beta_4'],
+    })
+
+    const { error } = await stripe.redirectToCheckout({
+      items: state.items.map((item) => ({ sku: item.id, quantity: item.quantity })),
+      customerEmail: formData.email,
+      successUrl: `http://localhost:8000/page-2/`,
+      cancelUrl: `http://localhost:8000/advanced/`,
+    })
+
+    if (error) {
+      console.error('Error:', error)
     }
   }
+
   return (
     <Layout>
       <CardBody>
         <h1>Checkout</h1>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(redirectToCheckout)}>
           <FormGroup>
             <Label>Name</Label>
             <Input
@@ -159,3 +132,5 @@ export default () => {
     </Layout>
   );
 }
+
+export default Checkout;

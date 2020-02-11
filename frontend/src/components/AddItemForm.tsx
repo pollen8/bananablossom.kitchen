@@ -15,7 +15,7 @@ import { store } from '../context/cartContext';
 import { formatter } from '../lib/formatter';
 import Button, { ButtonIcon } from './Button';
 import CardBody from './CardBody';
-import { IMeal } from './MealList';
+import { ISku } from './MealList';
 import Price from './Price';
 
 const QuantitySelector = styled.div`
@@ -31,22 +31,22 @@ const Quantity = styled.div`
 `;
 
 interface IProps {
-  meal?: IMeal;
+  sku?: ISku;
   isOpen: boolean;
   onToggle: (open: boolean) => void;
 }
 
 const AddItemForm: FC<IProps> = ({
-  meal,
+  sku,
   isOpen,
   onToggle,
 }) => {
   const [quantity, setQuantity] = useState(1);
   useEffect(() => {
     setQuantity(1);
-  }, [meal])
+  }, [sku])
   const { dispatch } = useContext(store);
-  if (!meal) {
+  if (!sku) {
     return null;
   }
   return (
@@ -55,7 +55,7 @@ const AddItemForm: FC<IProps> = ({
       center
     >
       <CardBody style={{ width: '310px' }}>
-        <h3>{meal.title}</h3>
+        <h3>{sku.product.name}</h3>
 
         <QuantitySelector>
           <div>
@@ -85,13 +85,13 @@ const AddItemForm: FC<IProps> = ({
             Cancel
           </Button>
           <Price>
-            {formatter.format(meal.price * quantity)}
+            {formatter.format(sku.price / 100 * quantity)}
           </Price>
           <Button
             onClick={() => {
               dispatch({
                 type: 'CART_ADD', item: {
-                  ...meal,
+                  ...sku,
                   quantity,
                 }
               });

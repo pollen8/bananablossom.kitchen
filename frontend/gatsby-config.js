@@ -1,3 +1,7 @@
+require("dotenv").config({
+  path: `.env.${process.env.NODE_ENV}`,
+})
+
 module.exports = {
   siteMetadata: {
     title: `Banana Blossom - eat like a Vietnamese`,
@@ -31,7 +35,15 @@ module.exports = {
         background_color: `#663399`,
         theme_color: `#663399`,
         display: `minimal-ui`,
-        icon: `src/images/girl-leaft.png`, // This path is relative to the root of the site.
+        icon: `src/images/girl-leaf.png`, // This path is relative to the root of the site.
+      },
+    },
+    {
+      resolve: `gatsby-source-stripe`,
+      options: {
+        objects: ['Sku'],
+        secretKey: process.env.STRIPE_SECRET_KEY,
+        downloadFiles: true,
       },
     },
     // this (optional) plugin enables Progressive Web App + Offline functionality

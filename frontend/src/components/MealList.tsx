@@ -1,28 +1,18 @@
-import { gql } from 'apollo-boost';
-import { Link } from 'gatsby';
+import {
+  graphql,
+  Link,
+  useStaticQuery,
+} from 'gatsby';
 import React, { useState } from 'react';
-import { useQuery } from 'react-apollo';
 import styled from 'styled-components';
 
 import { formatter } from '../lib/formatter';
 import AddItemForm from './AddItemForm';
-import Alert from './Alert';
 import Button from './Button';
 import Card from './Card';
 import CardBody from './CardBody';
 import CardFooter from './CardFooter';
 import Price from './Price';
-
-export interface IMeal {
-  id: string;
-  title: string;
-  description: string;
-  price: number;
-  quantity: number;
-  image: {
-    url: string;
-  }
-}
 
 const Grid = styled.div`
   margin: 3rem 5rem 0 5rem;
@@ -33,27 +23,59 @@ const Grid = styled.div`
   grid-row-gap: 4rem;
 `;
 
-const GET_MEALS = gql`{
-    meals(sort: "menu_category") {
-      id
-      title
-      description
-      price
-      image {
-        url
-      }
-      menu_category {
-        title
-      }
+
+export interface ISku {
+  id: string;
+  image: string;
+  price: number;
+  currency: FunctionStringCallback;
+  product: {
+    metadata: {
+      description: string;
+      vegetarian: string;
+      vegan: string;
+      gluten_free: string;
+      may_contain_nuts: string;
     }
-  }`;
+    name: string;
+  },
+  quantity?: number;
+}
+
+interface ISkuNodes {
+  skus: {
+    nodes: ISku[]
+  }
+}
+
+const GET_PRODUCTS = graphql`{
+    skus: allStripeSku {
+    nodes {
+      id
+      product {
+        metadata {
+          description
+          vegetarian
+          vegan
+          gluten_free
+          may_contain_nuts
+        }
+        name
+      }
+      price
+      image
+      currency
+    }
+  }
+}
+`;
 
 const MealCard = styled(Card)`
   position: relative;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-
+ 
   > div {
     margin-left: 9rem;
   }
@@ -68,54 +90,42 @@ const MealImage = styled.img`
 `;
 
 const MealList = () => {
-
-  const { loading, error, data, fetchMore } = useQuery<{ meals: IMeal[] }>(GET_MEALS, {
-    notifyOnNetworkStatusChange: true
-  });
+  const { skus } = useStaticQuery<ISkuNodes>(GET_PRODUCTS);
   const [isOpen, onToggle] = useState(false);
-  const [activeMeal, setActiveMeal] = useState<IMeal>();
+  const [activeSku, setActiveSku] = useState<ISku>();
 
-
-  if (error) return <Alert>Error loading menu</Alert>;
-
-  if (loading) {
-    return <h1>Loading</h1>;
-  }
-  console.log('data', data);
-
-  if (data.meals && data.meals.length) {
-
-    return (
-      <>
-        <Grid >
-          {data.meals.map(res => (
+  return (
+    <>
+      <Grid >
+        {
+          skus.nodes.map((sku) => (
             <MealCard
-              key={res.id}
+              key={sku.id}
             >
               {
-                res.image && <MealImage
-                  src={`http://localhost:1337${res.image.url}`}
+                sku.image && <MealImage
+                  src={sku.image}
                 />
               }
 
               <CardBody>
                 <h3>
-                  {res.title}
+                  {sku.product.name}
                 </h3>
-                <div>{res.description}</div>
+                <div>{sku.product.metadata.description}</div>
               </CardBody>
               <CardFooter>
                 <Price>
-                  {formatter.format(res.price)}
+                  {formatter.format(sku.price / 100)}
                 </Price>
                 <Link
-                  to={`/meals?id=${res.id}`}
+                  to={`/meals?id=${sku.id}`}
                 >
                   <>
                     <Button
                       color="primary"
                       onClick={() => {
-                        setActiveMeal(res);
+                        setActiveSku(sku);
                         onToggle(true)
                       }}>Order now
                     </Button>
@@ -123,18 +133,16 @@ const MealList = () => {
                 </Link>
               </CardFooter>
             </MealCard>
-          ))}
-        </Grid>
-        <AddItemForm
-          isOpen={isOpen}
-          onToggle={onToggle}
-          meal={activeMeal} />
-      </>
-    );
-  } else {
-    return <h1>No Meals Found</h1>;
-  }
+          ))
+        }
 
+      </Grid>
+      <AddItemForm
+        isOpen={isOpen}
+        onToggle={onToggle}
+        sku={activeSku} />
+    </>
+  );
 };
 
 export default MealList;
