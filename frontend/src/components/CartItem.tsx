@@ -15,12 +15,6 @@ interface IProps {
   readonly: boolean;
 }
 
-const Row = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin: 0.5rem 0;
-`;
-
 const CartItem: FC<IProps> = ({
   item,
   readonly,
@@ -31,6 +25,7 @@ const CartItem: FC<IProps> = ({
       <div>{item.product.name}</div>
       <div>{item.quantity}</div>
       <div>{formatter.format(item.quantity / 100 * item.price)}</div>
+      {readonly && <div />}
       {
         !readonly &&
         <ButtonIcon
