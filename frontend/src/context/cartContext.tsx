@@ -9,7 +9,7 @@ interface IState {
   items: ISku[];
 }
 
-const initialState: IState = sessionStorage.getItem('cart') === null
+const initialState: IState = !sessionStorage || sessionStorage.getItem('cart') === null
   ? {
     items: [],
   }
@@ -26,7 +26,9 @@ export type Action = { type: 'CART_ADD'; item: ISku }
 const StateProvider = ({ children }) => {
   const [state, dispatch] = useReducer((state: IState, action: Action) => {
     const handleStore = (state: IState): IState => {
-      sessionStorage.setItem('cart', JSON.stringify(state));
+      if (sessionStorage) {
+        sessionStorage.setItem('cart', JSON.stringify(state));
+      }
       return state;
     };
 
