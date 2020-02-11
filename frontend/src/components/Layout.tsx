@@ -45,7 +45,6 @@ class Layout extends React.Component<IProps, any> {
             name="viewport"
             content="initial-scale=1.0, width=device-width"
           />
-          <script src="https://js.stripe.com/v3" />
 
         </header>
         <header>
