@@ -1,18 +1,11 @@
 import {
   graphql,
-  Link,
   useStaticQuery,
 } from 'gatsby';
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
-import { formatter } from '../lib/formatter';
-import AddItemForm from './AddItemForm';
-import Button from './Button';
-import Card from './Card';
-import CardBody from './CardBody';
-import CardFooter from './CardFooter';
-import Price from './Price';
+import MealListItem from './MealListItem';
 
 const Grid = styled.div`
   margin: 3rem 5rem 0 5rem;
@@ -30,6 +23,7 @@ export interface ISku {
   price: number;
   currency: FunctionStringCallback;
   product: {
+    id: string;
     metadata: {
       description: string;
       vegetarian: string;
@@ -39,6 +33,9 @@ export interface ISku {
     }
     name: string;
   },
+  attributes: {
+    name: string;
+  };
   quantity?: number;
 }
 
@@ -48,11 +45,21 @@ interface ISkuNodes {
   }
 }
 
+export type TSkuProduct = ISku & {
+  selectedSKUIndex: number;
+  skus: Array<{
+    id: string;
+    price: number;
+    name: string;
+  }>
+}
+
 const GET_PRODUCTS = graphql`{
     skus: allStripeSku {
     nodes {
       id
       product {
+        id,
         metadata {
           description
           vegetarian
@@ -60,6 +67,9 @@ const GET_PRODUCTS = graphql`{
           gluten_free
           may_contain_nuts
         }
+        name
+      }
+      attributes {
         name
       }
       price
@@ -70,79 +80,42 @@ const GET_PRODUCTS = graphql`{
 }
 `;
 
-const MealCard = styled(Card)`
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
- 
-`;
-
-const MealImage = styled.img`
-  max-height: 10rem;
-  padding-left: 1rem;
-  padding-top: 1rem;
-  max-width: 100%;
-`;
-
-const FlexRow = styled.div`
-  display: flex;
-`;
 
 const MealList = () => {
   const { skus } = useStaticQuery<ISkuNodes>(GET_PRODUCTS);
-  const [isOpen, onToggle] = useState(false);
-  const [activeSku, setActiveSku] = useState<ISku>();
-
+  const products = skus.nodes.reduce((prev, next) => {
+    const i = prev.findIndex((p) => p.product.id === next.product.id);
+    if (i === -1) {
+      return [
+        ...prev,
+        {
+          ...next,
+          selectedSKUIndex: 0,
+          skus: [
+            { id: next.id, price: next.price, name: next.attributes.name },
+          ]
+        }
+      ];
+    }
+    prev[i].skus = [
+      ...prev[i].skus,
+      { id: next.id, price: next.price, name: next.attributes.name },
+    ]
+    return prev;
+  }, [] as TSkuProduct[]);
   return (
     <>
       <Grid >
         {
-          skus.nodes.map((sku) => (
-            <MealCard
-              key={sku.id}
-            >
-              <FlexRow>
-                {
-                  sku.image && <MealImage
-                    src={sku.image}
-                  />
-                }
-
-                <CardBody>
-                  <h3>
-                    {sku.product.name}
-                  </h3>
-                  <div>{sku.product.metadata.description}</div>
-                </CardBody>
-              </FlexRow>
-              <CardFooter>
-                <Price>
-                  {formatter.format(sku.price / 100)}
-                </Price>
-                <Link
-                  to={`/meals?id=${sku.id}`}
-                >
-                  <>
-                    <Button
-                      color="primary"
-                      onClick={() => {
-                        setActiveSku(sku);
-                        onToggle(true)
-                      }}>Order now
-                    </Button>
-                  </>
-                </Link>
-              </CardFooter>
-            </MealCard>
+          products.map((product) => (
+            <MealListItem
+              product={product}
+              key={product.id}
+            />
           ))
         }
 
       </Grid>
-      <AddItemForm
-        isOpen={isOpen}
-        onToggle={onToggle}
-        sku={activeSku} />
     </>
   );
 };

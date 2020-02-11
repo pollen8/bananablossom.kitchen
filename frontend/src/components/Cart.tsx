@@ -10,6 +10,7 @@ import Button from './Button';
 import Card from './Card';
 import CardBody from './CardBody';
 import CartItem from './CartItem';
+import OrderHelp from './OrderHelp';
 
 const StickyCard = styled(Card)`
   position: sticky;
@@ -62,6 +63,7 @@ const Cart: FC<IProps> = ({ readonly }) => {
             }
           </>
         }
+        <OrderHelp />
       </CardBody>
     </StickyCard>
   )

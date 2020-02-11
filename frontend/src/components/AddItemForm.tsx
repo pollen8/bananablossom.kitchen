@@ -15,7 +15,7 @@ import { store } from '../context/cartContext';
 import { formatter } from '../lib/formatter';
 import Button, { ButtonIcon } from './Button';
 import CardBody from './CardBody';
-import { ISku } from './MealList';
+import { TSkuProduct } from './MealList';
 import Price from './Price';
 
 const QuantitySelector = styled.div`
@@ -31,31 +31,32 @@ const Quantity = styled.div`
 `;
 
 interface IProps {
-  sku?: ISku;
+  product: TSkuProduct;
   isOpen: boolean;
   onToggle: (open: boolean) => void;
 }
 
 const AddItemForm: FC<IProps> = ({
-  sku,
+  product,
   isOpen,
   onToggle,
 }) => {
   const [quantity, setQuantity] = useState(1);
   useEffect(() => {
     setQuantity(1);
-  }, [sku])
+  }, [product])
   const { dispatch } = useContext(store);
-  if (!sku) {
+  if (!product) {
     return null;
   }
+  const { name, price, id } = product.skus[product.selectedSKUIndex];
   return (
     <Modal open={isOpen}
       onClose={() => onToggle(false)}
       center
     >
       <CardBody style={{ width: '310px' }}>
-        <h3>{sku.product.name}</h3>
+        <h3>{name}</h3>
 
         <QuantitySelector>
           <div>
@@ -85,13 +86,13 @@ const AddItemForm: FC<IProps> = ({
             Cancel
           </Button>
           <Price>
-            {formatter.format(sku.price / 100 * quantity)}
+            {formatter.format(price / 100 * quantity)}
           </Price>
           <Button
             onClick={() => {
               dispatch({
                 type: 'CART_ADD', item: {
-                  ...sku,
+                  ...product,
                   quantity,
                 }
               });

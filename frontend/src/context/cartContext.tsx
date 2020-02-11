@@ -3,10 +3,10 @@ import React, {
   useReducer,
 } from 'react';
 
-import { ISku } from '../components/MealList';
+import { TSkuProduct } from '../components/MealList';
 
 interface IState {
-  items: ISku[];
+  items: TSkuProduct[];
 }
 
 const initialState: IState = typeof window === 'undefined' || sessionStorage.getItem('cart') === null
@@ -19,8 +19,8 @@ const initialState: IState = typeof window === 'undefined' || sessionStorage.get
 const store = createContext<any>(initialState);
 const { Provider } = store;
 
-export type Action = { type: 'CART_ADD'; item: ISku }
-  | { type: 'CART_REMOVE'; item: ISku }
+export type Action = { type: 'CART_ADD'; item: TSkuProduct }
+  | { type: 'CART_REMOVE'; item: TSkuProduct }
   | { type: 'CART_CLEAR' };
 
 const StateProvider = ({ children }) => {
@@ -34,7 +34,7 @@ const StateProvider = ({ children }) => {
 
     switch (action.type) {
       case 'CART_ADD':
-        const i = state.items.findIndex((item) => item.id === action.item.id);
+        const i = state.items.findIndex((item) => item.id === action.item.id && item.selectedSKUIndex === action.item.selectedSKUIndex);
         if (i === -1) {
           return handleStore({
             ...state,
