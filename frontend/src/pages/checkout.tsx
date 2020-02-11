@@ -59,7 +59,7 @@ const Checkout: FC = () => {
 
   const redirectToCheckout = async (formData: IOrder) => {
     // event.preventDefault()
-    const stripe = (window as any).Stripe(process.env.STRIPE_PUBLISHABLE_KEY, {
+    const stripe = (window as any).Stripe(process.env.STRIPE_PUBLISHABLE_KEY || 'pk_test_bvHfxmEQzDAM98SrPyo1WfzG007Jp1mhLx', {
       betas: ['checkout_beta_4'],
     })
 
@@ -67,7 +67,7 @@ const Checkout: FC = () => {
       items: state.items.map((item) => ({ sku: item.id, quantity: item.quantity })),
       customerEmail: formData.email,
       successUrl: `http://localhost:8000/payment-success/`,
-      cancelUrl: `http://localhost:8000/advanced/`,
+      cancelUrl: `http://localhost:8000/payment-failure/`,
     })
 
     if (error) {
