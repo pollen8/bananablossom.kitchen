@@ -26,12 +26,20 @@ margin: 0 0 1rem 0;
   align-items: center;
 `;
 
-const Cart: FC = () => {
+interface IProps {
+  readonly?: boolean;
+}
+
+const Cart: FC<IProps> = ({ readonly }) => {
   const { state } = useContext(store);
   return (
     <StickyCard>
       <CardBody>
-        <h3>Cart</h3>
+        <h3>
+          {
+            readonly ? 'Your order' : 'Cart'
+          }
+        </h3>
         {
           state.items.length === 0 && <p>Your basket is empty</p>
         }
@@ -39,18 +47,28 @@ const Cart: FC = () => {
           state.items.length > 0 &&
           <>
             <Grid>
-              {state.items.map((item) => <CartItem key={item.id} item={item} />)}
+              {state.items.map((item) => <CartItem
+                readonly={readonly}
+                key={item.id} item={item} />)}
             </Grid>
-            <Link to="/checkout">
-              <Button color="primary">
-                Checkout
+            {
+              !readonly &&
+
+              <Link to="/checkout">
+                <Button color="primary">
+                  Checkout
           </Button>
-            </Link>
+              </Link>
+            }
           </>
         }
       </CardBody>
     </StickyCard>
   )
 }
+
+Cart.defaultProps = {
+  readonly: false,
+};
 
 export default Cart;

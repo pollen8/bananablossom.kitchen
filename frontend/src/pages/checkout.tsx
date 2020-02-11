@@ -1,21 +1,24 @@
 
+import { Link } from 'gatsby';
 import React, {
   FC,
   useContext,
-  useState,
 } from 'react';
 import { useForm } from 'react-hook-form';
+import styled from 'styled-components';
 
 import Button from '../components/Button';
+import Card from '../components/Card';
 import CardBody from '../components/CardBody';
+import Cart from '../components/Cart';
 import Calendar from '../components/checkout/Calendar';
-import Fieldset from '../components/Fieldset';
 import FormGroup from '../components/FormGroup';
 import Input from '../components/Input';
 import Label from '../components/Label';
 import Layout from '../components/Layout';
 import TextArea from '../components/TextArea';
 import { store } from '../context/cartContext';
+import { Frame } from './meals';
 
 export interface IOrder {
   additional_info: string;
@@ -33,15 +36,21 @@ export interface IOrder {
 }
 
 
+const Row = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const FormFooter = styled.div`
+  margin-top: 1rem;
+  text-align: right;
+`;
 
 const Checkout: FC = () => {
   // const stripe = (window as any).Stripe('pk_test_bvHfxmEQzDAM98SrPyo1WfzG007Jp1mhLx');
   // const [createOrder] = useMutation(CREATE_ORDER);
   const { state } = useContext(store);
-  const [showAddress, setShowAddress] = useState(false);
   const { register, handleSubmit, watch, control, errors } = useForm<IOrder>()
-
-  const total = state.items.reduce((prev, next) => prev + (next.price * next.quantity), 0);
 
   const deliveryHours = [12, 1, 2];
 
@@ -57,7 +66,7 @@ const Checkout: FC = () => {
     const { error } = await stripe.redirectToCheckout({
       items: state.items.map((item) => ({ sku: item.id, quantity: item.quantity })),
       customerEmail: formData.email,
-      successUrl: `http://localhost:8000/page-2/`,
+      successUrl: `http://localhost:8000/payment-success/`,
       cancelUrl: `http://localhost:8000/advanced/`,
     })
 
@@ -66,69 +75,79 @@ const Checkout: FC = () => {
     }
   }
 
+  if (state.items.length === 0) {
+    return (
+      <Layout>
+        <Frame>
+          <Card>
+            <CardBody>
+              <h1>Nothing to buy</h1>
+              <Link to="meals">
+                <Button>Order some
+                </Button>
+              </Link>
+            </CardBody>
+          </Card>
+        </Frame>
+      </Layout>
+    );
+  }
+
   return (
     <Layout>
-      <CardBody>
-        <h1>Checkout</h1>
-        <form onSubmit={handleSubmit(redirectToCheckout)}>
-          <FormGroup>
-            <Label>Name</Label>
-            <Input
-              name="name"
-              ref={register} />
-            {
-              errors.name && <span>This field is required</span>
-            }
-          </FormGroup>
-          <FormGroup>
-            <Label>Email</Label>
-            <Input name="email" ref={register} />
-          </FormGroup>
-          <FormGroup>
-            <Label>Date</Label>
-            <Calendar
-              control={control} />
+      <Frame>
+        <Card>
+          <CardBody>
+            <h1>Checkout</h1>
+            <form onSubmit={handleSubmit(redirectToCheckout)}>
+              <Row>
+                <div>
+                  <FormGroup>
+                    <Label>Name</Label>
+                    <Input
+                      name="name"
+                      ref={register} />
+                    {
+                      errors.name && <span>This field is required</span>
+                    }
+                  </FormGroup>
+                  <FormGroup>
+                    <Label>Email</Label>
+                    <Input name="email" ref={register} />
+                  </FormGroup>
+                  <FormGroup>
+                    <Label htmlFor="tel">Telephone</Label>
+                    <Input name="tel" ref={register} />
+                  </FormGroup>
+                  <FormGroup>
+                    <Label>Additional info</Label>
+                    <TextArea name="additional_info" cols="50" rows="7" ref={register} />
+                  </FormGroup>
+                </div>
+                <div>
+                  <FormGroup>
+                    <Label>Pick up date</Label>
+                    <Calendar
+                      control={control} />
+                  </FormGroup>
 
-          </FormGroup>
 
-          <FormGroup>
-            <Label>Delivery</Label>
-            <select ref={register}
-              name="delivery"
-              onChange={(e) => setShowAddress(e.target.selectedIndex === 1)}>
+                </div>
+              </Row>
 
-              <option value="pickup">Pick up</option>
-              <option value="delivery">Delivery</option>
-            </select>
-          </FormGroup>
-          {
-            showAddress &&
+              <FormFooter>
+                <Button
+                  color="primary"
+                  type="submit">Proceed to payment</Button>
+              </FormFooter>
+            </form>
+          </CardBody>
+        </Card>
+        <div>
+          <Cart readonly />
 
-            <Fieldset>
-              <legend>Address</legend>
-              <FormGroup>
-                <Label>Street</Label>
-                <Input name="address" ref={register} />
-              </FormGroup>
-              <FormGroup>
-                <Label>City</Label>
-                <Input name="city" ref={register} />
-              </FormGroup>
-              <FormGroup>
-                <Label>Postcode</Label>
-                <Input name="postcode" ref={register} />
-              </FormGroup>
-            </Fieldset>
-          }
-          <FormGroup>
-            <Label>Additional info</Label>
-            <TextArea name="additional_info" ref={register} />
-          </FormGroup>
-          <Input name="total" value={total} />
-          <Input name="order" value={JSON.stringify(state.items)} />
-          <Button type="submit">Submit</Button>
-        </form>
-      </CardBody>
+        </div>
+      </Frame>
     </Layout>
   );
 }

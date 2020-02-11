@@ -106,9 +106,11 @@ const DatePicker: FC<IProps> = ({
         </h3>
         <Controls>
           <button
+            type="button"
             onClick={() => setNow(subMonths(now, 1))}> &lt;
     </button>
           <button
+            type="button"
             onClick={() => setNow(addMonths(now, 1))}> &gt;
     </button>
         </Controls>

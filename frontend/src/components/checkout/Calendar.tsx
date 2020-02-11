@@ -42,11 +42,11 @@ const Calendar: FC<IProps> = ({
         disabledRanges={[
           { start: new Date(), end: addDays(new Date(), 1) }
         ]} />
-      <Controller as={TimePicker}
+      {/* <Controller as={TimePicker}
         name="order_time"
         control={control}
         width="300px"
-        startTime={{ hour: 9, minute: 0 }} />
+        startTime={{ hour: 9, minute: 0 }} /> */}
     </>
   )
 }
