@@ -76,17 +76,17 @@ const MealCard = styled(Card)`
   flex-direction: column;
   justify-content: space-between;
  
-  > div {
-    margin-left: 9rem;
-  }
 `;
 
 const MealImage = styled.img`
-  position: absolute;
-  top: -2rem;
-  left: -1rem;
   max-height: 10rem;
-  max-width: 10rem;
+  padding-left: 1rem;
+  padding-top: 1rem;
+  max-width: 100%;
+`;
+
+const FlexRow = styled.div`
+  display: flex;
 `;
 
 const MealList = () => {
@@ -102,18 +102,20 @@ const MealList = () => {
             <MealCard
               key={sku.id}
             >
-              {
-                sku.image && <MealImage
-                  src={sku.image}
-                />
-              }
+              <FlexRow>
+                {
+                  sku.image && <MealImage
+                    src={sku.image}
+                  />
+                }
 
-              <CardBody>
-                <h3>
-                  {sku.product.name}
-                </h3>
-                <div>{sku.product.metadata.description}</div>
-              </CardBody>
+                <CardBody>
+                  <h3>
+                    {sku.product.name}
+                  </h3>
+                  <div>{sku.product.metadata.description}</div>
+                </CardBody>
+              </FlexRow>
               <CardFooter>
                 <Price>
                   {formatter.format(sku.price / 100)}

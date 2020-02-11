@@ -6,6 +6,7 @@ import React from 'react';
 import Fonts from '../lib/fonts';
 import Button from './Button';
 import CardBody from './CardBody';
+import Logo from './Logo';
 import TopMenu from './TopMenu';
 
 interface IProps {
@@ -74,8 +75,8 @@ class Layout extends React.Component<IProps, any> {
         </header>
         <TopMenu>
           <Link to="/">
-            <img src="http://localhost:1337/banana_blossom_logo_v2_text.png"
-              style={{ width: '140px', cursor: 'pointer', marginRight: '2rem', marginLeft: '1rem' }} />
+            <Logo />
+
           </Link>
           <li>
             <Link to="/meals">
