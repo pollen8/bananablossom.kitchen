@@ -61,6 +61,10 @@ const StateProvider = ({ children }) => {
           items,
         });
       }
+      case 'CART_CLEAR':
+        return handleStore({
+          items: [],
+        });
       default:
         throw new Error();
     };

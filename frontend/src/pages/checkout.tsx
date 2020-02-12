@@ -49,7 +49,7 @@ const FormFooter = styled.div`
 const Checkout: FC = () => {
   // const stripe = (window as any).Stripe('pk_test_bvHfxmEQzDAM98SrPyo1WfzG007Jp1mhLx');
   // const [createOrder] = useMutation(CREATE_ORDER);
-  const { state } = useContext(store);
+  const { state, dispatch } = useContext(store);
   const { register, handleSubmit, watch, control, errors } = useForm<IOrder>()
   const deliveryHours = [12, 1, 2];
 
@@ -62,9 +62,10 @@ const Checkout: FC = () => {
     const { error } = await stripe.redirectToCheckout({
       items: state.items.map((item) => ({ sku: item.skus[item.selectedSKUIndex].id, quantity: item.quantity })),
       customerEmail: formData.email,
-      successUrl: `http://www.banana-blossom.kitchen/payment-success/`,
-      cancelUrl: `http://www.banana-blossom.kitchen/payment-failure/`,
+      successUrl: `https://www.banana-blossom.kitchen/payment-success/`,
+      cancelUrl: `https://www.banana-blossom.kitchen/payment-failure/`,
     })
+    dispatch({ type: 'CART_CLEAR' });
 
     if (error) {
       console.error('Error:', error)
