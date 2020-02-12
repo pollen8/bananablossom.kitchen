@@ -7,16 +7,18 @@ import Layout from '../components/Layout';
 
 export default () => <Layout><div>
   <h1>Contact</h1>
-  <form name="contact-us" data-netlify="true" method="POST">
+  <form name="contact" data-netlify="true" method="POST">
     <FormGroup>
       <Label htmlFor="name">Name *</Label>
       <input type="text"
-        required id="name"
+        required
+        id="name"
         name="name" />
     </FormGroup>
     <FormGroup>
       <Label htmlFor="email">Email *</Label>
-      <input type="email" required
+      <input type="email"
+        required
         name="email"
         id="email" />
     </FormGroup>
@@ -37,6 +39,7 @@ export default () => <Layout><div>
     <FormGroup>
       <Button type="submit">Send</Button>
     </FormGroup>
+    <input type="hidden" name="form-name" value="contact" />
   </form>
 </div>
 </Layout>
