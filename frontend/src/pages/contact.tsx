@@ -7,7 +7,7 @@ import Layout from '../components/Layout';
 
 export default () => <Layout><div>
   <h1>Contact</h1>
-  <form data-netlify="true" method="POST">
+  <form name="contact-us" data-netlify="true" method="POST">
     <FormGroup>
       <Label htmlFor="name">Name *</Label>
       <input type="text"
