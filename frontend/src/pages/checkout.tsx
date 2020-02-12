@@ -1,4 +1,5 @@
 
+import axios from 'axios';
 import { Link } from 'gatsby';
 import React, {
   FC,
@@ -52,7 +53,7 @@ const Checkout: FC = () => {
   const { state, dispatch } = useContext(store);
   const { register, handleSubmit, watch, control, errors } = useForm<IOrder>()
   const deliveryHours = [12, 1, 2];
-
+  // axios.post()
 
   const redirectToCheckout = async (formData: IOrder) => {
     const stripe = (window as any).Stripe(process.env.STRIPE_PUBLISHABLE_KEY || 'pk_live_NpIzgQMQCs9C4vDbqG5WHk7v00dThpwTXu', {

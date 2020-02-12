@@ -27,7 +27,6 @@ class Layout extends React.Component<IProps, any> {
     if (Component.getInitialProps) {
       pageProps = await Component.getInitialProps(ctx);
     }
-    console.log('pageProps', pageProps);
     const isAuthenticated = true;
     return { pageProps, isAuthenticated };
   }
@@ -76,27 +75,27 @@ class Layout extends React.Component<IProps, any> {
             <Logo />
 
           </Link>
-          <li>
+          {/* <li>
             <Link to="/meals">
               <>
                 <Button>Meals</Button>
               </>
             </Link>
-          </li>
+          </li> */}
           <li>
             <Link to="/contact">
               <>
-                <Button>Special requests</Button>
+                <Button>Contact us</Button>
               </>
             </Link>
           </li>
-          <li>
+          {/* <li>
             <Link to="/about-us">
               <>
                 <Button>Our story</Button>
               </>
             </Link>
-          </li>
+          </li> */}
         </TopMenu>
         <CardBody>{children}</CardBody>
       </div>
