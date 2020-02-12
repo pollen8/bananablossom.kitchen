@@ -39,7 +39,6 @@ class Layout extends React.Component<IProps, any> {
       <div>
         <header>
           <title>{title}</title>
-          <link href="/public/normalize.css" rel="stylesheet" />
           <meta charSet="utf-8" />
           <meta
             name="viewport"
