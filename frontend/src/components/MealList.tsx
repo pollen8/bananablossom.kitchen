@@ -10,12 +10,11 @@ import MealListItem from './MealListItem';
 const Grid = styled.div`
   margin: 3rem 5rem 0 5rem;
   display: grid;
-  grid-template-columns: 50% 50%;
+  grid-template-columns: repeat(auto-fit, minmax(45%, 1fr));
   grid-template-rows: auto;
   grid-column-gap: 4rem;
   grid-row-gap: 4rem;
 `;
-
 
 export interface ISku {
   id: string;

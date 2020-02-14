@@ -19,16 +19,8 @@
 
 * Special requests
   - intro 
-  * email to gmail account
+
 * Contact us info
-
-# GO-Live
-* Web hook to update static menus (stripe live env)
-* Live API keys
-* Prod env vars
-* Add env vars into Netlify (live versions)
-* Stripe: Transfers test products to live
-
 
 
 Nice to have
@@ -40,3 +32,9 @@ Done:
 * Web hook to update static menus (stripe test env)
 * Add env vars into Netlify (dev versions)
 * Show cart summary on checkout
+* Stripe: Transfers test products to live
+* Web hook to update static menus (stripe live env)
+* Live API keys
+* Prod env vars
+* Add env vars into Netlify (live versions)
+* special requests  -   * email to gmail account
