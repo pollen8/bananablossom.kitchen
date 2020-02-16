@@ -16,10 +16,14 @@
 * Homepage design
 * Thank you order page design
 * failed transaction page design
+* Order special dishes on certain days
+* Delivery for orders over £25
+  - Delivery time 10 - 14h 16h - 18:30h
+* About banana blossom page
 
 * Special requests
   - intro 
-
+* Cookie accpet / policy
 * Contact us info
 
 
