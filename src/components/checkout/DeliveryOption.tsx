@@ -49,6 +49,7 @@ const DeliveryOptions: FC<IProps> = ({
         onClick={() => toggle('pickup')}>
         <AiOutlineHome size="2rem" />
         <ButtonIcon
+          type="button"
           active={selected === 'pickup'}
           onClick={() => toggle('pickup')}
         >
@@ -68,6 +69,7 @@ const DeliveryOptions: FC<IProps> = ({
         onClick={() => total >= 25 && toggle('delivery')}>
         <AiOutlineCar size="2rem" color={total < 25 ? theme.colors.grey500 : theme.colors.grey300} />
         <ButtonIcon
+          type="button"
           disabled={total < 25}
           active={selected === 'delivery'}
           onClick={() => total >= 25 && toggle('delivery')}>

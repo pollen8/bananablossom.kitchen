@@ -17,7 +17,7 @@
 * Thank you order page design
 * failed transaction page design
 * Order special dishes on certain days
-* Delivery for orders over £25
+
   - Delivery time 10 - 14h 16h - 18:30h
 * About banana blossom page
 
@@ -42,3 +42,4 @@ Done:
 * Prod env vars
 * Add env vars into Netlify (live versions)
 * special requests  -   * email to gmail account
+* Delivery for orders over £25
