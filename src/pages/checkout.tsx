@@ -116,9 +116,11 @@ const Checkout: FC = () => {
     }
   }
 
-  const defaultValues = sessionStorage.getItem('form-order') ? JSON.parse(sessionStorage.getItem('form-order')) : {
-    delivery: 'pickup',
-  };
+  const defaultValues = typeof window !== 'undefined' && sessionStorage.getItem('form-order')
+    ? JSON.parse(sessionStorage.getItem('form-order'))
+    : {
+      delivery: 'pickup',
+    };
   const { errors, values, handleInputChange, handleSubmit, formatError, validateTouched, validateSome } = useForm<IOrder>({
     id: 'order',
     callback: redirectToCheckout,
