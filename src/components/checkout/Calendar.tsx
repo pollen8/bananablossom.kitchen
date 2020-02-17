@@ -127,7 +127,7 @@ const Calendar: FC<IProps> = ({
             setValues([value, values[1]]);
           }}
           disabledRanges={[
-            { start: new Date(), end: addDays(new Date(), 1) }
+            { start: addDays(new Date(), - 2), end: addDays(new Date(), - 1) }
           ]} />
       </div>
 

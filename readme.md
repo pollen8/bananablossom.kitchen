@@ -17,8 +17,8 @@
 * Thank you order page design
 * failed transaction page design
 * Order special dishes on certain days
-
-  - Delivery time 10 - 14h 16h - 18:30h
+* disable order delivery dates in psat
+  
 * About banana blossom page
 
 * Special requests
@@ -43,3 +43,4 @@ Done:
 * Add env vars into Netlify (live versions)
 * special requests  -   * email to gmail account
 * Delivery for orders over £25
+- Delivery time 10 - 14h 16h - 18:30h

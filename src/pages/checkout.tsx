@@ -1,14 +1,10 @@
 
+import addDays from 'date-fns/addDays';
 import { Link } from 'gatsby';
 import React, {
   FC,
   useContext,
-  useState,
 } from 'react';
-import {
-  AiOutlineHome,
-  AiOutlineQuestionCircle,
-} from 'react-icons/ai';
 import styled from 'styled-components';
 import {
   email,
@@ -16,14 +12,13 @@ import {
   Validation,
 } from 'validate-promise';
 
-import Alert from '../components/Alert';
 import Button from '../components/Button';
 import Card from '../components/Card';
 import CardBody from '../components/CardBody';
 import Cart from '../components/Cart';
 import CartContent from '../components/CartContent';
 import Calendar from '../components/checkout/Calendar';
-import DeliveryOptions, { TDeliveryOptions } from '../components/checkout/DeliveryOption';
+import DeliveryOptions from '../components/checkout/DeliveryOption';
 import DeliverySummary from '../components/checkout/DeliverySummary';
 import StageNavigation from '../components/checkout/StageNavigation';
 import DeliveryMap from '../components/DeliveryMap';
@@ -35,7 +30,6 @@ import Input from '../components/Input';
 import Label from '../components/Label';
 import Layout from '../components/layout';
 import TextArea from '../components/TextArea';
-import TimePicker from '../components/TimePicker';
 import { store } from '../context/cartContext';
 import { useFormWizard } from '../hooks/formWizard';
 import { useForm } from '../hooks/useForm';
@@ -120,6 +114,7 @@ const Checkout: FC = () => {
     ? JSON.parse(sessionStorage.getItem('form-order'))
     : {
       delivery: 'pickup',
+      order_date: addDays(new Date(), 1),
     };
   const { errors, values, handleInputChange, handleSubmit, formatError, validateTouched, validateSome } = useForm<IOrder>({
     id: 'order',

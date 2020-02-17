@@ -1,4 +1,4 @@
-import { addDays } from 'date-fns';
+import addDays from 'date-fns/addDays';
 import addMonths from 'date-fns/addMonths';
 import format from 'date-fns/format';
 import getDay from 'date-fns/getDay';
