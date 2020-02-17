@@ -1,29 +1,38 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
 
-import { Stage } from '../../pages/checkout';
-
-const Circle = styled.div<{ active: boolean }>`
+const Circle = styled.div<{ active: boolean, completed: boolean }>`
   width: 1.5rem;
   height: 1.5rem;
   border-radius: 1.5rem;
   line-height: 1.5rem;
   font-size: 0.7rem;
   text-align: center;
-  background-color: ${(props) => props.active ? props.theme.colors.primary : props.theme.colors.white100};
+  background-color: ${(props) => props.active
+    ? props.theme.colors.primary
+    : props.completed ?
+      props.theme.colors.green800 : props.theme.colors.white100};
   color:  ${(props) => props.active ? props.theme.colors.white100 : props.theme.colors.grey500};
   border: 1px solid;
   border-color: ${(props) => props.active ? 'transparent' : props.theme.colors.grey500};
-  `;
+  z-index: 10;
+`;
 
 const Bar = styled.div`
   display: flex;
   padding: 0.1rem 0.5rem;
   justify-context: space-between;
-  div {
-    margin-right: 0.5rem;
+  > div:first-child{
+    &:before {
+      left: 50%;
+    }
   }
-  `
+  > div:last-child{
+    &:before {
+      width: 50%;
+    }
+  }
+`;
 
 interface ItemProps {
   disabled: boolean;
@@ -31,51 +40,62 @@ interface ItemProps {
 
 const Item = styled.div<ItemProps>`
   display: flex;
-  padding: 0.1rem 0.5rem;
+  padding: 0.1rem 1.5rem;
+  flex-grow: 1;
   flex-direction: column;
   align-items: center;
   cursor: ${(props) => props.disabled ? 'normal' : 'pointer'};
-  `
+  position: relative;
+  &:before {
+    content: '';
+    position: absolute;
+    top: 30%;
+    left: 0;
+    border-top: 1px solid ${(props) => props.theme.colors.grey500};
+    width: 100%;
+  }
+`;
 
 interface IProps {
-  active: Stage,
-  maxVisitedStage: Stage,
-  setStage: (stage: Stage) => void;
+  stages: string[],
+  active: string,
+  maxVisitedStage: number,
+  setStage: (stage: string) => void;
 }
 
-const stageLabel = (i: Stage) => {
+const stageLabel = (i: string) => {
   switch (i) {
-    case Stage.deliveryChoice: return 'Delivery Choice';
-    case Stage.deliveryOptions: return 'Delivery Option';
-    case Stage.details: return 'Details';
-    case Stage.info: return 'Info';
+    case 'deliveryChoice': return 'Delivery method';
+    case 'deliveryOptions': return 'Delivery options';
+    case 'details': return 'Details';
+    case 'info': return 'Confirm';
     default: return '';
   }
 }
 
 const StageNavigation: FC<IProps> = ({
+  stages,
   active,
   setStage,
   maxVisitedStage,
 }) => {
-  const stages = Object.values(Stage).filter((s) => typeof s === 'string');
-  const activeIndex = stages.findIndex((s) => s === Stage[active]);
+  const activeIndex = stages.findIndex((s) => s === active);
   return (
     <Bar>
       {
         stages.map((s, i) => <Item
-          // outline
           disabled={i > maxVisitedStage}
-          // text={i !== activeIndex}
           onClick={() => {
             if (i <= maxVisitedStage) {
-              setStage(Stage[s]);
+              setStage(s);
             }
           }}
           key={s}>
-          <Circle active={i === active}>{i}</Circle>
+          <Circle
+            completed={i < activeIndex}
+            active={i === activeIndex}>{i}</Circle>
           <div>
-            {stageLabel(i)}
+            {stageLabel(s)}
           </div>
         </Item>)
       }

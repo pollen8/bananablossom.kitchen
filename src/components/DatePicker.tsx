@@ -10,6 +10,7 @@ import startOfMonth from 'date-fns/startOfMonth';
 import subMonths from 'date-fns/subMonths';
 import React, {
   FC,
+  HTMLAttributes,
   useState,
 } from 'react';
 import styled from 'styled-components';
@@ -76,6 +77,8 @@ export const Cell = styled.div<IDayProps>`
 `;
 
 interface IProps {
+  name?: string;
+  className?: string;
   disabledRanges?: Interval[];
   value?: Date;
   width?: string | number;
@@ -88,9 +91,11 @@ const isDisabled = (date: Date, disabled: Interval[]) => {
 
 const DatePicker: FC<IProps> = ({
   disabledRanges,
+  name,
   onChange,
   value,
   width,
+  className,
 }) => {
   const [now, setNow] = useState(value || new Date());
   const daysInMonth = getDaysInMonth(now);
@@ -99,18 +104,21 @@ const DatePicker: FC<IProps> = ({
   const firstDays = Array.from(Array(getDay(firstDateOfMonth)).keys());
 
   return (
-    <Container width={width}>
-      <Header>
+    <Container width={width}
+      className={className ?? 'date-picker'}>
+      <Header className="date-picker-header">
         <h3>
           {format(now, 'MMMM yyyy')}
         </h3>
         <Controls>
           <button
             type="button"
+            title="Previous month"
             onClick={() => setNow(subMonths(now, 1))}> &lt;
     </button>
           <button
             type="button"
+            title="Next month"
             onClick={() => setNow(addMonths(now, 1))}> &gt;
     </button>
         </Controls>
@@ -130,9 +138,11 @@ const DatePicker: FC<IProps> = ({
           days.map((d) => {
             const thisDay = addDays(firstDateOfMonth, d);
             const disabled = isDisabled(thisDay, disabledRanges);
+            const isActive = isSameDay(thisDay, now);
             return <Cell
               disabled={disabled}
-              isActive={isSameDay(thisDay, now)}
+              className={`date-picker-cell ${isActive ? ' active' : ''} ${disabled ? ' disabled' : ''}`}
+              isActive={isActive}
               isToday={isToday(thisDay)}
               onClick={() => {
                 if (disabled) {

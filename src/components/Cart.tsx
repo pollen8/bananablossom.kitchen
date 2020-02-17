@@ -9,6 +9,7 @@ import { store } from '../context/cartContext';
 import Button from './Button';
 import Card from './Card';
 import CardBody from './CardBody';
+import CartContent from './CartContent';
 import CartItem from './CartItem';
 import OrderHelp from './OrderHelp';
 
@@ -17,21 +18,16 @@ const StickyCard = styled(Card)`
   top: 11rem;
 `;
 
-const Grid = styled.div`
-margin: 0 0 1rem 0;
-  display: grid;
-  grid-template-columns: 45% 15% 25% 15%;
-  grid-template-rows: auto;
-  // grid-column-gap: 4rem;
-  grid-row-gap: 0.5rem;
-  align-items: center;
-`;
+
 
 interface IProps {
   readonly?: boolean;
+  hideInfo?: boolean;
 }
 
-const Cart: FC<IProps> = ({ readonly }) => {
+const Cart: FC<IProps> = ({ readonly,
+  hideInfo = false,
+}) => {
   const { state } = useContext(store);
   return (
     <StickyCard>
@@ -47,11 +43,8 @@ const Cart: FC<IProps> = ({ readonly }) => {
         {
           state.items.length > 0 &&
           <>
-            <Grid>
-              {state.items.map((item) => <CartItem
-                readonly={readonly}
-                key={item.id} item={item} />)}
-            </Grid>
+            <CartContent
+              readonly={readonly} />
             {
               !readonly &&
 
@@ -63,7 +56,10 @@ const Cart: FC<IProps> = ({ readonly }) => {
             }
           </>
         }
-        <OrderHelp />
+        {
+          !hideInfo && <OrderHelp />
+        }
+
       </CardBody>
     </StickyCard>
   )

@@ -19,7 +19,7 @@ import Logo from './Logo';
 import SEO from './seo';
 import TopMenu from './TopMenu';
 
-const GlobalStyle = createGlobalStyle`
+const GlobalStyle = createGlobalStyle<any>`
   html {
     font-size: 16px;
   }
@@ -31,7 +31,7 @@ const GlobalStyle = createGlobalStyle`
     font-size: 0.8rem;
     font-family: 'Comfortaa', cursive;
     background: #eedd;
-    color: #777;
+    color: ${(props) => props.theme.colors.grey300};
   }
   `;
 

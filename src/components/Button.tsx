@@ -118,11 +118,25 @@ export const ButtonIcon = styled.button<Props>`
   background:transparent;
   display: flex;
   align-items: center;
+  cursor: ${(props) => props.disabled ? 'not-allowed' : 'pointer'};
   font-size: ${(props) => props.size === 'lg' ? '2.5rem' : '1rem'};
-  color: ${(props) => props.active ? props.theme.colors.primary : '#4F625D'};
-  &:hover {
-    color: ${(props) => props.theme.colors.primary};
-  }
+
+  ${(props) => {
+    if (props.disabled) {
+      return ` color: ${props.theme.colors.grey500};`
+    }
+    return `color: ${props.active ? props.theme.colors.primary : '#4F625D'};`
+  }}
+  
+  ${(props) => {
+    if (props.disabled) {
+      return ``;
+    }
+    return ` &:hover {
+      color: ${props.theme.colors.primary};
+    }
+    `;
+  }}
   svg {
     font-size: ${(props) => props.size === 'lg' ? '2.5rem' : '1.5rem'};
   }

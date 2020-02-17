@@ -25,7 +25,7 @@
   - intro 
 * Cookie accpet / policy
 * Contact us info
-
+* terms and conditions / refunds
 
 Nice to have
 * Pick unavailable dates from google ical https://www.gatsbyjs.org/packages/gatsby-source-ical/?=ical

@@ -101,18 +101,14 @@ const MealListItem: FC<IProps> = ({
               }
             </div>
           }
-          <Link
-            to={`/meals?id=${product.id}`}
-          >
-            <>
-              <Button
-                color="primary"
-                onClick={() => {
-                  onToggle(true);
-                }}>Order now
+          <>
+            <Button
+              color="primary"
+              onClick={() => {
+                onToggle(true);
+              }}>Order now
             </Button>
-            </>
-          </Link>
+          </>
         </CardFooter>
       </MealCard>
       <AddItemForm

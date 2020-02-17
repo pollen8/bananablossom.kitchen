@@ -9,7 +9,7 @@ import {
   Grid,
 } from './DatePicker';
 
-interface ITime {
+export interface ITime {
   hour: number;
   minute: number;
 };
@@ -20,12 +20,16 @@ interface ITimeRange {
 }
 
 interface IProps {
+  className?: string;
   startTime?: ITime, // Start time for the time range
   endTime?: ITime, // End time for the time range
   available?: ITimeRange[]; // Times ranges which can be selected
   interval?: number; // Minute interval
-  onChange?: (start: ITime, end: ITime) => void;
+  onChange?: (time: ITime) => void;
   width?: string | number;
+  useAmPm?: boolean;
+  hideValue?: boolean;
+  value?: ITime;
 }
 
 const isHourDisabled = (hour: number, available: ITimeRange[]) => {
@@ -48,14 +52,11 @@ const isMinuteDisabled = (hour: number, minute: number, available: ITimeRange[])
 }
 
 const nearestAvailableTime = (time: ITime, available: ITimeRange[]) => {
-  console.log('nearest start');
   if (!isHourDisabled(time.hour, available) && !isMinuteDisabled(time.hour, time.minute, available)) {
     return time;
   }
 
-  console.log(available, time.hour);
   const range = available.find((a) => a.end.hour == time.hour);
-  console.log('range', range);
   if (!range) {
     throw new Error('this shouldnt happen');
   }
@@ -67,50 +68,80 @@ const nearestAvailableTime = (time: ITime, available: ITimeRange[]) => {
 
 const TimePicker: FC<IProps> = ({
   startTime,
+  className,
   endTime,
   interval,
   onChange,
   width,
   available,
+  useAmPm,
+  hideValue,
+  value,
 }) => {
   const hours = Array.from(Array(endTime.hour - startTime.hour).keys());
   const intervals = Array.from(Array((Math.floor(60 / interval)) + 1).keys()).map((v) => v * interval)
     .filter((v) => v !== 60);
-  const [start, setStart] = useState<ITime>({ hour: hours[0] + startTime.hour, minute: intervals[0] });
-  const setTime = (time: ITime) => setStart(nearestAvailableTime(time, available));
+  const [start, setStart] = useState<ITime>(value ?? { hour: hours[0] + startTime.hour, minute: intervals[0] });
+  const setTime = (time: ITime) => {
+    const clamped = nearestAvailableTime(time, available);
+    setStart(clamped);
+    onChange(clamped);
+  };
 
   return (
-    <Container width={width}>
-      <strong>Selected {start.hour}:{start.minute === 0 ? '00' : start.minute}</strong>
-      <div>
-        <strong>Hour</strong>
+    <Container width={width} className={className ?? 'time-picker'}>
+      <div className="time-picker-header">
+        {
+          !hideValue && <strong>Selected {start.hour}:{start.minute === 0 ? '00' : start.minute}</strong>
+        }
       </div>
+      <h4 className="time-picker-interval-heading">hour</h4>
       <Grid columns={hours.length}>
         {
-          hours.map((h) => <Cell
-            data-is-active={h + startTime.hour === start.hour ? 'yes' : 'no'}
-            isActive={h + startTime.hour === start.hour}
-            onClick={() => setTime({ hour: h + startTime.hour, minute: start.minute })}
-            disabled={isHourDisabled(h + startTime.hour, available)}
-          >
-            {h + startTime.hour}
-          </Cell>)
+          hours.map((h) => {
+            const isActive = h + startTime.hour === start.hour;
+            const disabled = isHourDisabled(h + startTime.hour, available);
+            const hour = h + startTime.hour;
+            return <Cell
+              className={`time-picker-cell ${isActive && 'active'} ${disabled && 'disabled'}`}
+              data-is-active={h + startTime.hour === start.hour ? 'yes' : 'no'}
+              isActive={isActive}
+              onClick={() => setTime({ hour: h + startTime.hour, minute: start.minute })}
+              disabled={disabled}
+            >
+              {useAmPm ? formatAmPm(hour) : hour}
+            </Cell>;
+          })
         }
       </Grid>
-      <div>
-        <strong>Minute</strong>
-      </div>
+      <h4 className="time-picker-interval-heading">
+        Minute
+      </h4>
       <Grid columns={intervals.length}>
         {
-          intervals.map((i) => <Cell
-            isActive={start.minute === i}
-            disabled={isMinuteDisabled(start.hour, i, available)}
-            onClick={() => setTime({ hour: start.hour, minute: i })}
-          >{i}</Cell>)
+          intervals.map((i) => {
+            const disabled = isMinuteDisabled(start.hour, i, available);
+            const isActive = start.minute === i;
+            return <Cell
+              isActive={isActive}
+              className={`time-picker-cell ${isActive && 'active'} ${disabled && 'disabled'}`}
+              disabled={disabled}
+              onClick={() => setTime({ hour: start.hour, minute: i })}
+            >
+              {i}
+            </Cell>
+          })
         }
       </Grid>
     </Container>
   )
+}
+
+export const formatAmPm = (hour: number) => {
+  if (hour <= 12) {
+    return <>{hour}<small>am</small></>;
+  }
+  return <>{hour - 12}<small>pm</small></>;
 }
 
 TimePicker.defaultProps = {
@@ -119,6 +150,7 @@ TimePicker.defaultProps = {
     hour: 24,
     minute: 0,
   },
+  hideValue: false,
   interval: 15,
   startTime: {
     hour: 0,
