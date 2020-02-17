@@ -127,6 +127,7 @@ const Checkout: FC = () => {
     : {
       delivery: 'pickup',
       order_date: addDays(new Date(), 1),
+      order_time: { hour: 13, minute: 0 },
     };
   const { errors, values, handleInputChange, handleSubmit, formatError, validateTouched, validateSome } = useForm<IOrder>({
     id: 'order',
