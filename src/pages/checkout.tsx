@@ -93,6 +93,18 @@ const Checkout: FC = () => {
   const { state, dispatch } = useContext(store);
 
   const redirectToCheckout = async (formData: IOrder) => {
+
+    const response = await fetch("/.netlify/functions/sendmail", {
+      method: "POST",
+      body: JSON.stringify(formData),
+    })
+    console.log('email response', response);
+    if (!response.ok) {
+      //not 200 response
+      return
+    }
+
+    //all OK
     const stripe = (window as any).Stripe(process.env.STRIPE_PUBLISHABLE_KEY || 'pk_live_NpIzgQMQCs9C4vDbqG5WHk7v00dThpwTXu', {
       betas: ['checkout_beta_4'],
     });
