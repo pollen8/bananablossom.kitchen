@@ -6,6 +6,7 @@
   "author": "Kyle Mathews <mathews.kyle@gmail.com>",
   "dependencies": {
     "@sendgrid/mail": "^6.5.2",
+    "axios": "^0.19.2",
     "date-fns": "^2.9.0",
     "fontfaceobserver": "^2.1.0",
     "gatsby": "^2.19.15",

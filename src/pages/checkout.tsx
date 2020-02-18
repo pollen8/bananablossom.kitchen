@@ -1,4 +1,5 @@
 
+import axios from 'axios';
 import addDays from 'date-fns/addDays';
 import { Link } from 'gatsby';
 import React, {
@@ -98,10 +99,7 @@ const Checkout: FC = () => {
 
   const redirectToCheckout = async (formData: IOrder) => {
 
-    const response = await fetch("/.netlify/functions/sendmail", {
-      method: "POST",
-      body: JSON.stringify(formData),
-    })
+    const response = await axios.post("/.netlify/functions/sendmail", formData)
     console.log('email response', response);
     if (!response.ok) {
       //not 200 response
