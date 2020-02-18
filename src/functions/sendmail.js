@@ -1,4 +1,4 @@
-import sgMail from '@sendgrid/mail';
+const sgMail = require('@sendgrid/mail')
 
 const { SENDGRID_API_KEY } = process.env
 
@@ -16,7 +16,7 @@ exports.handler = async (event, context, callback) => {
   const msg = {
     to: ['bananablossom.kitchen@gmail.com', 'fabrikar@gmail.com'],
     from: email,
-    subject: subject ? subject : 'Banana Blossom: Order',
+    subject: subject ? subject : 'Banana Blossom: Order 2',
     html: body,
   };
 

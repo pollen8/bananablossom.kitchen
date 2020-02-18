@@ -102,7 +102,7 @@ const Checkout: FC = () => {
 
     const response = await axios.post("/.netlify/functions/sendmail", formData)
     console.log('email response', response);
-    if (!response.ok) {
+    if (!response) {
       //not 200 response
       return
     }
