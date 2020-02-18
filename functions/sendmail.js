@@ -11,13 +11,14 @@ exports.handler = async (event, context, callback) => {
 
   const body = Object.keys(payload).map((k) => {
     if (k === 'order_date') {
-      return `${k}: ` + new Date(payload[k]).toDateString();
+      return `Pickup/delivery date: ` + new Date(payload[k]).toDateString();
     }
     if (k === 'order_time') {
-      return `${k}: ${payload[k].hour}: ${payload[k].minute}`;
+      return `Pickup/delivery time: ${payload[k].hour}: ${payload[k].minute}`;
     }
     if (typeof payload[k] === 'object') {
-      return `${k}: ${JSON.stringify(payload[k])}`;
+      return '<ul>' + payload[k].map((order) => `<li>${order.quantity}: ${order.attributes.name}</li>`) + '</ul>'
+        + `<br />${JSON.stringify(payload[k])}`;
     }
     return `${k}: ${payload[k]}`
   }).join("<br/>");
