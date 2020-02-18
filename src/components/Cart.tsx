@@ -10,7 +10,6 @@ import Button from './Button';
 import Card from './Card';
 import CardBody from './CardBody';
 import CartContent from './CartContent';
-import CartItem from './CartItem';
 import OrderHelp from './OrderHelp';
 
 const StickyCard = styled(Card)`

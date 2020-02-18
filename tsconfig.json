@@ -22,7 +22,6 @@
     "frontend/node_modules"
   ],
   "include": [
-    "frontend/next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
   ]

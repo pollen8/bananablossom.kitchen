@@ -89,6 +89,10 @@ const contract: Array<Validation<IOrder>> = [
   }
 ];
 
+fetch("/.netlify/functions/hello")
+  .then(response => response.json())
+  .then(console.log)
+
 const Checkout: FC = () => {
   const { state, dispatch } = useContext(store);
 
