@@ -25,7 +25,7 @@ exports.handler = async (event, context, callback) => {
   const msg = {
     to: ['bananablossom.kitchen@gmail.com', 'fabrikar@gmail.com'],
     from: email,
-    subject: subject ? subject : 'Banana Blossom: Order',
+    subject: subject ? subject : 'banana-blossom.kitchen: Order',
     html: body,
   };
 
