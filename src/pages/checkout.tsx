@@ -90,7 +90,8 @@ const contract: Array<Validation<IOrder>> = [
   }
 ];
 
-fetch("/.netlify/functions/hello")
+
+axios.get("/.netlify/functions/hello")
   .then(response => response.json())
   .then(console.log)
 
