@@ -90,17 +90,12 @@ const contract: Array<Validation<IOrder>> = [
   }
 ];
 
-
-axios.get("/.netlify/functions/hello")
-  .then(response => response.json())
-  .then(console.log)
-
 const Checkout: FC = () => {
   const { state, dispatch } = useContext(store);
 
   const redirectToCheckout = async (formData: IOrder) => {
 
-    const response = await axios.post("/.netlify/functions/sendmail", formData)
+    const response = await axios.post("/.netlify/functions/sendmail", { ...formData, order: state.items })
     console.log('email response', response);
     if (!response) {
       //not 200 response
