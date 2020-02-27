@@ -50,7 +50,7 @@ const Cart: FC<IProps> = ({ readonly,
               <Link to="/checkout">
                 <Button color="primary">
                   Checkout
-          </Button>
+                </Button>
               </Link>
             }
           </>

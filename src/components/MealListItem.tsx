@@ -1,10 +1,11 @@
-import { Link } from 'gatsby';
+import Img from 'gatsby-image';
 import React, {
   FC,
   useState,
 } from 'react';
 import styled from 'styled-components';
 
+import { useMedia } from '../hooks/useMedia';
 import { formatter } from '../lib/formatter';
 import AddItemForm from './AddItemForm';
 import Button from './Button';
@@ -14,15 +15,25 @@ import CardFooter from './CardFooter';
 import { TSkuProduct } from './MealList';
 import Price from './Price';
 
-const MealImage = styled.img`
-  max-height: 10rem;
-  padding-left: 1rem;
-  padding-top: 1rem;
-  max-width: 100%;
+const MealImage = styled(Img) <{ direction: 'column' | 'row' }>`
+  img {
+  ${(props) => {
+    if (props.direction !== 'column') {
+      return `
+        padding-left: 1rem;
+        padding-top: 1rem;
+      `;
+    }
+    return `
+    border-radius:  0.3rem 0.3rem 0 0;
+    `
+  }}
+}
 `;
 
-const FlexRow = styled.div`
+const FlexRow = styled.div<{ direction: 'column' | 'row' }>`
   display: flex;
+  flex-direction: ${(props) => props.direction};
 `;
 
 
@@ -52,24 +63,34 @@ const MealListItem: FC<IProps> = ({
 }) => {
   const [isOpen, onToggle] = useState(false);
   const [selectedSKUIndex, setSelectedSKUIndex] = useState(product.selectedSKUIndex);
+  const columnCount = useMedia(
+    ['(min-width: 1500px)', '(min-width: 1000px)', '(min-width: 0px)'],
+    [3, 2, 1],
+    2
+  );
   return (
     <>
       <MealCard>
-        <FlexRow>
+
+        <FlexRow direction={columnCount === 1 ? 'column' : 'row'}>
           {
-            product.image && <MealImage
-              src={product.image}
-            />
+            product.fluid &&
+            <div style={{ width: '100%' }}>
+              <MealImage
+                direction={columnCount === 1 ? 'column' : 'row'}
+                fluid={product.fluid} alt="test"
+              />
+            </div>
           }
 
-          <CardBody>
+          <CardBody style={{ width: '100%' }}>
             <h3>
               {product.product.name}
             </h3>
             <div>{product.product.metadata.description}</div>
           </CardBody>
         </FlexRow>
-        <CardFooter>
+        <CardFooter direction={columnCount === 1 ? 'column' : 'row'}>
           {
             product.skus.length === 1 &&
             <Price>
@@ -81,7 +102,7 @@ const MealListItem: FC<IProps> = ({
             product.skus.length > 1 &&
             <div>
               {
-                product.skus.map((sku, i) => <FlexRow key={sku.id} >
+                product.skus.map((sku, i) => <FlexRow key={sku.id} direction="row" >
                   <input
                     type="radio"
                     id={`sku-${sku.id}`}
@@ -101,14 +122,13 @@ const MealListItem: FC<IProps> = ({
               }
             </div>
           }
-          <>
-            <Button
-              color="primary"
-              onClick={() => {
-                onToggle(true);
-              }}>Order now
+          <Button
+            style={{ marginTop: columnCount === 1 ? '1rem' : 0 }}
+            color="primary"
+            onClick={() => {
+              onToggle(true);
+            }}>Order now
             </Button>
-          </>
         </CardFooter>
       </MealCard>
       <AddItemForm

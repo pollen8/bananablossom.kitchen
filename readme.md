@@ -11,13 +11,16 @@
 #TODO
 
 
+* Mobile checkout pages
+* Testimonials
+* Links to twitter etc
 * What to do with order summaries ? email???
 * Gluten free / vegan / veg / nuts per product
 * Homepage design
 * Thank you order page design
 * failed transaction page design
 * Order special dishes on certain days
-* disable order delivery dates in psat
+* disable order delivery dates in past
   
 * About banana blossom page
 
@@ -32,6 +35,7 @@ Nice to have
 
 
 Done:
+* Mobile cart page
 * Persist cart in session storage
 * Web hook to update static menus (stripe test env)
 * Add env vars into Netlify (dev versions)
