@@ -5,6 +5,9 @@ import {
 
 export const useMedia = (queries: string[], values: any[], defaultValue: any) => {
 
+  if (typeof window === 'undefined') {
+    return defaultValue;
+  }
   // Array containing a media query list for each query
   const mediaQueryLists = queries.map(q => window.matchMedia(q));
 
