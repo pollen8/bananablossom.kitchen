@@ -3,33 +3,30 @@ import React, {
   FC,
   useContext,
 } from 'react';
-import styled from 'styled-components';
 
 import { store } from '../context/cartContext';
+import { formatter } from '../lib/formatter';
 import Button from './Button';
 import Card from './Card';
 import CardBody from './CardBody';
 import CartContent from './CartContent';
 import OrderHelp from './OrderHelp';
-
-const StickyCard = styled(Card)`
-  position: sticky;
-  top: 11rem;
-`;
-
-
+import Price from './Price';
+import Badge from './ui/Badge';
 
 interface IProps {
   readonly?: boolean;
   hideInfo?: boolean;
 }
 
-const Cart: FC<IProps> = ({ readonly,
+const Cart: FC<IProps> = ({
+  readonly,
   hideInfo = false,
 }) => {
   const { state } = useContext(store);
+  const total = state.items.reduce((total, item) => total + (item.quantity * item.price / 100), 0);
   return (
-    <StickyCard>
+    <Card>
       <CardBody>
         <h3>
           {
@@ -41,31 +38,40 @@ const Cart: FC<IProps> = ({ readonly,
         }
         {
           state.items.length > 0 &&
-          <>
+          <div id="controls">
+            <Price id="price">
+              {formatter.format(total)}
+            </Price>
             <CartContent
+              id="cart-content"
               readonly={readonly} />
             {
               !readonly &&
 
               <Link to="/checkout">
                 <Button color="primary">
+                  <Badge id="order-total-badge"
+                    background="white100" color="blue100">
+                    {state.items.length}
+                  </Badge>
                   Checkout
                 </Button>
               </Link>
             }
-          </>
+          </div>
         }
         {
           !hideInfo && <OrderHelp />
         }
 
       </CardBody>
-    </StickyCard>
+    </Card>
   )
 }
 
 Cart.defaultProps = {
   readonly: false,
 };
+
 
 export default Cart;

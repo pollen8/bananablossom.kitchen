@@ -5,16 +5,20 @@ import {
 import React from 'react';
 import styled from 'styled-components';
 
-import { useMedia } from '../hooks/useMedia';
 import MealListItem from './MealListItem';
 
-const Grid = styled.div<{ columnCount: number }>`
+const Grid = styled.div<{ columnCount?: number }>`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(45%, 1fr));
   grid-template-rows: auto;
   grid-column-gap: 4rem;
-  margin: ${(props) => props.columnCount === 1 ? '0' : '3rem 5rem 0 5rem'};
-  grid-row-gap: ${(props) => props.columnCount === 1 ? '1rem' : '4rem'};
+  margin: 0;
+  grid-row-gap: 4rem;
+
+  @media (min-width: 640px){
+    margin: 0rem 5rem 0 5rem;
+    grid-row-gap: 1rem;
+  }
 `;
 
 export interface ISku {
@@ -90,14 +94,7 @@ const GET_PRODUCTS = graphql`{
 }
 `;
 
-
-
 const MealList = () => {
-  const columnCount = useMedia(
-    ['(min-width: 1500px)', '(min-width: 1000px)', '(min-width: 0px)'],
-    [3, 2, 1],
-    2
-  );
   const { skus, images } = useStaticQuery<ISkuNodes>(GET_PRODUCTS);
 
   const products = skus.nodes.reduce((prev, next) => {
@@ -128,7 +125,7 @@ const MealList = () => {
   }, [] as TSkuProduct[]);
   return (
     <>
-      <Grid columnCount={columnCount}>
+      <Grid>
         {
           products.map((product) => (
             <>

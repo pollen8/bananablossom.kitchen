@@ -66,7 +66,7 @@ const MealListItem: FC<IProps> = ({
   const columnCount = useMedia(
     ['(min-width: 1500px)', '(min-width: 1000px)', '(min-width: 0px)'],
     [3, 2, 1],
-    1
+    2
   );
   return (
     <>
