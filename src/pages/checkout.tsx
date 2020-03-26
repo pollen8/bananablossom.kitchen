@@ -19,7 +19,7 @@ import CardBody from '../components/CardBody';
 import Cart from '../components/Cart';
 import CartContent from '../components/CartContent';
 import Calendar from '../components/checkout/Calendar';
-import DeliveryOptions from '../components/checkout/DeliveryOption';
+import DeliveryOptions, { deliveryFreeFrom } from '../components/checkout/DeliveryOption';
 import DeliverySummary from '../components/checkout/DeliverySummary';
 import StageNavigation from '../components/checkout/StageNavigation';
 import DeliveryMap from '../components/DeliveryMap';
@@ -300,7 +300,7 @@ const Checkout: FC = () => {
                       <legend>Delivery / Pickup</legend>
                       <div>
                         {
-                          total > 25 && <>
+                          total > deliveryFreeFrom && <>
                             {
                               values.delivery === 'delivery' &&
                               <>

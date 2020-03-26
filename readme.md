@@ -1,11 +1,8 @@
-* Front end 
+* Running
 
-> npm run dev
-
-* backend
-
-> cd backend
 > npm run develop
+
+
 
 
 #TODO

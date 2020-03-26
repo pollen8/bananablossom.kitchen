@@ -36,12 +36,14 @@ const Option = styled.div<{ disabled?: boolean } & HTMLAttributes<HTMLDivElement
   }
 `;
 
+export const deliveryFreeFrom = 15;
+
 const DeliveryOptions: FC<IProps> = ({
   selected,
   total,
   toggle,
 }) => {
-  const theme = useTheme<any>();
+  const theme = useTheme();
   return (
     <div style={{ display: 'flex', justifyContent: 'space-around', margin: '0.25rem 0' }}>
       <Option
@@ -64,15 +66,15 @@ const DeliveryOptions: FC<IProps> = ({
         </ButtonIcon>
       </Option>
       <Option
-        title={total < 25 ? 'Delivery available for orders over £25.00' : ''}
-        disabled={total < 25}
-        onClick={() => total >= 25 && toggle('delivery')}>
-        <AiOutlineCar size="2rem" color={total < 25 ? theme.colors.grey500 : theme.colors.grey300} />
+        title={total < deliveryFreeFrom ? `Delivery available for orders over £${deliveryFreeFrom}.00` : ''}
+        disabled={total < deliveryFreeFrom}
+        onClick={() => total >= deliveryFreeFrom && toggle('delivery')}>
+        <AiOutlineCar size="2rem" color={total < deliveryFreeFrom ? theme.colors.grey500 : theme.colors.grey300} />
         <ButtonIcon
           type="button"
-          disabled={total < 25}
+          disabled={total < deliveryFreeFrom}
           active={selected === 'delivery'}
-          onClick={() => total >= 25 && toggle('delivery')}>
+          onClick={() => total >= deliveryFreeFrom && toggle('delivery')}>
           {
             selected === 'delivery'
               ? <AiOutlineCheckSquare />

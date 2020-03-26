@@ -66,11 +66,11 @@ const MealListItem: FC<IProps> = ({
   const columnCount = useMedia(
     ['(min-width: 1500px)', '(min-width: 1000px)', '(min-width: 0px)'],
     [3, 2, 1],
-    2
+    1
   );
   return (
     <>
-      <MealCard>
+      <MealCard data-dish={`data-${product.product.name.replace(' ', '-')}`}>
 
         <FlexRow direction={columnCount === 1 ? 'column' : 'row'}>
           {

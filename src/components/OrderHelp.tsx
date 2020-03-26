@@ -1,8 +1,10 @@
 import React, { FC } from 'react';
 
+import { deliveryFreeFrom } from './checkout/DeliveryOption';
+
 const OrderHelp: FC = () => {
   return (<div style={{ marginTop: '1rem', fontSize: '0.7rem' }}>
-    <p>Delivery around Basingstoke for orders over £25.00</p>
+    <p>Delivery around Basingstoke for orders over £${deliveryFreeFrom}.00</p>
     <p>
       Dishes may contain allergens. If you have any dietary requirements, please let us know when you place your order.
     </p>
