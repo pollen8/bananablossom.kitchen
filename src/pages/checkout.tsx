@@ -34,7 +34,13 @@ import TextArea from '../components/TextArea';
 import { store } from '../context/cartContext';
 import { useFormWizard } from '../hooks/formWizard';
 import { useForm } from '../hooks/useForm';
-import { Frame } from './meals';
+
+export const Frame = styled.div`
+  display: grid;
+  grid-template-columns: auto 250px;
+  grid-gap: 32px;
+}
+`;
 
 export interface IOrder {
   additional_info: string;
