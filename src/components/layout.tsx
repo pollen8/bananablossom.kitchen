@@ -33,6 +33,9 @@ const GlobalStyle = createGlobalStyle<any>`
     background: #eedd;
     color: ${(props) => props.theme.colors.grey300};
   }
+  table {
+    font-size: 0.8rem;
+  }
   `;
 
 const Layout: FC = ({ children }) => {
