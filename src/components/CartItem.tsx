@@ -24,7 +24,7 @@ const CartItem: FC<IProps> = ({
     <>
       <div>{name}</div>
       <div>{item.quantity}</div>
-      <div>{formatter.format(item.quantity / 100 * price)}</div>
+      <div style={{ textAlign: 'right' }}>{formatter.format(item.quantity / 100 * price)}</div>
       {readonly && <div />}
       {
         !readonly &&

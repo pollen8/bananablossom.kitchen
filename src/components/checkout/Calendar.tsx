@@ -101,6 +101,13 @@ border: 1px solid ${(props) => props.theme.colors.grey700};
   }
 `;
 
+const StyledRow = styled(Row)`
+  flex-directon: row;
+  @media (min-width: 640px){
+    flex-directon: column;
+  }
+`;
+
 interface IProps {
   handleInputChange: (key: string, value: any) => void;
   orderDate: Date;
@@ -113,9 +120,8 @@ const Calendar: FC<IProps> = ({
   orderTime,
 }) => {
   const [values, setValues] = useState<[Date, ITime]>([orderDate, { hour: 10, minute: 0 }]);
-  console.log(values);
   return (
-    <Row style={{ justifyContent: 'flex-start' }}>
+    <StyledRow style={{ justifyContent: 'flex-start' }}>
       <div>
         <Label>Date: {values[0].toLocaleDateString()}</Label>
         <StyledDatePicker
@@ -145,7 +151,7 @@ const Calendar: FC<IProps> = ({
           hideValue
           available={deliveryAvailability} />
       </div>
-    </Row>
+    </StyledRow>
   )
 }
 

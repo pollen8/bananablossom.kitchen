@@ -5,6 +5,7 @@ import { Link } from 'gatsby';
 import React, {
   FC,
   useContext,
+  useState,
 } from 'react';
 import styled from 'styled-components';
 import {
@@ -33,7 +34,9 @@ import Layout from '../components/layout';
 import TextArea from '../components/TextArea';
 import { store } from '../context/cartContext';
 import { useFormWizard } from '../hooks/formWizard';
+import { useDiscount } from '../hooks/useDiscount';
 import { useForm } from '../hooks/useForm';
+import { ThisLayout } from './index';
 
 export const Frame = styled.div`
   display: grid;
@@ -64,9 +67,24 @@ const Row = styled.div`
   width: 100%;
 `;
 
-const Col = styled.div`
+interface ICol {
+  xs?: number;
+}
+const Col = styled.div<ICol>`
   margin: 0 0.125rem;
   flex-grow: 1;
+  ${(props) => {
+    if (props.xs) {
+      return `
+      width: ${(props.xs / 12) * 100}%;
+      `;
+    }
+    return `
+    @media (min-width: 640px){
+      flex-grow: 1;
+    }
+    `;
+  }}
 `;
 
 const stages = ['details',
@@ -98,6 +116,13 @@ const contract: Array<Validation<IOrder>> = [
 
 const Checkout: FC = () => {
   const { state, dispatch } = useContext(store);
+  const [discount, setDiscount] = useState(0);
+  const { value } = useDiscount(setDiscount);
+  const total = state.items.reduce((total, item) => total + (item.quantity * item.price / 100), 0);
+
+  const discountedTotal = discount === 0
+    ? total
+    : total - (total * (discount / 100));
 
   const redirectToCheckout = async (formData: IOrder) => {
 
@@ -142,8 +167,6 @@ const Checkout: FC = () => {
 
   const { stage, maxVisitedStage, changeStage } = useFormWizard({ stages });
 
-  const total = state.items.reduce((total, item) => total + (item.quantity * item.price / 100), 0);
-
   if (state.items.length === 0) {
     return (
       <Layout>
@@ -164,8 +187,8 @@ const Checkout: FC = () => {
 
   return (
     <Layout>
-      <Frame>
-        <Card>
+      <ThisLayout>
+        <Card className="main-content">
           <CardBody>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <h1>Checkout</h1>
@@ -246,18 +269,14 @@ const Checkout: FC = () => {
                     <Fieldset>
                       <legend>Delivery / Pickup</legend>
                       <p>Choose whether you want your order delivered</p>
+                      <DeliveryOptions
+                        selected={values.delivery}
+                        total={total}
+                        toggle={(v) => {
+                          handleInputChange('delivery', v);
+                        }} />
                       <Row>
-                        <Col>
-                          <DeliveryOptions
-                            selected={values.delivery}
-                            total={total}
-                            toggle={(v) => {
-                              handleInputChange('delivery', v);
-                            }} />
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col>
+                        <Col xs={12}>
 
                           <Label>
                             {values.delivery === 'pickup' ? 'Pick up location' : 'Our delivery area'}
@@ -265,7 +284,7 @@ const Checkout: FC = () => {
                           <Row>
                             {
                               values.delivery === 'pickup' &&
-                              <Col>
+                              <Col xs={12}>
                                 <strong>Pick up from: </strong>
                                 <div className="adr">
                                   <div className="street-address">35 Morley Road</div>
@@ -275,7 +294,7 @@ const Checkout: FC = () => {
                                 </div>
                               </Col>
                             }
-                            <Col>
+                            <Col xs={12}>
                               <DeliveryMap
                                 googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyDjdFEZgu3s8slEPabzamBDEjIP6pU1OSU&libraries=places"
                                 loadingElement={<div style={{ height: `100%` }} />}
@@ -311,7 +330,7 @@ const Checkout: FC = () => {
                               values.delivery === 'delivery' &&
                               <>
                                 <Row>
-                                  <Col>
+                                  <Col xs={12}>
                                     <p>Delivery address details:</p>
                                     <FormGroup>
                                       <Label htmlFor="address1">Address</Label>
@@ -336,7 +355,7 @@ const Checkout: FC = () => {
                                         autoComplete="street-address postal-code" />
                                     </FormGroup>
                                   </Col>
-                                  <Col>
+                                  <Col xs={12}>
                                     <DeliveryMap
                                       googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyDjdFEZgu3s8slEPabzamBDEjIP6pU1OSU&libraries=places"
                                       loadingElement={<div style={{ height: `100%` }} />}
@@ -382,6 +401,9 @@ const Checkout: FC = () => {
 
                       <Label text>Order summary</Label>
                       <CartContent readonly
+                        total={total}
+                        discount={discount}
+                        discountedTotal={discountedTotal}
                       />
                       <DeliverySummary order={values} />
                     </Fieldset>
@@ -411,11 +433,10 @@ const Checkout: FC = () => {
             </form>
           </CardBody>
         </Card>
-        <div>
+        <div id="cart">
           <Cart readonly />
-
         </div>
-      </Frame>
+      </ThisLayout>
     </Layout >
   );
 }

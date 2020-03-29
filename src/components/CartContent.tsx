@@ -5,6 +5,7 @@ import React, {
 import styled from 'styled-components';
 
 import { store } from '../context/cartContext';
+import { formatter } from '../lib/formatter';
 import CartItem from './CartItem';
 
 const Grid = styled.div`
@@ -19,10 +20,16 @@ margin: 0 0 1rem 0;
 interface IProps {
   id?: string;
   readonly?: boolean;
+  discount: number;
+  total: number;
+  discountedTotal: number;
 }
 
 const CartContent: FC<IProps> = ({
   id,
+  discount,
+  total,
+  discountedTotal,
   readonly
 }) => {
   const { state } = useContext(store);
@@ -31,6 +38,22 @@ const CartContent: FC<IProps> = ({
       {state.items.map((item) => <CartItem
         readonly={readonly}
         key={item.id} item={item} />)}
+      {
+        discount > 0 &&
+        <>
+          <div>{discount}% discount</div>
+          <div></div>
+          <div style={{ textAlign: 'right' }}>- {formatter.format(total - discountedTotal)}</div>
+          <div></div>
+        </>
+      }
+      <div></div>
+      <div />
+      <div style={{ textAlign: 'right' }}>
+        <h4>
+          {formatter.format(discountedTotal)}
+        </h4>
+      </div>
     </Grid>
   )
 }

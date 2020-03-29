@@ -11,12 +11,15 @@ export const Frame = styled.div`
   grid-gap: 32px;
 `;
 
-const ThisLayout = styled.div`
+export const ThisLayout = styled.div`
 
-#meal-list {
+#meal-list{
   margin-bottom: 6rem;
 }
 
+.main-content{
+  margin-bottom: 6rem;
+}
 #cart {
   padding: 0.25rem;
   width: 100%;
@@ -46,7 +49,7 @@ const ThisLayout = styled.div`
   align-items: center;
 
   button {
-    width: 150px;
+    width: 110px;
     display: flex;
     align-items: center;
     justify-content: space-around;
@@ -65,10 +68,22 @@ const ThisLayout = styled.div`
   display: none;
 }
 
+#discount-banner {
+  max-width: 7rem;
+  font-size: 0.7rem;
+  text-align: center;
+  line-height: 1rem;
+}
+
 @media (min-width: 640px){
   display: flex;
 
   #meal-list {
+    margin-bottom: 0;
+    flex-grow 1;
+  }
+
+  .main-content{
     margin-bottom: 0;
     flex-grow 1;
   }

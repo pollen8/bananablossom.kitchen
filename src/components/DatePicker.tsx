@@ -78,6 +78,7 @@ export const Cell = styled.div<IDayProps>`
 
 interface IProps {
   name?: string;
+  id?: string;
   className?: string;
   disabledRanges?: Interval[];
   value?: Date;
@@ -91,6 +92,7 @@ const isDisabled = (date: Date, disabled: Interval[]) => {
 
 const DatePicker: FC<IProps> = ({
   disabledRanges,
+  id,
   name,
   onChange,
   value,
@@ -105,6 +107,7 @@ const DatePicker: FC<IProps> = ({
 
   return (
     <Container width={width}
+      id={id}
       className={className ?? 'date-picker'}>
       <Header className="date-picker-header">
         <h3>

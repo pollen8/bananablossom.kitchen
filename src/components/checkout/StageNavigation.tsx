@@ -19,17 +19,20 @@ const Circle = styled.div<{ active: boolean, completed: boolean }>`
 `;
 
 const Bar = styled.div`
-  display: flex;
-  padding: 0.1rem 0.5rem;
-  justify-context: space-between;
-  > div:first-child{
-    &:before {
-      left: 50%;
+  display: none;
+  @media (min-width: 640px){
+    display: flex;
+    padding: 0.1rem 0.5rem;
+    justify-context: space-between;
+    > div:first-child{
+      &:before {
+        left: 50%;
+      }
     }
-  }
-  > div:last-child{
-    &:before {
-      width: 50%;
+    > div:last-child{
+      &:before {
+        width: 50%;
+      }
     }
   }
 `;
