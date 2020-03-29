@@ -3,12 +3,11 @@
 > npm run develop
 
 
-
-
 #TODO
 
 
-* Mobile checkout pages
+
+* family meals
 * Testimonials
 * Links to twitter etc
 * What to do with order summaries ? email???
@@ -18,9 +17,7 @@
 * failed transaction page design
 * Order special dishes on certain days
 * disable order delivery dates in past
-  
 * About banana blossom page
-
 * Special requests
   - intro 
 * Cookie accpet / policy
@@ -29,10 +26,12 @@
 
 Nice to have
 * Pick unavailable dates from google ical https://www.gatsbyjs.org/packages/gatsby-source-ical/?=ical
-
+* Netlify Auth to write out site admin tools.
+* Geo locate user
 
 Done:
 * Mobile cart page
+* Mobile checkout pages
 * Persist cart in session storage
 * Web hook to update static menus (stripe test env)
 * Add env vars into Netlify (dev versions)
@@ -45,3 +44,4 @@ Done:
 * special requests  -   * email to gmail account
 * Delivery for orders over £25
 - Delivery time 10 - 14h 16h - 18:30h
+* Opening times

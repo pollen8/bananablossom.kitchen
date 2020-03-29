@@ -9,7 +9,7 @@ const Banner: FC<Partial<HTMLImageElement>> = ({
   alt,
 }) => {
 
-  const data = useStaticQuery(graphql`
+  const data = useStaticQuery(graphql` 
 query {
   banner: file(relativePath: { eq: "banner.png" }) {
     childImageSharp {
@@ -21,7 +21,6 @@ query {
 }
 `)
 
-  console.log('data', data);
   return <Img fluid={data.banner.childImageSharp.fluid} alt={alt} title={alt} />
 }
 

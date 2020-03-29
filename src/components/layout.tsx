@@ -53,7 +53,7 @@ const Layout: FC = ({ children }) => {
   `)
   return (
     <>
-      <SEO />
+      <SEO title={title} />
       <TopMenu>
         <Link to="/">
           <Logo alt={title} />
@@ -70,6 +70,13 @@ const Layout: FC = ({ children }) => {
           <Link to="/contact">
             <>
               <Button>Contact us</Button>
+            </>
+          </Link>
+        </li>
+        <li>
+          <Link to="/info">
+            <>
+              <Button>Info</Button>
             </>
           </Link>
         </li>
