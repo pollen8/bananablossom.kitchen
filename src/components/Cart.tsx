@@ -15,6 +15,7 @@ import CartContent from './CartContent';
 import PromotionCode from './checkout/PromotionCode';
 import OrderHelp from './OrderHelp';
 import Price from './Price';
+import Facebook from './social/Facebook';
 import Badge from './ui/Badge';
 
 interface IProps {
@@ -89,7 +90,7 @@ const Cart: FC<IProps> = ({
         {
           !hideInfo && <OrderHelp />
         }
-
+        <Facebook />
       </CardBody>
     </Card>
   )
