@@ -14,6 +14,13 @@ const Info = () => {
   const now = new Date();
   const data = useStaticQuery(graphql` 
 query {
+  kitchen: file(relativePath: { eq: "linh-in-kitchen.jpg" }) {
+    childImageSharp {
+          fixed(width: 270) {
+          ...GatsbyImageSharpFixed
+        } 
+        }
+  }
   rating: file(relativePath: { eq: "fhrs_5_en-gb.jpg" }) {
     childImageSharp {
           fixed(width: 200) {
@@ -31,7 +38,7 @@ query {
             <h1>About us</h1>
             <Stack>
               <div>
-
+                <Img style={{ float: 'left', marginRight: '1rem' }} fixed={data.kitchen.childImageSharp.fixed} alt="Linh Clayburn in the kitchen" />
                 <p>
                   Banana Blossom offers an authentic homecooked vietnamese food, one of the healthiest cuisine worldwide.
             </p>
