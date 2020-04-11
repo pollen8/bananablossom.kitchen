@@ -17,6 +17,7 @@ const Stack = styled.div`
       margin-left: 0;
     }
     > *:last-child {
+      min-width: 20rem;
       margin-right: 0;
     }
   }

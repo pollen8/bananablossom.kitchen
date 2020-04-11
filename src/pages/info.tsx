@@ -35,16 +35,44 @@ query {
       <Stack>
         <Card>
           <CardBody>
-            <h1>About us</h1>
             <Stack>
               <div>
-                <Img style={{ float: 'left', marginRight: '1rem' }} fixed={data.kitchen.childImageSharp.fixed} alt="Linh Clayburn in the kitchen" />
-                <p>
+
+                <h2>
                   Banana Blossom offers an authentic homecooked vietnamese food, one of the healthiest cuisine worldwide.
-            </p>
-                <p>
+                </h2>
+                <h6>
                   Order our food and make your lunchtime a memorable experience!
-          </p>
+                </h6>
+                <h3><Img style={{ float: 'left', marginRight: '1rem' }} fixed={data.kitchen.childImageSharp.fixed} alt="Linh Clayburn in the kitchen" />Meet Linh</h3>
+                <p>
+                  Linh was born in Vietnam, where her family has run a successful street food restaurant in
+                  Ho Chi Minh City for over 20 years.
+                  They provision all their food from local markets and enjoy experiencing the
+                  pleasure their cooking gives their clients.
+                  As with many Vietnamese street vendors they specialise in a particular dish.
+                  In this case this is Cơm tấm - grilled pork, shredded pork, pork skin,
+                  fried egg, pork meatloaf, pickled carrot, and sliced cucumber.
+                </p>
+                <p>At the age of 18 she moved to La Rochelle, France.
+                After having completed her initial studies in French, Linh worked
+                for <a href="http://planetesesame.com/">Planète Sésame</a>,
+                  a charity whose aim is to aid female immigrants in getting their first job in a kitchen. This experience gave
+                  Linh a veritable introduction into world cuisine, especially those originating from North Africa.
+</p>
+                <p>Then in 2012 she attended <a href="https://www.apprentissage.cma17.fr/">CFA De Lagord</a> where she obtained a
+                    Baccalauréat Professionnel in cuisine, whilst working
+                    as the second chef at <a href="https://le-bistrot-dla-chaine.business.site/">La Bistro de La Chaine</a>
+                </p>
+                <p>Linh has been living and working in England for the last 4 years, where she was a chef de partie at
+                  the <a href="www.whitehartoverton.co.uk">White Hart Overton</a> and
+                  at the<a href="https://www.fourseasons.com/hampshire"> Four Seasons Hotel</a> where she was responsible for
+                  creating their Café Santé asian fusion menus.</p>
+
+                <p>In 2020 Linh decided to start Banana Blossom with the aim of providing high quality authentic
+                Vietnamese cuisine, encapsulating and transcribing her family's wealth of culinary knowledge for your
+                tasting pleasure.
+                  </p>
               </div>
               <div>
 

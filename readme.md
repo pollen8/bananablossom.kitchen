@@ -5,11 +5,8 @@
 
 #TODO
 
-
-
 * family meals
 * Testimonials
-* Links to twitter etc
 * What to do with order summaries ? email???
 * Gluten free / vegan / veg / nuts per product
 * Homepage design
@@ -17,10 +14,9 @@
 * failed transaction page design
 * Order special dishes on certain days
 * disable order delivery dates in past
-* About banana blossom page
 * Special requests
   - intro 
-* Cookie accpet / policy
+* Cookie accept / policy
 * Contact us info
 * terms and conditions / refunds
 
@@ -45,3 +41,5 @@ Done:
 * Delivery for orders over £25
 - Delivery time 10 - 14h 16h - 18:30h
 * Opening times
+* Links to twitter etc
+* About banana blossom page

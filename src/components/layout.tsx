@@ -23,9 +23,17 @@ const GlobalStyle = createGlobalStyle<any>`
   html {
     font-size: 16px;
   }
-  h1: {
+  h1 {
+    font-size: 1.3rem;
+    margin-bottom: 1.2rem;
+  }
+  h2 {
+    font-size: 1.25rem;
+    margin-bottom: 1.2rem;
+  }
+  h3 {
     font-size: 1.2rem;
-    color: red;
+    margin-bottom: 1.2rem;
   }
   body {
     font-size: 0.8rem;
