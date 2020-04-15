@@ -8,10 +8,10 @@ import { store } from '../context/cartContext';
 import { formatter } from '../lib/formatter';
 import CartItem from './CartItem';
 
-const Grid = styled.div`
+const Grid = styled.div<{ readonly: boolean }>`
 margin: 0 0 1rem 0;
   display: grid;
-  grid-template-columns: 45% 15% 25% 15%;
+  grid-template-columns: ${(props) => props.readonly ? '55% 15% 25%' : '45% 15% 25% 15%'};
   grid-template-rows: auto;
   grid-row-gap: 0.5rem;
   align-items: center;
@@ -34,7 +34,7 @@ const CartContent: FC<IProps> = ({
 }) => {
   const { state } = useContext(store);
   return (
-    <Grid id={id}>
+    <Grid id={id} readonly={readonly}>
       {state.items.map((item) => <CartItem
         readonly={readonly}
         key={item.id} item={item} />)}
@@ -42,12 +42,14 @@ const CartContent: FC<IProps> = ({
         discount > 0 &&
         <>
           <div>{discount}% discount</div>
-          <div></div>
+          <div />
           <div style={{ textAlign: 'right' }}>- {formatter.format(total - discountedTotal)}</div>
-          <div></div>
+          {
+            !readonly && <div />
+          }
         </>
       }
-      <div></div>
+      <div />
       <div />
       <div style={{ textAlign: 'right' }}>
         <h4>

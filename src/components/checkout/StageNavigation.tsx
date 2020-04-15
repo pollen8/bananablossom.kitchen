@@ -2,11 +2,11 @@ import React, { FC } from 'react';
 import styled from 'styled-components';
 
 const Circle = styled.div<{ active: boolean, completed: boolean }>`
-  width: 1.5rem;
-  height: 1.5rem;
-  border-radius: 1.5rem;
-  line-height: 1.5rem;
-  font-size: 0.7rem;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 1rem;
+  line-height: 1rem;
+  font-size: 0.6rem;
   text-align: center;
   background-color: ${(props) => props.active
     ? props.theme.colors.primary
@@ -43,7 +43,7 @@ interface ItemProps {
 
 const Item = styled.div<ItemProps>`
   display: flex;
-  padding: 0.1rem 1.5rem;
+  padding: 0.1rem 0.5rem;
   flex-grow: 1;
   flex-direction: column;
   align-items: center;
@@ -52,7 +52,7 @@ const Item = styled.div<ItemProps>`
   &:before {
     content: '';
     position: absolute;
-    top: 30%;
+    top: 25%;
     left: 0;
     border-top: 1px solid ${(props) => props.theme.colors.grey500};
     width: 100%;
@@ -75,6 +75,9 @@ const stageLabel = (i: string) => {
     default: return '';
   }
 }
+const Text = styled.div`
+  font-size: 0.7rem;
+`;
 
 const StageNavigation: FC<IProps> = ({
   stages,
@@ -96,10 +99,10 @@ const StageNavigation: FC<IProps> = ({
           key={s}>
           <Circle
             completed={i < activeIndex}
-            active={i === activeIndex}>{i}</Circle>
-          <div>
+            active={i === activeIndex}></Circle>
+          <Text>
             {stageLabel(s)}
-          </div>
+          </Text>
         </Item>)
       }
     </Bar>

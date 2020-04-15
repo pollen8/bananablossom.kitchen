@@ -20,8 +20,8 @@ const DeliverySummary: FC<IProps> = ({
         {
           order.delivery === 'pickup' && <>
             <Label text>Pickup</Label>
-            <p>On {new Date(order.order_date).toLocaleDateString()}{' '}
-              {formatTime(order.order_time)}</p>
+            <div>On {new Date(order.order_date).toLocaleDateString()}{' '}
+              {formatTime(order.order_time)}</div>
           </>
         }
         {

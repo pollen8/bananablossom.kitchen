@@ -121,7 +121,7 @@ const Calendar: FC<IProps> = ({
 }) => {
   const [values, setValues] = useState<[Date, ITime]>([orderDate, { hour: 10, minute: 0 }]);
   return (
-    <StyledRow style={{ justifyContent: 'flex-start' }}>
+    <StyledRow style={{ justifyContent: 'space-between' }}>
       <div>
         <Label>Date: {values[0].toLocaleDateString()}</Label>
         <StyledDatePicker

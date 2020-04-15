@@ -36,13 +36,13 @@ const GlobalStyle = createGlobalStyle<any>`
     margin-bottom: 1.2rem;
   }
   body {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     font-family: 'Comfortaa', cursive;
     background: #eedd;
     color: ${(props) => props.theme.colors.grey300};
   }
   table {
-    font-size: 0.8rem;
+    font-size: 0.57rem;
   }
   `;
 
@@ -91,13 +91,7 @@ const Layout: FC = ({ children }) => {
             </>
           </Link>
         </li>
-        {/* <li>
-            <Link to="/about-us">
-              <>
-                <Button>Our story</Button>
-              </>
-            </Link>
-          </li> */}
+
       </TopMenu>
       <CardBody>{children}</CardBody>
       <GlobalStyle />

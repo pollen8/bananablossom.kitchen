@@ -6,7 +6,6 @@ import Layout from '../components/layout';
 import MealList from '../components/MealList';
 
 const ThisLayout = styled.div`
-border: 1px solid green;
 @media (min-width: 640px){
   margin: 10px;
 }

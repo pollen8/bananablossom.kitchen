@@ -103,6 +103,7 @@ const TimePicker: FC<IProps> = ({
             const disabled = isHourDisabled(h + startTime.hour, available);
             const hour = h + startTime.hour;
             return <Cell
+              key={`hour-${h}`}
               className={`time-picker-cell ${isActive && 'active'} ${disabled && 'disabled'}`}
               data-is-active={h + startTime.hour === start.hour ? 'yes' : 'no'}
               isActive={isActive}
@@ -124,6 +125,7 @@ const TimePicker: FC<IProps> = ({
             const isActive = start.minute === i;
             return <Cell
               isActive={isActive}
+              key={`time-${start.hour}-${i}`}
               className={`time-picker-cell ${isActive && 'active'} ${disabled && 'disabled'}`}
               disabled={disabled}
               onClick={() => setTime({ hour: start.hour, minute: i })}

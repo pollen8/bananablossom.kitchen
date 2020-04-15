@@ -18,14 +18,13 @@ const CartItem: FC<IProps> = ({
   item,
   readonly,
 }) => {
-  const { name, price, id } = item.skus[item.selectedSKUIndex];
+  const { name, price } = item.skus[item.selectedSKUIndex];
   const { dispatch } = useContext(store);
   return (
     <>
       <div>{name}</div>
       <div>{item.quantity}</div>
       <div style={{ textAlign: 'right' }}>{formatter.format(item.quantity / 100 * price)}</div>
-      {readonly && <div />}
       {
         !readonly &&
         <ButtonIcon

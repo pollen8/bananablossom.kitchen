@@ -16,6 +16,7 @@
 * disable order delivery dates in past
 * Special requests
   - intro 
+  * Time picker allows you to select 2:15 which is grey'd out AND clicking 15h errors
 * Cookie accept / policy
 * Contact us info
 * terms and conditions / refunds

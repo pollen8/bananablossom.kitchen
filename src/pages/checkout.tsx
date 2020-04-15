@@ -14,14 +14,19 @@ import {
   Validation,
 } from 'validate-promise';
 
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
+
 import Button from '../components/Button';
 import Card from '../components/Card';
 import CardBody from '../components/CardBody';
 import Cart from '../components/Cart';
 import CartContent from '../components/CartContent';
 import Calendar from '../components/checkout/Calendar';
+import CheckoutForm from '../components/checkout/CheckoutForm';
 import DeliveryOptions, { deliveryFreeFrom } from '../components/checkout/DeliveryOption';
 import DeliverySummary from '../components/checkout/DeliverySummary';
+import EmptyCart from '../components/checkout/EmptyCart';
 import StageNavigation from '../components/checkout/StageNavigation';
 import DeliveryMap from '../components/DeliveryMap';
 import Error from '../components/Error';
@@ -114,42 +119,47 @@ const contract: Array<Validation<IOrder>> = [
   }
 ];
 
+const stripePromise = loadStripe(process.env.STRIPE_PUBLISHABLE_KEY);
+
+const applyDiscount = (value: number, discount: number) => {
+  return discount === 0
+    ? value
+    : value - (value * (discount / 100));
+}
 const Checkout: FC = () => {
   const { state, dispatch } = useContext(store);
   const [discount, setDiscount] = useState(0);
   const { value } = useDiscount(setDiscount);
   const total = state.items.reduce((total, item) => total + (item.quantity * item.price / 100), 0);
+  const [clientSecret, setClientSecret] = useState('');
+  const discountedTotal = applyDiscount(total, discount);
 
-  const discountedTotal = discount === 0
-    ? total
-    : total - (total * (discount / 100));
+  // const redirectToCheckout = async (formData: IOrder) => {
 
-  const redirectToCheckout = async (formData: IOrder) => {
+  //   const response = await axios.post("/.netlify/functions/sendmail", { ...formData, order: state.items })
+  //   console.log('email response', response);
+  //   if (!response) {
+  //     //not 200 response
+  //     return
+  //   }
 
-    const response = await axios.post("/.netlify/functions/sendmail", { ...formData, order: state.items })
-    console.log('email response', response);
-    if (!response) {
-      //not 200 response
-      return
-    }
+  //   //all OK
+  //   const stripe = (window as any).Stripe(process.env.STRIPE_PUBLISHABLE_KEY, {
+  //     betas: ['checkout_beta_4'],
+  //   });
 
-    //all OK
-    const stripe = (window as any).Stripe(process.env.STRIPE_PUBLISHABLE_KEY || 'pk_live_NpIzgQMQCs9C4vDbqG5WHk7v00dThpwTXu', {
-      betas: ['checkout_beta_4'],
-    });
+  //   const { error } = await stripe.redirectToCheckout({
+  //     items: state.items.map((item) => ({ sku: item.skus[item.selectedSKUIndex].id, quantity: item.quantity })),
+  //     customerEmail: formData.email,
+  //     successUrl: `https://www.banana-blossom.kitchen/payment-success/`,
+  //     cancelUrl: `https://www.banana-blossom.kitchen/payment-failure/`,
+  //   })
+  //   dispatch({ type: 'CART_CLEAR' });
 
-    const { error } = await stripe.redirectToCheckout({
-      items: state.items.map((item) => ({ sku: item.skus[item.selectedSKUIndex].id, quantity: item.quantity })),
-      customerEmail: formData.email,
-      successUrl: `https://www.banana-blossom.kitchen/payment-success/`,
-      cancelUrl: `https://www.banana-blossom.kitchen/payment-failure/`,
-    })
-    dispatch({ type: 'CART_CLEAR' });
-
-    if (error) {
-      console.error('Error:', error)
-    }
-  }
+  //   if (error) {
+  //     console.error('Error:', error)
+  //   }
+  // }
 
   const defaultValues = typeof window !== 'undefined' && sessionStorage.getItem('form-order')
     ? JSON.parse(sessionStorage.getItem('form-order'))
@@ -160,7 +170,7 @@ const Checkout: FC = () => {
     };
   const { errors, values, handleInputChange, handleSubmit, formatError, validateTouched, validateSome } = useForm<IOrder>({
     id: 'order',
-    callback: redirectToCheckout,
+    // callback: redirectToCheckout,
     contract,
     defaultValues,
   });
@@ -168,21 +178,7 @@ const Checkout: FC = () => {
   const { stage, maxVisitedStage, changeStage } = useFormWizard({ stages });
 
   if (state.items.length === 0) {
-    return (
-      <Layout>
-        <Frame>
-          <Card>
-            <CardBody>
-              <h1>Nothing to buy</h1>
-              <Link to="meals">
-                <Button>Order some
-                </Button>
-              </Link>
-            </CardBody>
-          </Card>
-        </Frame>
-      </Layout>
-    );
+    return <EmptyCart />;
   }
 
   return (
@@ -190,15 +186,15 @@ const Checkout: FC = () => {
       <ThisLayout>
         <Card className="main-content">
           <CardBody>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <h1>Checkout</h1>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', maxWidth: '50rem', margin: 'auto' }}>
+              <h1 style={{ padding: 0, margin: 0 }}>Checkout</h1>
               <StageNavigation
                 stages={stages}
                 active={stage}
                 maxVisitedStage={maxVisitedStage}
                 setStage={changeStage} />
             </div>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} style={{ maxWidth: '50rem', margin: 'auto' }}>
               <div>
                 {
                   stage === 'details' &&
@@ -244,6 +240,9 @@ const Checkout: FC = () => {
                           valid={!errors.hasOwnProperty('tel')}
                           onBlur={(e) => handleInputChange('tel', e.target.value)}
                         />
+                        <div>
+                          <small>We only use this if we have to contact you regarding your order.</small>
+                        </div>
                       </FormGroup>
                       {
                         errors.tel && <Error>{formatError(errors.tel)}</Error>
@@ -255,6 +254,10 @@ const Checkout: FC = () => {
                         onClick={async () => {
                           try {
                             await validateSome(['name', 'email', 'tel']);
+                            const res = await axios.post("/.netlify/functions/paymentProcess", {
+                              amount: discountedTotal * 100,
+                            });
+                            setClientSecret(res.data.client_secret);
                             changeStage('deliveryChoice');
                           } catch (e) { }
                         }}
@@ -397,10 +400,9 @@ const Checkout: FC = () => {
                 {stage === 'info' &&
                   <>
                     <Fieldset>
-                      <legend>Please check your order details</legend>
-
                       <Label text>Order summary</Label>
-                      <CartContent readonly
+                      <CartContent
+                        readonly
                         total={total}
                         discount={discount}
                         discountedTotal={discountedTotal}
@@ -415,18 +417,20 @@ const Checkout: FC = () => {
                             </Label>
                         <TextArea name="additional_info"
                           id="additional_info"
-                          cols="50"
                           onBlur={(e) => handleInputChange('additional_info', e.target.value)}
-                          rows="7"
+                          rows="3"
                         />
                       </FormGroup>
                     </Fieldset>
-                    <FormFooter>
-                      <Button
-                        color="primary"
-                        type="submit">Proceed to payment
-                      </Button>
-                    </FormFooter>
+                    <Fieldset>
+                      <legend>Pay with card</legend>
+
+                      <Elements stripe={stripePromise}>
+                        <CheckoutForm clientSecret={clientSecret}
+                          discountedTotal={discountedTotal}
+                          order={values} />
+                      </Elements>
+                    </Fieldset>
                   </>
                 }
               </div>
