@@ -5,6 +5,7 @@
 
 #TODO
 
+* set up staging site
 * family meals
 * Testimonials
 * What to do with order summaries ? email???

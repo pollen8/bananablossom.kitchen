@@ -119,7 +119,7 @@ const contract: Array<Validation<IOrder>> = [
   }
 ];
 
-const stripePromise = loadStripe(process.env.STRIPE_PUBLISHABLE_KEY);
+const stripePromise = loadStripe(process.env.STRIPE_PUBLISHABLE_KEY ?? 'pk_live_NpIzgQMQCs9C4vDbqG5WHk7v00dThpwTXu');
 
 const applyDiscount = (value: number, discount: number) => {
   return discount === 0
