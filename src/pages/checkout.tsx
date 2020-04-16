@@ -121,7 +121,7 @@ const contract: Array<Validation<IOrder>> = [
 
 const pk = process.env.NODE_ENV === 'development'
   ? process.env.STRIPE_PUBLISHABLE_KEY_TEST
-  : process.env.STRIPE_PUBLISHABLE_KEY;
+  : process.env.STRIPE_PUBLISHABLE_KEY ?? 'pk_live_NpIzgQMQCs9C4vDbqG5WHk7v00dThpwTXu';
 
 const stripePromise = loadStripe(pk);
 
