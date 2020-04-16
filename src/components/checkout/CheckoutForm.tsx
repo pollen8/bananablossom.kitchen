@@ -1,10 +1,13 @@
+import axios from 'axios';
 import React, {
   FC,
+  useContext,
   useState,
 } from 'react';
 import { AiOutlineLock } from 'react-icons/ai';
 import styled from 'styled-components';
 
+import { useNavigate } from '@reach/router';
 import {
   CardElement,
   CardElementProps,
@@ -12,6 +15,7 @@ import {
   useStripe,
 } from '@stripe/react-stripe-js';
 
+import { store } from '../../context/cartContext';
 import { formatter } from '../../lib/formatter';
 import { IOrder } from '../../pages/checkout';
 import Button from '../Button';
@@ -79,10 +83,15 @@ const CheckoutForm: FC<IProps> = ({
   order,
 }) => {
   const stripe = useStripe();
+  const navigate = useNavigate();
   const elements = useElements();
   const [error, setError] = useState('');
+  const [disabled, setDisabled] = useState(false);
+  const { state, dispatch } = useContext(store);
+
   const handleSubmit = async (event) => {
     setError('');
+    setDisabled(true);
     // We don't want to let default form submission happen here,
     // which would refresh the page.
     event.preventDefault();
@@ -93,6 +102,7 @@ const CheckoutForm: FC<IProps> = ({
       return;
     }
     const result = await stripe.confirmCardPayment(clientSecret, {
+
       payment_method: {
         card: elements.getElement(CardElement),
         billing_details: {
@@ -102,7 +112,8 @@ const CheckoutForm: FC<IProps> = ({
             line1: order.street,
             city: order.city,
             postal_code: order.postcode,
-          }
+          },
+
         },
 
       }
@@ -111,6 +122,10 @@ const CheckoutForm: FC<IProps> = ({
     if (result.error) {
       // Show error to your customer (e.g., insufficient funds)
       setError(result.error.message);
+      await axios.post("/.netlify/functions/sendmail", {
+        subject: 'Banana Blossom: Order failed', error: result.error.message, ...order, order: state.items
+      });
+      setDisabled(false);
     } else {
       // The payment has been processed!
       if (result.paymentIntent.status === 'succeeded') {
@@ -119,7 +134,13 @@ const CheckoutForm: FC<IProps> = ({
         // execution. Set up a webhook or plugin to listen for the
         // payment_intent.succeeded event that handles any business critical
         // post-payment actions.
+        await axios.post("/.netlify/functions/sendmail", {
+          ...order, order: state.items
+        })
+        dispatch({ type: 'CART_CLEAR' });
+        navigate('/payment-success');
       }
+      setDisabled(false);
     }
   };
 
@@ -137,9 +158,10 @@ const CheckoutForm: FC<IProps> = ({
       }
       <FormFooter>
         <Button
+          disabled={disabled}
           color="primary"
           style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem' }}
-          disabled={!stripe}>
+        >
           <AiOutlineLock size={25} />
           <div>Pay {formatter.format(discountedTotal)}
           </div>

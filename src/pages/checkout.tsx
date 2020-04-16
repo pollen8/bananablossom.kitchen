@@ -119,7 +119,11 @@ const contract: Array<Validation<IOrder>> = [
   }
 ];
 
-const stripePromise = loadStripe(process.env.STRIPE_PUBLISHABLE_KEY ?? 'pk_live_NpIzgQMQCs9C4vDbqG5WHk7v00dThpwTXu');
+const pk = process.env.NODE_ENV === 'development'
+  ? process.env.STRIPE_PUBLISHABLE_KEY_TEST
+  : process.env.STRIPE_PUBLISHABLE_KEY;
+
+const stripePromise = loadStripe(pk);
 
 const applyDiscount = (value: number, discount: number) => {
   return discount === 0
@@ -256,6 +260,7 @@ const Checkout: FC = () => {
                             await validateSome(['name', 'email', 'tel']);
                             const res = await axios.post("/.netlify/functions/paymentProcess", {
                               amount: discountedTotal * 100,
+                              order: state.items.map((item) => `${item.quantity} x ${item.skus[item.selectedSKUIndex].name}`),
                             });
                             setClientSecret(res.data.client_secret);
                             changeStage('deliveryChoice');

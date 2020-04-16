@@ -1,4 +1,5 @@
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const k = process.env.FUNCTIONAL_TESTS_URL ? 'STRIPE_SECRET_KEY_TEST' : 'STRIPE_SECRET_KEY';
+const stripe = require('stripe')(process.env[k]);
 
 exports.handler = async (event) => {
 
@@ -18,11 +19,14 @@ exports.handler = async (event) => {
       amount: data.amount,
       currency: 'gbp',
       payment_method_types: ['card'],
+      metadata: {
+        order: data.order.join('; '),
+      },
     });
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ client_secret: intent.client_secret })
+      body: JSON.stringify({ client_secret: intent.client_secret, k })
     };
 
   } catch (e) {
