@@ -3,8 +3,9 @@ import 'react-netlify-identity-widget/styles.css'; // delete if you want to brin
 import React from 'react';
 import IdentityModal, { useIdentityContext } from 'react-netlify-identity-widget';
 
-import Orders from '../components/admin/Orders';
-import Layout from '../components/layout';
+import Admin from '../components/admin/Admin';
+import AdminLayout from '../components/AdminLayout';
+import Button from '../components/Button';
 
 export default () => {
 
@@ -12,23 +13,25 @@ export default () => {
   const [dialog, setDialog] = React.useState(false)
   const name = identity?.user?.user_metadata?.full_name ?? '';
 
-  console.log(identity)
   const isLoggedIn = identity && identity.isLoggedIn
 
   const isAdmin = (identity?.user?.app_metadata?.roles ?? []).includes('admin');
   return (
-    <Layout>
-      <button className="btn" onClick={() => setDialog(true)}>
-        {isLoggedIn ? `Hello ${name}, Log out here!` : "LOG IN"}
-      </button>
+    <AdminLayout>
+      <div style={{ textAlign: 'right' }}>
+        <Button onClick={() => setDialog(true)}>
+          {isLoggedIn ? `Hello ${name}, Log out here!` : "LOG IN"}
+        </Button>
+      </div>
       {
         isLoggedIn && isAdmin &&
-        <Orders />
+
+        <Admin />
       }
       <hr />
       <IdentityModal showDialog={dialog} onCloseDialog={() => setDialog(false)} />
 
-    </Layout>
+    </AdminLayout>
   );
 }
 

@@ -4,28 +4,23 @@ const faunadb = require('faunadb');
 const q = faunadb.query
 const client = new faunadb.Client({
   secret: process.env.FAUNADB_SECRET
-})
+});
 
-/* export our lambda function as named "handler" export */
 exports.handler = async (event) => {
-  /* parse the string body into a useable JS object */
   const data = JSON.parse(event.body)
-  console.log("Function `promotion-create` invoked", data)
-  const promotionItem = {
-    data: data
-  }
+  console.log('Function `promotion-delete-batch` invoked', data.ids)
   try {
-    const response = await client.query(q.Create(q.Ref("classes/promotion_codes"), promotionItem));
-    console.log("success", response);
+    const response = await Promise.all(
+      data.ids.map((id) => client.query(q.Delete(q.Ref(q.Collection('promotion_codes'), id))))
+    );
     return {
       statusCode: 200,
       body: JSON.stringify(response)
-    };
+    }
   } catch (error) {
     return {
       statusCode: 400,
       body: JSON.stringify(error)
     }
   }
-
 }

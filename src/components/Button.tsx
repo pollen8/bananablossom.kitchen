@@ -62,7 +62,7 @@ const Btn = styled.button`
   border-radius: 0.3rem;
   cursor:  ${(props) => props.disabled ? 'default' : 'pointer'};
  
-  cursor: pointer;
+  cursor: ${(props) => props.disabled ? 'not-allowed' : 'pointer'};
   ${(props: Props) => hover(props)};
   ${(props: Props) => {
     switch (props.size) {
