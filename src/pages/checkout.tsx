@@ -20,7 +20,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import Button from '../components/Button';
 import Card from '../components/Card';
 import CardBody from '../components/CardBody';
-import Cart from '../components/Cart';
+import Cart, { getCartTotal } from '../components/Cart';
 import CartContent from '../components/CartContent';
 import Calendar from '../components/checkout/Calendar';
 import CheckoutForm from '../components/checkout/CheckoutForm';
@@ -134,36 +134,9 @@ const Checkout: FC = () => {
   const { state, dispatch } = useContext(store);
   const [discount, setDiscount] = useState(0);
   const { value } = useDiscount(setDiscount);
-  const total = state.items.reduce((total, item) => total + (item.quantity * item.price / 100), 0);
+  const total = getCartTotal();
   const [clientSecret, setClientSecret] = useState('');
   const discountedTotal = applyDiscount(total, discount);
-
-  // const redirectToCheckout = async (formData: IOrder) => {
-
-  //   const response = await axios.post("/.netlify/functions/sendmail", { ...formData, order: state.items })
-  //   console.log('email response', response);
-  //   if (!response) {
-  //     //not 200 response
-  //     return
-  //   }
-
-  //   //all OK
-  //   const stripe = (window as any).Stripe(process.env.STRIPE_PUBLISHABLE_KEY, {
-  //     betas: ['checkout_beta_4'],
-  //   });
-
-  //   const { error } = await stripe.redirectToCheckout({
-  //     items: state.items.map((item) => ({ sku: item.skus[item.selectedSKUIndex].id, quantity: item.quantity })),
-  //     customerEmail: formData.email,
-  //     successUrl: `https://www.banana-blossom.kitchen/payment-success/`,
-  //     cancelUrl: `https://www.banana-blossom.kitchen/payment-failure/`,
-  //   })
-  //   dispatch({ type: 'CART_CLEAR' });
-
-  //   if (error) {
-  //     console.error('Error:', error)
-  //   }
-  // }
 
   const defaultValues = typeof window !== 'undefined' && sessionStorage.getItem('form-order')
     ? JSON.parse(sessionStorage.getItem('form-order'))
@@ -174,7 +147,6 @@ const Checkout: FC = () => {
     };
   const { errors, values, handleInputChange, handleSubmit, formatError, validateTouched, validateSome } = useForm<IOrder>({
     id: 'order',
-    // callback: redirectToCheckout,
     contract,
     defaultValues,
   });
@@ -258,6 +230,12 @@ const Checkout: FC = () => {
                         onClick={async () => {
                           try {
                             await validateSome(['name', 'email', 'tel']);
+                            // const response = await axios.post("/.netlify/functions/order-create", {
+                            //   amount: discountedTotal * 100,
+                            //   order: state.items,
+                            // });
+                            // console.log('order create response', response);
+
                             const res = await axios.post("/.netlify/functions/paymentProcess", {
                               amount: discountedTotal * 100,
                               order: state.items.map((item) => `${item.quantity} x ${item.skus[item.selectedSKUIndex].name}`),

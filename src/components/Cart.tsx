@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { Link } from 'gatsby';
 import React, {
   FC,
@@ -23,13 +22,22 @@ interface IProps {
   hideInfo?: boolean;
 }
 
+export const getCartTotal = () => {
+  const { state } = useContext(store);
+  const total = state.items.reduce((total, item) => {
+    const sku = item.skus[item.selectedSKUIndex];
+    return total + (item.quantity * sku.price / 100);
+  }, 0);
+  return total;
+}
+
 const Cart: FC<IProps> = ({
   readonly,
   hideInfo = false,
 }) => {
   const { state } = useContext(store);
   const [discount, setDiscount] = useState(0);
-  const total = state.items.reduce((total, item) => total + (item.quantity * item.price / 100), 0);
+  const total = getCartTotal()
 
   const discountedTotal = discount === 0
     ? total
