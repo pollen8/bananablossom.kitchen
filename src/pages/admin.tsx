@@ -9,11 +9,11 @@ export default () => {
   return (
     <Layout>
       {
-        netlifyIdentity.currentUser() === null &&
+        netlifyIdentity.store?.user?.id === undefined &&
         <div data-netlify-identity-button>Login with Netlify Identity</div>
       }
       {
-        netlifyIdentity.currentUser() !== null &&
+        netlifyIdentity.store?.user?.id &&
         <Orders />
       }
       <div data-netlify-identity-menu></div>

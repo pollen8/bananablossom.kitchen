@@ -7,12 +7,11 @@ const client = new faunadb.Client({
 
 exports.handler = async (event) => {
   try {
-    const response = await client.query(q.Paginate(q.Match(q.Ref("indexes/all_orders"))));
+    const response = await client.query(q.Paginate(q.Match(q.Ref("indexes/all_orders_by_date"))));
     const orderRefs = response.data;
-    console.log("Order refs", orderRefs);
-    console.log(`${orderRefs.length} orders found`);
+
     // create new query out of promotion refs. http://bit.ly/2LG3MLg
-    const getAllOrderData = orderRefs.map((ref) => q.Get(ref));
+    const getAllOrderData = orderRefs.map((ref) => q.Get(ref[1]));
     const ret = await client.query(getAllOrderData);
     return {
       statusCode: 200,

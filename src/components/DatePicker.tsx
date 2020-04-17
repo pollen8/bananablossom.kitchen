@@ -10,7 +10,6 @@ import startOfMonth from 'date-fns/startOfMonth';
 import subMonths from 'date-fns/subMonths';
 import React, {
   FC,
-  HTMLAttributes,
   useState,
 } from 'react';
 import styled from 'styled-components';
