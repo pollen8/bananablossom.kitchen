@@ -16,7 +16,7 @@ export default () => {
   console.log(identity)
   const isLoggedIn = identity && identity.isLoggedIn
 
-  const isAdmin = (identity?.user?.app_metadata?.roles ?? []).contains('admin');
+  const isAdmin = (identity?.user?.app_metadata?.roles ?? []).includes('admin');
   return (
     <Layout>
       <button className="btn" onClick={() => setDialog(true)}>
