@@ -1,11 +1,10 @@
+import netlifyIdentity from 'netlify-identity-widget';
 import React from 'react';
 
 import Orders from '../components/admin/Orders';
 import Layout from '../components/layout';
 
-const netlifyIdentity = require('netlify-identity-widget');
 export default () => {
-  console.log(window, netlifyIdentity.currentUser());
   return (
     <Layout>
       {
