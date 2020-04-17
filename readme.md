@@ -8,11 +8,8 @@
 * set up staging site
 * family meals
 * Testimonials
-* What to do with order summaries ? email???
 * Gluten free / vegan / veg / nuts per product
 * Homepage design
-* Thank you order page design
-* failed transaction page design
 * Order special dishes on certain days
 * disable order delivery dates in past
 * Special requests
@@ -45,3 +42,4 @@ Done:
 * Opening times
 * Links to twitter etc
 * About banana blossom page
+* What to do with order summaries ? email & fauna db

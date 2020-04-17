@@ -232,7 +232,8 @@ const Checkout: FC = () => {
                             await validateSome(['name', 'email', 'tel']);
                             const res = await axios.post("/.netlify/functions/paymentProcess", {
                               amount: discountedTotal * 100,
-                              order: state.items.map((item) => `${item.quantity} x ${item.skus[item.selectedSKUIndex].name}`),
+                              email: values.email,
+                              order: state.items.map((item) => `${item.quantity} x  ${item.product.name}: ${item.skus[item.selectedSKUIndex].name}`),
                             });
                             setClientSecret(res.data.client_secret);
                             changeStage('deliveryChoice');

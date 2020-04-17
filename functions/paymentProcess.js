@@ -19,6 +19,7 @@ exports.handler = async (event) => {
       amount: data.amount,
       currency: 'gbp',
       payment_method_types: ['card'],
+      receipt_email: data.email,
       metadata: {
         order: data.order.join('; '),
       },

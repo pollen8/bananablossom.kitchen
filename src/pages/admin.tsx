@@ -13,9 +13,10 @@ export default () => {
         <div data-netlify-identity-button>Login with Netlify Identity</div>
       }
       {
-        netlifyIdentity.store?.user?.id &&
+        netlifyIdentity.store?.user?.id !== undefined &&
         <Orders />
       }
+      <hr />
       <div data-netlify-identity-menu></div>
 
     </Layout>
