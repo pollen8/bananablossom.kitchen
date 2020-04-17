@@ -21,7 +21,6 @@
 
 Nice to have
 * Pick unavailable dates from google ical https://www.gatsbyjs.org/packages/gatsby-source-ical/?=ical
-* Netlify Auth to write out site admin tools.
 * Geo locate user
 
 Done:
@@ -43,3 +42,4 @@ Done:
 * Links to twitter etc
 * About banana blossom page
 * What to do with order summaries ? email & fauna db
+* Netlify Auth to write out site admin tools.

@@ -10,8 +10,7 @@ export default () => {
 
   const identity = useIdentityContext()
   const [dialog, setDialog] = React.useState(false)
-  const name =
-    (identity && identity.user && identity.user.user_metadata && identity.user.user_metadata.name) || "NoName"
+  const name = identity?.user?.user_metadata?.full_name ?? '';
 
   console.log(identity)
   const isLoggedIn = identity && identity.isLoggedIn
