@@ -101,6 +101,20 @@ const CheckoutForm: FC<IProps> = ({
       // Make sure to disable form submission until Stripe.js has loaded.
       return;
     }
+
+    const response = await axios.post("/.netlify/functions/order-create", {
+      amount: discountedTotal,
+      order: state.items.map((item) => {
+        const sku = item.skus[item.selectedSKUIndex];
+        return {
+          product: item.product.name + ': ' + sku.name,
+          price: sku.price,
+          quantity: item.quantity,
+        }
+      }),
+      customer: order,
+    });
+
     const result = await stripe.confirmCardPayment(clientSecret, {
 
       payment_method: {

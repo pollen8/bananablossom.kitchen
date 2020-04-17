@@ -230,12 +230,6 @@ const Checkout: FC = () => {
                         onClick={async () => {
                           try {
                             await validateSome(['name', 'email', 'tel']);
-                            // const response = await axios.post("/.netlify/functions/order-create", {
-                            //   amount: discountedTotal * 100,
-                            //   order: state.items,
-                            // });
-                            // console.log('order create response', response);
-
                             const res = await axios.post("/.netlify/functions/paymentProcess", {
                               amount: discountedTotal * 100,
                               order: state.items.map((item) => `${item.quantity} x ${item.skus[item.selectedSKUIndex].name}`),
