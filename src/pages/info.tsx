@@ -111,7 +111,7 @@ query {
               </tr>
               <tr>
                 <th>Sunday</th>
-                <td>11:00 - 20:00</td>
+                <td>Closed</td>
               </tr>
             </table>
           </CardBody>
