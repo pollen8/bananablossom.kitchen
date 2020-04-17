@@ -5,6 +5,7 @@ import Orders from '../components/admin/Orders';
 import Layout from '../components/layout';
 
 export default () => {
+  console.log(netlifyIdentity, netlifyIdentity.currentUser());
   return (
     <Layout>
       {
