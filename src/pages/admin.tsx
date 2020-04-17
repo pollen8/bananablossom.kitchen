@@ -13,16 +13,17 @@ export default () => {
   const name =
     (identity && identity.user && identity.user.user_metadata && identity.user.user_metadata.name) || "NoName"
 
-  console.log(JSON.stringify(identity))
+  console.log(identity)
   const isLoggedIn = identity && identity.isLoggedIn
 
+  const isAdmin = (identity?.user?.app_metadata?.roles ?? []).contains('admin');
   return (
     <Layout>
       <button className="btn" onClick={() => setDialog(true)}>
         {isLoggedIn ? `Hello ${name}, Log out here!` : "LOG IN"}
       </button>
       {
-        isLoggedIn &&
+        isLoggedIn && isAdmin &&
         <Orders />
       }
       <hr />
