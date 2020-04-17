@@ -9,6 +9,7 @@ module.exports = {
     author: `@pollen8`,
   },
   plugins: [
+    'gatsby-plugin-netlify-identity-widget',
     `gatsby-plugin-typescript`,
     {
       resolve: `gatsby-plugin-stripe`,
