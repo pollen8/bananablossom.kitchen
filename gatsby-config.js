@@ -9,7 +9,13 @@ module.exports = {
     author: `@pollen8`,
   },
   plugins: [
-    'gatsby-plugin-netlify-identity-widget',
+    // You can should only have one instance of this plugin
+    {
+      resolve: `gatsby-plugin-netlify-identity`,
+      options: {
+        url: `https://www.banana-blossom.kitchen/` // required!
+      },
+    },
     `gatsby-plugin-typescript`,
     {
       resolve: `gatsby-plugin-stripe`,

@@ -1,23 +1,32 @@
-import netlifyIdentity from 'netlify-identity-widget';
+import 'react-netlify-identity-widget/styles.css'; // delete if you want to bring your own CSS
+
 import React from 'react';
+import IdentityModal, { useIdentityContext } from 'react-netlify-identity-widget';
 
 import Orders from '../components/admin/Orders';
 import Layout from '../components/layout';
 
 export default () => {
-  console.log(netlifyIdentity, netlifyIdentity.currentUser());
+
+  const identity = useIdentityContext()
+  const [dialog, setDialog] = React.useState(false)
+  const name =
+    (identity && identity.user && identity.user.user_metadata && identity.user.user_metadata.name) || "NoName"
+
+  console.log(JSON.stringify(identity))
+  const isLoggedIn = identity && identity.isLoggedIn
+
   return (
     <Layout>
+      <button className="btn" onClick={() => setDialog(true)}>
+        {isLoggedIn ? `Hello ${name}, Log out here!` : "LOG IN"}
+      </button>
       {
-        netlifyIdentity.store?.user?.id === undefined &&
-        <div data-netlify-identity-button>Login with Netlify Identity</div>
-      }
-      {
-        netlifyIdentity.store?.user?.id !== undefined &&
+        isLoggedIn &&
         <Orders />
       }
       <hr />
-      <div data-netlify-identity-menu></div>
+      <IdentityModal showDialog={dialog} onCloseDialog={() => setDialog(false)} />
 
     </Layout>
   );
