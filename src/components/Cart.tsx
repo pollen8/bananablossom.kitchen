@@ -4,6 +4,7 @@ import React, {
   useContext,
   useState,
 } from 'react';
+import styled from 'styled-components';
 
 import { store } from '../context/cartContext';
 import { formatter } from '../lib/formatter';
@@ -15,12 +16,24 @@ import PromotionCode from './checkout/PromotionCode';
 import OrderHelp from './OrderHelp';
 import Price from './Price';
 import Facebook from './social/Facebook';
+import TripAdvisor from './TripAdvisor';
 import Badge from './ui/Badge';
 
 interface IProps {
   readonly?: boolean;
   hideInfo?: boolean;
 }
+
+const Icons = styled.div`
+  display: none;
+  > div {
+    display: flex;
+    align-items: center;
+  }
+  @media (min-width: 640px){ 
+    display: block;
+  }
+`;
 
 export const getCartTotal = () => {
   const { state } = useContext(store);
@@ -98,7 +111,13 @@ const Cart: FC<IProps> = ({
         {
           !hideInfo && <OrderHelp />
         }
-        <Facebook />
+        <Icons>
+
+          <div>
+            <Facebook />
+            <TripAdvisor />
+          </div>
+        </Icons>
       </CardBody>
     </Card>
   )
