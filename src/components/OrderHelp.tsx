@@ -13,12 +13,10 @@ const OrderHelp: FC = () => {
   useEffect(() => {
     const fetch = async () => {
       const res = await axios.post("/.netlify/functions/promotion-list");
-      console.log('res data', res.data);
       setPromotions(res.data);
     };
     fetch();
   }, []);
-  console.log('promotions', promotions);
   return (
     <>
       {

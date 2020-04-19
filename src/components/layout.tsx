@@ -1,11 +1,6 @@
 
 import './layout.css';
 
-import {
-  graphql,
-  Link,
-  useStaticQuery,
-} from 'gatsby';
 import React, {
   FC,
   useEffect,
@@ -13,9 +8,7 @@ import React, {
 import { createGlobalStyle } from 'styled-components';
 
 import Fonts from '../lib/fonts';
-import Button from './Button';
 import CardBody from './CardBody';
-import Logo from './Logo';
 import SEO from './seo';
 import TopMenu from './TopMenu';
 
@@ -53,46 +46,11 @@ const Layout: FC = ({ children }) => {
 
 
   const title = "Banana Blossom, Eat like a Vietnamese";
-  const data = useStaticQuery(graphql`
-    query SiteTitleQuery {
-      site {
-        siteMetadata {
-          title
-        }
-      }
-    }
-  `)
+
   return (
     <>
       <SEO title={title} />
-      <TopMenu>
-        <Link to="/">
-          <Logo alt={title} />
-
-        </Link>
-        {/* <li>
-            <Link to="/meals">
-              <>
-                <Button>Meals</Button>
-              </>
-            </Link>
-          </li> */}
-        <li>
-          <Link to="/contact">
-            <>
-              <Button>Contact us</Button>
-            </>
-          </Link>
-        </li>
-        <li>
-          <Link to="/info">
-            <>
-              <Button>Info</Button>
-            </>
-          </Link>
-        </li>
-
-      </TopMenu>
+      <TopMenu />
       <CardBody>{children}</CardBody>
       <GlobalStyle />
     </>
