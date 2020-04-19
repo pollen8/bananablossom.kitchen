@@ -115,7 +115,7 @@ const TopMenu: FC<HTMLAttributes<HTMLDivElement>> = (props) => {
     }
     window && window.addEventListener("scroll", watchScroll);
     return () => window && window.removeEventListener('scroll', watchScroll);
-  }, [window])
+  }, [])
   return <Menu {...rest}
     scrolled={scrolled}>
     <Link to="/">
