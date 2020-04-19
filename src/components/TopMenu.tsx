@@ -114,7 +114,7 @@ const TopMenu: FC<HTMLAttributes<HTMLDivElement>> = (props) => {
       setScrolled(window.pageYOffset > 200);
     }
     window && window.addEventListener("scroll", watchScroll);
-    return () => window.removeEventListener('scroll', watchScroll);
+    return () => window && window.removeEventListener('scroll', watchScroll);
   }, [window])
   return <Menu {...rest}
     scrolled={scrolled}>
