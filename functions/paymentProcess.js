@@ -18,6 +18,7 @@ exports.handler = async (event) => {
     const intent = await stripe.paymentIntents.create({
       amount: data.amount,
       currency: 'gbp',
+      payment_method: 'card',
       payment_method_types: ['card'],
       receipt_email: data.email,
       metadata: {
