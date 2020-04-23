@@ -26,13 +26,13 @@ exports.handler = async (event) => {
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ client_secret: intent.client_secret, k })
+      body: JSON.stringify({ statusCode: 200, client_secret: intent.client_secret, k })
     };
 
   } catch (e) {
     return {
-      statusCode: e.statusCode,
-      body: JSON.stringify({ message: e.raw.message, details: e.raw }),
+      statusCode: 200,
+      body: JSON.stringify({ statusCode: e.statusCode, message: e.raw.message, details: e.raw }),
     }
   }
 

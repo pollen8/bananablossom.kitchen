@@ -17,6 +17,7 @@ import {
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 
+import Alert from '../components/Alert';
 import Button from '../components/Button';
 import Card from '../components/Card';
 import CardBody from '../components/CardBody';
@@ -133,6 +134,7 @@ const applyDiscount = (value: number, discount: number) => {
 const Checkout: FC = () => {
   const { state, dispatch } = useContext(store);
   const [discount, setDiscount] = useState(0);
+  const [intentError, setIntentError] = useState('');
   const { value } = useDiscount(setDiscount);
   const total = getCartTotal();
   const [clientSecret, setClientSecret] = useState('');
@@ -224,20 +226,33 @@ const Checkout: FC = () => {
                         errors.tel && <Error>{formatError(errors.tel)}</Error>
                       }
                     </Fieldset>
+                    {
+                      intentError !== '' && <Alert color="danger">Sorry we're having some trouble with our payment gateway.
+                      <br />Please contact us on  07904 139992 to fullfil your order
+                     <br /> <small>{intentError}</small></Alert>
+                    }
                     <FormFooter>
                       <Button
                         type="button"
                         onClick={async () => {
+                          let res: any;
                           try {
+                            setIntentError('');
                             await validateSome(['name', 'email', 'tel']);
-                            const res = await axios.post("/.netlify/functions/paymentProcess", {
+                            res = await axios.post("/.netlify/functions/paymentProcess", {
                               amount: discountedTotal * 100,
                               email: values.email,
                               order: state.items.map((item) => `${item.quantity} x  ${item.product.name}: ${item.skus[item.selectedSKUIndex].name}`),
                             });
-                            setClientSecret(res.data.client_secret);
-                            changeStage('deliveryChoice');
-                          } catch (e) { }
+                            if (res.data.statusCode !== 200) {
+                              setIntentError(res.data.message);
+                            } else {
+                              setClientSecret(res.data.client_secret);
+                              changeStage('deliveryChoice');
+                            }
+                          } catch (e) {
+                            console.log('ERROR', e, res);
+                          }
                         }}
                         color="primary"
                       >Continue</Button>
