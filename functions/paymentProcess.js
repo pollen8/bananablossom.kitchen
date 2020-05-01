@@ -22,8 +22,8 @@ exports.handler = async (event) => {
   try {
     // Parse the body contents into an object.
     const data = JSON.parse(event.body);
-
-    response = await client.query(q.Create(q.Ref("classes/payment_intents"), { type: 'start', data }));
+    data.type = 'start';
+    response = await client.query(q.Create(q.Ref("classes/payment_intents"), { data }));
 
     const intent = await stripe.paymentIntents.create({
       amount: data.amount,
@@ -33,14 +33,15 @@ exports.handler = async (event) => {
         order: data.order.join('; '),
       },
     });
-    response = await client.query(q.Create(q.Ref("classes/payment_intents"), { type: 'ok', data: intent }));
+    data.type = 'ok';
+    response = await client.query(q.Create(q.Ref("classes/payment_intents"), { data: intent }));
     return {
       statusCode: 200,
       body: JSON.stringify({ statusCode: 200, client_secret: intent.client_secret, k })
     };
 
   } catch (e) {
-    response = await client.query(q.Create(q.Ref("classes/payment_intents"), { type: 'error', e }));
+    response = await client.query(q.Create(q.Ref("classes/payment_intents"), { data: e }));
     return {
       statusCode: 200,
       body: JSON.stringify({ statusCode: e.statusCode, message: e.raw.message, details: e.raw }),

@@ -2,11 +2,11 @@ import React, {
   ButtonHTMLAttributes,
   FC,
 } from 'react';
-import styled from 'styled-components';
+import styled, { ThemedStyledProps } from 'styled-components';
 
-type Status = 'primary' | 'default' | 'success';
+type Status = 'primary' | 'default' | 'success' | 'danger';
 
-const backgroundColor = (props: Props) => {
+const backgroundColor = (props: ThemedStyledProps<any, Props>) => {
   const { text, color } = props;
   if (text) {
     return `transparent`;
@@ -17,6 +17,8 @@ const backgroundColor = (props: Props) => {
       return 'hsl(208, 26%, 40%)';
     case 'success':
       return '#B1CF3D';
+    case 'danger':
+      return props.theme.colors.red500;
     default:
       return 'hsl(164, 11%, 35%)';
   }

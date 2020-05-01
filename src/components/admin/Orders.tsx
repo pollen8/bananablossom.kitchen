@@ -11,11 +11,9 @@ import CardBody from '../CardBody';
 
 const Orders: FC = () => {
   const [orders, setOrders] = useState([]);
-  console.log('orders', orders);
   useEffect(() => {
     const fetch = async () => {
       const res = await axios.post("/.netlify/functions/order-list");
-      console.log('res data', res.data);
       setOrders(res.data);
     };
     fetch();
@@ -39,7 +37,7 @@ const Orders: FC = () => {
               {
                 orders.map(({ data, ts }) => <tr>
                   <td>
-                    {format(ts / 1000, 'dd MMMM yy')}
+                    {format(ts / 1000, 'dd MMMM yyyy')}
                   </td>
                   <td>
                     <div>{data.customer.name}</div>

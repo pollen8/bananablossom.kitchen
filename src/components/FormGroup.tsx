@@ -2,10 +2,15 @@ import React, {
   FC,
   HTMLAttributes,
 } from 'react';
+import styled from 'styled-components';
 
-const FormGroup: FC<HTMLAttributes<HTMLDivElement>> = (props) => {
+const Group = styled.div<{ check?: boolean }>`
+  display: ${(props) => props.check ? 'flex' : 'block'};
+`;
+
+const FormGroup: FC<HTMLAttributes<HTMLDivElement> & { check?: boolean }> = (props) => {
   const { children, ...rest } = props;
-  return <div {...rest}>{children}</div>
+  return <Group {...rest}>{children}</Group>
 }
 
 export default FormGroup;

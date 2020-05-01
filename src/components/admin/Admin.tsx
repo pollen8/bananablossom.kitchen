@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import Button from '../Button';
 import Orders from './Orders';
+import Products from './Products';
 import Promotion from './Promotions';
 
 const Page = styled.div`
@@ -24,17 +25,20 @@ const Content = styled.div`
 `;
 
 const Admin = () => {
+  console.log('Amin render');
   const [tab, setTab] = useState(0);
   return (
     <Page>
       <Menu>
         <Button onClick={() => setTab(0)} color={tab === 0 ? 'primary' : 'default'}>Orders</Button>
         <Button onClick={() => setTab(1)} color={tab === 1 ? 'primary' : 'default'}>Promotions</Button>
+        <Button onClick={() => setTab(2)} color={tab === 2 ? 'primary' : 'default'}>Products</Button>
       </Menu>
 
       <Content>
         {tab === 0 && <Orders />}
         {tab === 1 && <Promotion />}
+        {tab === 2 && <Products />}
       </Content>
     </Page>
   )

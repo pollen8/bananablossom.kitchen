@@ -59,6 +59,7 @@ const Promotion: FC = () => {
                       const res = await axios.post("/.netlify/functions/promotion-delete", { ids: selected });
                       console.log('res data', res.data);
                       setPromotions(promotions.filter((p) => !selected.includes(p.ref['@ref'].id)));
+                      setSelected([]);
                     }}
                   >delete</Button>
                 </th>
@@ -75,7 +76,7 @@ const Promotion: FC = () => {
                     <input type="checkbox"
                       value={getId(ref)}
                       onChange={(e) => {
-                        console.log(ref, e.target.value);
+                        e.preventDefault();
                         if (e.target.checked) {
                           selected.push(e.target.value);
                           setSelected(selected);
@@ -96,7 +97,7 @@ const Promotion: FC = () => {
         <FormGroup>
           <Label htmlFor="code">
             Promotion code
-      </Label>
+          </Label>
           <Input
             id="code"
             onChange={(e) => setData({ ...data, code: e.target.value })}

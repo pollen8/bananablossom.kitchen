@@ -5,7 +5,7 @@
 
 #TODO
 
-
+* loading indicator after pressing payment button
 * set up staging site
 * family meals
 * Testimonials

@@ -50,7 +50,7 @@ const Layout: FC = ({ children }) => {
   return (
     <>
       <SEO title={title} />
-
+      <script src="https://widget.cloudinary.com/v2.0/global/all.js" type="text/javascript"></script>
       <CardBody>
         <Logo />
         {children}</CardBody>

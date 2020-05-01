@@ -18,5 +18,6 @@ export const theme = {
     blue400: 'hsl(200, 56%, 40%)',
     blue500: 'hsl(200, 65%, 50%)',
     blue800: 'hsl(200, 46%, 88%)',
+    blue900: 'hsl(200, 65%, 97%)',
   },
 }
