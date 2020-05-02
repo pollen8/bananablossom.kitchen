@@ -25,13 +25,13 @@ exports.handler = async (event) => {
     data.type = 'start';
     response = await client.query(q.Create(q.Ref("classes/payment_intents"), { data }));
 
+    const metadata = {};
+    data.order.forEach((item, i) => metadata[i] = item);
     const intent = await stripe.paymentIntents.create({
       amount: data.amount,
       currency: 'gbp',
       receipt_email: data.email,
-      metadata: {
-        order: data.order.join('; '),
-      },
+      metadata,
     });
     data.type = 'ok';
     response = await client.query(q.Create(q.Ref("classes/payment_intents"), { data: intent }));
