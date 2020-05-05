@@ -28,7 +28,7 @@ exports.handler = async (event) => {
     const metadata = {};
     data.order.forEach((item, i) => metadata[i] = item);
     const intent = await stripe.paymentIntents.create({
-      amount: data.amount,
+      amount: Math.floor(data.amount),
       currency: 'gbp',
       receipt_email: data.email,
       metadata,
