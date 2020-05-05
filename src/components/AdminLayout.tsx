@@ -1,5 +1,6 @@
 
 import './layout.css';
+import 'react-responsive-modal/styles.css';
 
 import React, {
   FC,
