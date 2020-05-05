@@ -11,7 +11,7 @@ const Grid = styled.div<{ columnCount?: number }>`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(45%, 1fr));
   grid-template-rows: auto;
-  grid-column-gap: 4rem;
+  grid-column-gap: 1rem;
   margin: 0;
   grid-row-gap: 4rem;
 
