@@ -9,11 +9,11 @@ import MealListItem from './MealListItem';
 
 const Grid = styled.div<{ columnCount?: number }>`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(45%, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(49%, 1fr));
   grid-template-rows: auto;
   grid-column-gap: 1rem;
   margin: 0;
-  grid-row-gap: 4rem;
+  grid-row-gap: 1rem;
 
   @media (min-width: 640px){
     margin: 0rem 5rem 0 0;
