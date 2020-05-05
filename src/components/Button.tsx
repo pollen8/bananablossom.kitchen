@@ -11,6 +11,9 @@ const backgroundColor = (props: ThemedStyledProps<any, Props>) => {
   if (text) {
     return `transparent`;
   }
+  if (props.disabled) {
+    return props.theme.colors.grey600;
+  }
   switch (color) {
     case 'primary':
       // return '#E04969';

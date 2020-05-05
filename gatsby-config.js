@@ -64,6 +64,25 @@ module.exports = {
         downloadFiles: true,
       },
     },
+    {
+      resolve: `gatsby-source-faunadb`,
+      options: {
+        secret: process.env.FAUNADB_SECRET,
+        index: `all_products`,
+        type: "faunaProduct",
+      },
+    },
+    {
+      resolve: `gatsby-source-cloudinary`,
+      options: {
+        cloudName: process.env.CLOUDINARY_CLOUD_NAME,
+        apiKey: process.env.CLOUDINARY_API_KEY,
+        apiSecret: process.env.CLOUDINARY_API_SECRET,
+        resourceType: `image`,
+        maxResults: 100,
+      }
+    },
+
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.dev/offline
     // `gatsby-plugin-offline`,

@@ -37,9 +37,10 @@ const Icons = styled.div`
 
 export const getCartTotal = () => {
   const { state } = useContext(store);
+  console.log('state', state);
   const total = state.items.reduce((total, item) => {
-    const sku = item.skus[item.selectedSKUIndex];
-    return total + (item.quantity * sku.price / 100);
+    console.log('item', item);
+    return total + (item.quantity * item.sku.price);
   }, 0);
   return total;
 }

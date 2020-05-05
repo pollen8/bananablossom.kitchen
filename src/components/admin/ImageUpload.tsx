@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, {
   FC,
-  useCallback,
+  useState,
 } from 'react';
 import { useDropzone } from 'react-dropzone';
 import styled from 'styled-components';
@@ -25,11 +25,13 @@ interface IProps {
 const ImageUpload: FC<IProps> = ({
   onChange,
 }) => {
-
+  const [isUploading, setIsUploading] = useState(false);
+  const [progress, setProgress] = useState(0);
   // @TODO - env var this
   const cloudName = 'pollen8';
   const upload_preset = 'fm9zzl3f';
   const onPhotoSelected = async (files) => {
+    setIsUploading(true);
     const url = `https://api.cloudinary.com/v1_1/${
       cloudName
       }/upload`;
@@ -54,15 +56,16 @@ const ImageUpload: FC<IProps> = ({
           },
           method: 'post',
           onUploadProgress: ((e: { loaded: number, total: number }) => {
-            console.log((e.loaded / e.total) * 100);
+            setProgress((e.loaded / e.total) * 100);
           }),
           url,
         })
           .then((res) => {
-            console.log('cloudnay res', res);
+            setIsUploading(false);
             onChange(res.data.public_id);
           })
           .catch(() => {
+            setIsUploading(false);
             throw (new Error('upload cancelled'));
           });
 
@@ -82,7 +85,9 @@ const ImageUpload: FC<IProps> = ({
       {
         isDragActive ?
           <div>Drop the files here ...</div> :
-          <div>Drag 'n' drop some files here, or click to select files</div>
+          isUploading ?
+            <div> {Math.floor(progress)}% uploaded.... please wait</div>
+            : <div>Drag 'n' drop some files here, or click to select files</div>
       }
     </Zone>
   )

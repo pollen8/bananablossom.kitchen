@@ -105,7 +105,7 @@ const CheckoutForm: FC<IProps> = ({
     const response = await axios.post("/.netlify/functions/order-create", {
       amount: discountedTotal,
       order: state.items.map((item) => {
-        const sku = item.skus[item.selectedSKUIndex];
+        const sku = item.sku;
         return {
           product: item.product.name + ': ' + sku.name,
           price: sku.price,

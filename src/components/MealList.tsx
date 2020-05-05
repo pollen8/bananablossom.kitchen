@@ -5,9 +5,10 @@ import {
 import React from 'react';
 import styled from 'styled-components';
 
-import MealListItem from './MealListItem';
+import { IProduct } from './admin/AddProduct';
+import MealListItem2 from './MealListItem';
 
-const Grid = styled.div<{ columnCount?: number }>`
+export const Grid = styled.div<{ columnCount?: number }>`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(49%, 1fr));
   grid-template-rows: auto;
@@ -21,120 +22,79 @@ const Grid = styled.div<{ columnCount?: number }>`
   }
 `;
 
-export interface ISku {
-  id: string;
-  image: string;
-  price: number;
-  currency: FunctionStringCallback;
-  product: {
-    id: string;
-    metadata: {
-      description: string;
-      vegetarian: string;
-      vegan: string;
-      gluten_free: string;
-      may_contain_nuts: string;
-    }
-    name: string;
-  },
-  attributes: {
-    name: string;
+export const mergeImages = (allCloudinaryMedia) => (product): IProduct => {
+  const skus = product.skus
+    .map((sku) => {
+      const src = allCloudinaryMedia.nodes.find((i) => i.public_id === sku.image);
+      return {
+        ...sku,
+        image: src ? src.secure_url : '',
+      };
+    });
+  console.log(' merge images skus', skus);
+  return {
+    ...product,
+    skus,
   };
-  quantity?: number;
+};
+
+export interface ICloudinaryImage {
+  secure_url,
+  public_id,
 }
 
-interface ISkuNodes {
-  skus: {
-    nodes: ISku[]
+export interface ISkuNodes {
+  allFaunaProduct: {
+    nodes: IProduct[]
   },
-  images: any,
-}
-
-export type TSkuProduct = ISku & {
-  selectedSKUIndex: number;
-  fluid: any;
-  skus: Array<{
-    id: string;
-    price: number;
-    name: string;
-  }>
-}
-
-const GET_PRODUCTS = graphql`{
-    images: allImageSharp {
-      nodes {
-        id
-        fluid(maxWidth: 275, maxHeight: 175) {
-          ...GatsbyImageSharpFluid
-        }
-      }
+  allCloudinaryMedia: {
+    nodes: ICloudinaryImage[];
   }
-    skus: allStripeSku {
+}
+const GET_MAINS = graphql`{
+  allFaunaProduct(filter: {course: {eq: "main"}}) {
     nodes {
+      description
       id
-      product {
+      name
+      skus {
         id,
-        metadata {
-          description
-          vegetarian
-          vegan
-          gluten_free
-          may_contain_nuts
-        }
+        glutenFree
+        image
         name
+        price
+        vegan
+        vegetarian
+        unavailable
+        nuts
       }
-      attributes {
-        name
-      }
-      price
-      image
-      currency
     }
   }
-}
-`;
+
+  allCloudinaryMedia {
+    nodes {
+      public_id
+      secure_url
+    }
+  }
+
+}`;
 
 const MealList = () => {
-  const { skus, images } = useStaticQuery<ISkuNodes>(GET_PRODUCTS);
+  const { allFaunaProduct, allCloudinaryMedia } = useStaticQuery<ISkuNodes>(GET_MAINS);
+  const products = allFaunaProduct.nodes
+    .filter((node) => Array.isArray(node.skus))
+    .map(mergeImages(allCloudinaryMedia));
 
-  const products = skus.nodes.reduce((prev, next) => {
-    const i = prev.findIndex((p) => p.product.id === next.product.id);
-    // try to find local image
-    const imageSrc = images.nodes.find((node) => {
-      const nodeImg = node.fluid.src.split('/').pop();
-      return next.image && next.image.includes(nodeImg.split('.')[0]);
-    })
-    if (i === -1) {
-      return [
-        ...prev,
-        {
-          ...next,
-          fluid: imageSrc?.fluid,
-          selectedSKUIndex: 0,
-          skus: [
-            { id: next.id, price: next.price, name: next.attributes.name },
-          ]
-        }
-      ];
-    }
-    prev[i].skus = [
-      ...prev[i].skus,
-      { id: next.id, price: next.price, name: next.attributes.name },
-    ]
-    return prev;
-  }, [] as TSkuProduct[]);
   return (
     <>
       <Grid>
         {
           products.map((product) => (
-            <>
-
-              <MealListItem
-                product={product}
-                key={product.id}
-              />
-            </>
+            <MealListItem2
+              product={product}
+              key={product.id}
+            />
           ))
         }
 

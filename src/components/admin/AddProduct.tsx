@@ -47,6 +47,8 @@ export interface ISku {
   vegetarian: boolean;
   vegan: boolean;
   glutenFree: boolean;
+  nuts: boolean;
+  unavailable: boolean;
 }
 
 export interface IProduct {
@@ -75,7 +77,8 @@ const AddProduct: FC<IProps> = (props) => {
   const [data, setData] = useState(product ?? emptyProduct);
   useEffect(() => {
     setData(product ?? emptyProduct);
-  }, [product])
+  }, [product]);
+  console.log('product', data);
   return (
     <Card>
       <CardBody>
@@ -127,17 +130,18 @@ const AddProduct: FC<IProps> = (props) => {
           product={data}
           remove={(sku: ISku) => {
             const p = {
-              ...product,
-              skus: (product.skus ?? []).filter((item) => item.id !== sku.id),
+              ...data,
+              skus: (data.skus ?? []).filter((item) => item.id !== sku.id),
             }
             setData(p);
             updateProduct(p);
           }}
           setData={(sku: ISku) => {
-            const existingSkus = product.skus ?? [];
-            const index = existingSkus.findIndex((s) => s.id === sku.id)
+            const existingSkus = data.skus ?? [];
+            const index = existingSkus.findIndex((s) => s.id === sku.id);
+            console.log('save', existingSkus, index);
             const p = {
-              ...product,
+              ...data,
               skus: index === -1
                 ? [
                   ...existingSkus,
@@ -163,6 +167,7 @@ const AddProduct: FC<IProps> = (props) => {
                 addProduct(response.data);
               } else {
                 const update = await updateProduct(data);
+                addProduct(update.data);
               }
               setData(emptyProduct);
             }}

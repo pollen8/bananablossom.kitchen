@@ -7,16 +7,16 @@ import styled from 'styled-components';
 
 import { useMedia } from '../hooks/useMedia';
 import { formatter } from '../lib/formatter';
-import AddItemForm from './AddItemForm';
+import AddItemForm2 from './AddItemForm';
+import { IProduct } from './admin/AddProduct';
+import Alert from './Alert';
 import Button from './Button';
 import Card from './Card';
 import CardBody from './CardBody';
 import CardFooter from './CardFooter';
-import { TSkuProduct } from './MealList';
 import Price from './Price';
 
-const MealImage = styled(Img) <{ direction: 'column' | 'row' }>`
-  img {
+const MealImage = styled.img <{ direction: 'column' | 'row' }>`
   ${(props) => {
     if (props.direction !== 'column') {
       return `
@@ -28,7 +28,6 @@ const MealImage = styled(Img) <{ direction: 'column' | 'row' }>`
     border-radius:  0.3rem 0.3rem 0 0;
     `
   }}
-}
 `;
 
 const FlexRow = styled.div<{ direction: 'column' | 'row' }>`
@@ -56,45 +55,51 @@ const SkuLabel = styled.label`
 `;
 
 interface IProps {
-  product: TSkuProduct;
+  product: IProduct;
 }
 const MealListItem: FC<IProps> = ({
   product,
 }) => {
   const [isOpen, onToggle] = useState(false);
-  const [selectedSKUIndex, setSelectedSKUIndex] = useState(product.selectedSKUIndex);
+  const [selectedSKUIndex, setSelectedSKUIndex] = useState(0);
   const columnCount = useMedia(
     ['(min-width: 1500px)', '(min-width: 1000px)', '(min-width: 0px)'],
     [3, 2, 1],
     2
   );
+  console.log('product sku', product.skus[selectedSKUIndex]);
+  const unavailable = product.skus[selectedSKUIndex].unavailable === true;
   return (
     <>
-      <MealCard data-dish={`data-${product.product.name.replace(' ', '-')}`}>
+      <MealCard data-dish={`data-${product.name.replace(' ', '-')}`}>
 
         <FlexRow direction={columnCount === 1 ? 'column' : 'row'}>
           {
-            product.fluid &&
+            product.skus.length > 0 &&
             <div style={{ width: '100%' }}>
               <MealImage
                 direction={columnCount === 1 ? 'column' : 'row'}
-                fluid={product.fluid} alt="test"
+                src={product.skus[selectedSKUIndex].image}
               />
             </div>
           }
 
           <CardBody style={{ width: '100%' }}>
             <h3>
-              {product.product.name}
+              {product.name}
             </h3>
-            <div>{product.product.metadata.description}</div>
+            <div>{product.description}</div>
+            {
+              unavailable &&
+              <Alert>Sorry, but this isn't available at the moment</Alert>
+            }
           </CardBody>
         </FlexRow>
         <CardFooter direction={columnCount === 1 ? 'column' : 'row'}>
           {
             product.skus.length === 1 &&
             <Price>
-              {formatter.format(product.price / 100)}
+              {formatter.format(Number(product.skus[0].price))}
             </Price>
           }
 
@@ -115,7 +120,7 @@ const MealListItem: FC<IProps> = ({
                       {sku.name}
                     </div>
                     <div>
-                      {formatter.format(sku.price / 100)}
+                      {formatter.format(Number(sku.price))}
                     </div>
                   </SkuLabel>
                 </FlexRow>)
@@ -123,6 +128,7 @@ const MealListItem: FC<IProps> = ({
             </div>
           }
           <Button
+            disabled={unavailable}
             style={{ marginTop: columnCount === 1 ? '1rem' : 0 }}
             color="primary"
             onClick={() => {
@@ -131,13 +137,12 @@ const MealListItem: FC<IProps> = ({
             </Button>
         </CardFooter>
       </MealCard>
-      <AddItemForm
+      <AddItemForm2
         isOpen={isOpen}
         onToggle={onToggle}
-        product={{
-          ...product,
-          selectedSKUIndex,
-        }} />
+        product={product}
+        sku={product.skus[selectedSKUIndex]}
+      />
     </>
   );
 }

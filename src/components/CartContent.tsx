@@ -36,8 +36,9 @@ const CartContent: FC<IProps> = ({
   return (
     <Grid id={id} readonly={readonly}>
       {state.items.map((item) => <CartItem
+        key={item.id}
         readonly={readonly}
-        key={item.id} item={item} />)}
+        item={item} />)}
       {
         discount > 0 &&
         <>

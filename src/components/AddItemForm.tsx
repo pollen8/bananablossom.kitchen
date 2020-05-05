@@ -13,9 +13,12 @@ import styled from 'styled-components';
 
 import { store } from '../context/cartContext';
 import { formatter } from '../lib/formatter';
+import {
+  IProduct,
+  ISku,
+} from './admin/AddProduct';
 import Button, { ButtonIcon } from './Button';
 import CardBody from './CardBody';
-import { TSkuProduct } from './MealList';
 import Price from './Price';
 
 const QuantitySelector = styled.div`
@@ -31,13 +34,15 @@ const Quantity = styled.div`
 `;
 
 interface IProps {
-  product: TSkuProduct;
+  product?: IProduct;
+  sku: ISku;
   isOpen: boolean;
   onToggle: (open: boolean) => void;
 }
 
 const AddItemForm: FC<IProps> = ({
   product,
+  sku,
   isOpen,
   onToggle,
 }) => {
@@ -49,7 +54,7 @@ const AddItemForm: FC<IProps> = ({
   if (!product) {
     return null;
   }
-  const { name, price, id } = product.skus[product.selectedSKUIndex];
+  const { name, price } = sku;
   return (
     <Modal open={isOpen}
       onClose={() => onToggle(false)}
@@ -86,14 +91,15 @@ const AddItemForm: FC<IProps> = ({
             Cancel
           </Button>
           <Price>
-            {formatter.format(price / 100 * quantity)}
+            {formatter.format(Number(price) * quantity)}
           </Price>
           <Button
             onClick={() => {
               dispatch({
                 type: 'CART_ADD', item: {
-                  ...product,
+                  product,
                   quantity,
+                  sku,
                 }
               });
               onToggle(false);

@@ -4,13 +4,15 @@ import React, {
 } from 'react';
 import { AiOutlineMinusCircle } from 'react-icons/ai';
 
-import { store } from '../context/cartContext';
+import {
+  ICartItem,
+  store,
+} from '../context/cartContext';
 import { formatter } from '../lib/formatter';
 import { ButtonIcon } from './Button';
-import { TSkuProduct } from './MealList';
 
 interface IProps {
-  item: TSkuProduct;
+  item: ICartItem;
   readonly: boolean;
 }
 
@@ -18,13 +20,13 @@ const CartItem: FC<IProps> = ({
   item,
   readonly,
 }) => {
-  const { name, price } = item.skus[item.selectedSKUIndex];
+  const { name, price } = item.sku;
   const { dispatch } = useContext(store);
   return (
     <>
-      <div>{name}</div>
+      <div>{item.product.name}</div>
       <div>{item.quantity}</div>
-      <div style={{ textAlign: 'right' }}>{formatter.format(item.quantity / 100 * price)}</div>
+      <div style={{ textAlign: 'right' }}>{formatter.format(item.quantity * Number(price))}</div>
       {
         !readonly &&
         <ButtonIcon

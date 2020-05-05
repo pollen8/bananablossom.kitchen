@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import Cart from '../components/Cart';
-import Layout from '../components/layout';
+import Layout from '../components/mealLayout';
 import MealList from '../components/MealList';
 
 export const Frame = styled.div`
@@ -149,12 +149,3 @@ export default () => {
     </Layout>
   );
 }
-// import React from 'react';
-
-// import Banner from '../components/Banner';
-
-// export default () => {
-//   return <>
-//     <Banner />
-//   </>
-// }

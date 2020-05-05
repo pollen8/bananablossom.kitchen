@@ -13,7 +13,7 @@ import Logo from './Logo';
 
 const Menu = styled.div<{ scrolled: boolean }>`
   background-color: rgba(255,255,255,1);
-  padding: 1rem;
+  padding: 0.75rem 1rem;
   display: flex;
   position: sticky;
   z-index:100;
@@ -32,8 +32,7 @@ const Menu = styled.div<{ scrolled: boolean }>`
   a {
     color: #16311D;
   }
-  .gatsby-image-wrapper {
-    transition: all 500ms ease;
+  img {
     margin-right: 2.5rem;
   }
   ${(props) => {
@@ -72,7 +71,7 @@ position: relative;
     #burger-btn {
       display: block;
     }
-    ul {
+> ul {
       background-color: #fff;
       display: ${(props) => props.show ? 'block' : 'none'};
       position: absolute;
@@ -81,6 +80,7 @@ position: relative;
       top: 2.2rem;
       right: 0;
 
+      [data-active-link],
       [aria-current] {
         color : ${(props) => props.theme.colors.primary};
         border: 0px solid transparent !important;
@@ -102,8 +102,17 @@ const StyledLink = styled(Link)`
     border-color : ${(props) => props.theme.colors.primary} !important;
   }
 `;
-
 const activeStyle = { borderBottom: '3px solid #F5728E' };
+
+const isPartiallyActive = (props) => {
+  const active = props.location.pathname.includes('/courses');
+  return active ?
+    {
+      'data-active-link': true,
+      'style': activeStyle,
+    } : {};
+}
+
 
 const TopMenu: FC<HTMLAttributes<HTMLDivElement>> = (props) => {
   const { children, ...rest } = props;
@@ -121,36 +130,43 @@ const TopMenu: FC<HTMLAttributes<HTMLDivElement>> = (props) => {
     <Link to="/">
       <Logo alt="Banana Blossom - Eat like a vietnamese" />
     </Link>
-    <Burger
-      show={show}>
-      <Button id="burger-btn"
+    <div style={{ width: '100%' }}>
+      <Burger
+        show={show}>
+        <Button id="burger-btn"
 
-        onClick={() => {
-          toggle(!show);
-        }}>
-        <AiOutlineMenu />
-      </Button>
-      <ul>
-        <li>
-          <StyledLink to="/"
-            activeStyle={activeStyle}>
-            Menu
+          onClick={() => {
+            toggle(!show);
+          }}>
+          <AiOutlineMenu />
+        </Button>
+        <ul>
+          <li>
+            <StyledLink to="/courses/mains"
+              activeClassName="active"
+              getProps={isPartiallyActive}
+              activeStyle={activeStyle}
+            >
+              Menu
           </StyledLink>
-        </li>
-        <li>
-          <StyledLink to="/contact"
-            activeStyle={activeStyle}>
-            Contact us
+          </li>
+          <li>
+            <StyledLink to="/contact"
+              activeStyle={activeStyle}>
+              Contact us
           </StyledLink>
-        </li>
-        <li>
-          <StyledLink to="/info"
-            activeStyle={activeStyle}>
-            Info
+          </li>
+          <li>
+            <StyledLink to="/info"
+              activeStyle={activeStyle}>
+              Info
           </StyledLink>
-        </li>
-      </ul>
-    </Burger>
+          </li>
+        </ul>
+
+      </Burger>
+      {children}
+    </div>
   </Menu>
 }
 

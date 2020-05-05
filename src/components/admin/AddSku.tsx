@@ -4,7 +4,6 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 
 import Button from '../Button';
 import FormGroup from '../FormGroup';
@@ -15,13 +14,15 @@ import { ISku } from './AddProduct';
 import ImageUpload from './ImageUpload';
 
 export const blankSku: ISku = {
-  id: uuidv4(),
+  id: '',
   name: '',
   price: '',
   image: '',
   vegetarian: false,
   vegan: false,
   glutenFree: false,
+  nuts: false,
+  unavailable: false,
 };
 
 interface IProps {
@@ -39,7 +40,6 @@ const AddSku: FC<IProps> = ({
   useEffect(() => {
     setData(selected ?? blankSku);
   }, [selected])
-  console.log('render', sku);
   return (
     <>
       <Stack>
@@ -82,6 +82,14 @@ const AddSku: FC<IProps> = ({
                 onChange={(e) => setData({ ...sku, glutenFree: e.target.checked })} />
         gluten free</label>
           </FormGroup>
+
+          <FormGroup>
+            <label>
+              <input type="checkbox"
+                checked={sku.nuts}
+                onChange={(e) => setData({ ...sku, nuts: e.target.checked })} />
+        may contain nuts</label>
+          </FormGroup>
         </div>
       </Stack>
 
@@ -93,9 +101,14 @@ const AddSku: FC<IProps> = ({
             setData({ ...sku, image: fileName });
           }} />
       </FormGroup>
-      {
-        ['vegetarian', '',]
-      }
+
+      <FormGroup>
+        <label>
+          <input type="checkbox"
+            checked={sku.unavailable}
+            onChange={(e) => setData({ ...sku, unavailable: e.target.checked })} />
+          {' '}Unavailable (check to not show on site)</label>
+      </FormGroup>
 
       <FormGroup>
         <Button
