@@ -16,7 +16,7 @@ const Grid = styled.div<{ columnCount?: number }>`
   grid-row-gap: 4rem;
 
   @media (min-width: 640px){
-    margin: 0rem 5rem 0 5rem;
+    margin: 0rem 5rem 0 0;
     grid-row-gap: 1rem;
   }
 `;
