@@ -29,6 +29,8 @@
     "gatsby-plugin-styled-components": "^3.3.0",
     "gatsby-plugin-typescript": "^2.4.0",
     "gatsby-react-router-scroll": "^3.0.0",
+    "gatsby-source-cloudinary": "^0.1.14",
+    "gatsby-source-faunadb": "^1.0.0",
     "gatsby-source-filesystem": "^2.3.0",
     "gatsby-source-stripe": "^3.0.7",
     "gatsby-transformer-sharp": "^2.5.0",

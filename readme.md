@@ -5,7 +5,9 @@
 
 #TODO
 
-* loading indicator after pressing payment button
+
+* Allow ordering of products (move frozen to end of list)
+* look up product skus in backend and get prices from there - don't send total from front end
 * set up staging site
 * family meals
 * Testimonials
@@ -17,9 +19,8 @@
   - intro 
   * Time picker allows you to select 2:15 which is grey'd out AND clicking 15h errors
 * Cookie accept / policy
-* Contact us info
 * terms and conditions / refunds
-* look up product skus in backend and get prices from there - don't send total from front end
+
 * Custom sign on - prompt to create an account after order.
 
 Nice to have
@@ -47,3 +48,5 @@ Done:
 * What to do with order summaries ? email & fauna db
 * Netlify Auth to write out site admin tools.
 * Menu - responsive
+* Contact us info
+* loading indicator after pressing payment button (done in meals-from-fauna branch)

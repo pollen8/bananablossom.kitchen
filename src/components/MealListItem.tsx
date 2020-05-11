@@ -1,4 +1,3 @@
-import Img from 'gatsby-image';
 import React, {
   FC,
   useState,
@@ -7,7 +6,7 @@ import styled from 'styled-components';
 
 import { useMedia } from '../hooks/useMedia';
 import { formatter } from '../lib/formatter';
-import AddItemForm2 from './AddItemForm';
+import AddItemForm from './AddItemForm';
 import { IProduct } from './admin/AddProduct';
 import Alert from './Alert';
 import Button from './Button';
@@ -16,18 +15,12 @@ import CardBody from './CardBody';
 import CardFooter from './CardFooter';
 import Price from './Price';
 
-const MealImage = styled.img <{ direction: 'column' | 'row' }>`
-  ${(props) => {
-    if (props.direction !== 'column') {
-      return `
-        padding-left: 1rem;
-        padding-top: 1rem;
-      `;
-    }
-    return `
-    border-radius:  0.3rem 0.3rem 0 0;
-    `
-  }}
+const MealImage = styled(Image)`
+  border-radius:  0.3rem 0.3rem 0 0;
+  width: 100%;
+  object-fit: cover;
+  object-position: center center;
+  margin-bottom: 0;
 `;
 
 const FlexRow = styled.div<{ direction: 'column' | 'row' }>`
@@ -54,6 +47,19 @@ const SkuLabel = styled.label`
   }
 `;
 
+const SkuItem = styled(FlexRow)`
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 0.4rem;
+  padding-bottom: 0.4rem;
+  &:last-child {
+    border-bottom: 0;
+  }
+  input {
+    margin-right: 1rem;
+  }
+`;
+import {Image} from 'cloudinary-react';
+
 interface IProps {
   product: IProduct;
 }
@@ -67,47 +73,39 @@ const MealListItem: FC<IProps> = ({
     [3, 2, 1],
     2
   );
-  console.log('product sku', product.skus[selectedSKUIndex]);
   const unavailable = product.skus[selectedSKUIndex].unavailable === true;
   return (
     <>
       <MealCard data-dish={`data-${product.name.replace(' ', '-')}`}>
-
-        <FlexRow direction={columnCount === 1 ? 'column' : 'row'}>
+        <FlexRow direction="column">
           {
-            product.skus.length > 0 &&
-            <div style={{ width: '100%' }}>
-              <MealImage
-                direction={columnCount === 1 ? 'column' : 'row'}
-                src={product.skus[selectedSKUIndex].image}
-              />
+            product.skus.length > 0 && product.skus[selectedSKUIndex].image !== '' &&
+            <div style={{ width: '100%', maxHeight: '300px', position: 'relative', overflow: 'hidden' }}>
+                <MealImage
+                cloudName="pollen8"
+                 publicId={product.skus[selectedSKUIndex].image} 
+                 quality="auto:best"
+                 effect="saturation:30"
+                 crop="scale"
+                 client_hints
+                 sizes="100vw" />
             </div>
           }
 
           <CardBody style={{ width: '100%' }}>
-            <h3>
+            <h3 style={{lineHeight: '1.6rem'}}>
               {product.name}
             </h3>
-            <div>{product.description}</div>
+            <p>{product.description}</p>
             {
               unavailable &&
-              <Alert>Sorry, but this isn't available at the moment</Alert>
+              <Alert color="info">Sorry, but this isn't available at the moment</Alert>
             }
-          </CardBody>
-        </FlexRow>
-        <CardFooter direction={columnCount === 1 ? 'column' : 'row'}>
-          {
-            product.skus.length === 1 &&
-            <Price>
-              {formatter.format(Number(product.skus[0].price))}
-            </Price>
-          }
-
-          {
+            {
             product.skus.length > 1 &&
             <div>
               {
-                product.skus.map((sku, i) => <FlexRow key={sku.id} direction="row" >
+                product.skus.map((sku, i) => <SkuItem key={sku.id} direction="row" >
                   <input
                     type="radio"
                     id={`sku-${sku.id}`}
@@ -123,13 +121,23 @@ const MealListItem: FC<IProps> = ({
                       {formatter.format(Number(sku.price))}
                     </div>
                   </SkuLabel>
-                </FlexRow>)
+                </SkuItem>)
               }
             </div>
           }
+           {
+            product.skus.length === 1 &&
+            <Price>
+              {formatter.format(Number(product.skus[0].price))}
+            </Price>
+          }
+          </CardBody>
+        </FlexRow>
+        <CardFooter direction="column">
+         
           <Button
             disabled={unavailable}
-            style={{ marginTop: columnCount === 1 ? '1rem' : 0 }}
+            style={{ marginTop: columnCount === 1 ? '1rem' : 0, width: '100%' }}
             color="primary"
             onClick={() => {
               onToggle(true);
@@ -137,7 +145,7 @@ const MealListItem: FC<IProps> = ({
             </Button>
         </CardFooter>
       </MealCard>
-      <AddItemForm2
+      <AddItemForm
         isOpen={isOpen}
         onToggle={onToggle}
         product={product}

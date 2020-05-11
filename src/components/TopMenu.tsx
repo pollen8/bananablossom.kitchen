@@ -10,6 +10,7 @@ import styled from 'styled-components';
 
 import Button from './Button';
 import Logo from './Logo';
+import { SubMenu } from './mealLayout';
 
 const Menu = styled.div<{ scrolled: boolean }>`
   background-color: rgba(255,255,255,1);
@@ -66,12 +67,17 @@ position: relative;
   display: none;
   
 }
+
+  > ul > ul {
+    position: absolute;
+    bottom: -2.4rem;
+  }
   @media (max-width: 640px){
     justify-content: end;
     #burger-btn {
       display: block;
     }
-> ul {
+    > ul {
       background-color: #fff;
       display: ${(props) => props.show ? 'block' : 'none'};
       position: absolute;
@@ -85,7 +91,15 @@ position: relative;
         color : ${(props) => props.theme.colors.primary};
         border: 0px solid transparent !important;
       }
+    }
 
+    > ul > ul  {
+      position: initial;
+      display: block;
+      li {
+        display: block;
+        width: 100%;
+      }
     }
   }
 `;
@@ -130,7 +144,7 @@ const TopMenu: FC<HTMLAttributes<HTMLDivElement>> = (props) => {
     <Link to="/">
       <Logo alt="Banana Blossom - Eat like a vietnamese" />
     </Link>
-    <div style={{ width: '100%' }}>
+    <div style={{ width: '60%' }}>
       <Burger
         show={show}>
         <Button id="burger-btn"
@@ -150,6 +164,12 @@ const TopMenu: FC<HTMLAttributes<HTMLDivElement>> = (props) => {
               Menu
           </StyledLink>
           </li>
+          <SubMenu>
+          <li><Link to="/courses/starters">Starters</Link></li>
+          <li><Link to="/courses/mains">Mains</Link></li>
+          <li><Link to="/courses/sides">Sides</Link></li>
+          <li><Link to="/courses/desserts">Desserts</Link></li>
+        </SubMenu>
           <li>
             <StyledLink to="/contact"
               activeStyle={activeStyle}>

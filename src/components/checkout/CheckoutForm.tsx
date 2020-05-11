@@ -89,6 +89,7 @@ const CheckoutForm: FC<IProps> = ({
   const [disabled, setDisabled] = useState(false);
   const { state, dispatch } = useContext(store);
 
+  console.log('order', state.items);
   const handleSubmit = async (event) => {
     setError('');
     setDisabled(true);
@@ -101,8 +102,7 @@ const CheckoutForm: FC<IProps> = ({
       // Make sure to disable form submission until Stripe.js has loaded.
       return;
     }
-
-    const response = await axios.post("/.netlify/functions/order-create", {
+    const orderItem = {
       amount: discountedTotal,
       order: state.items.map((item) => {
         const sku = item.sku;
@@ -113,8 +113,10 @@ const CheckoutForm: FC<IProps> = ({
         }
       }),
       customer: order,
-    });
+      status: 'pending payment',
+    };
 
+    const response = await axios.post("/.netlify/functions/order-create", orderItem);
     const result = await stripe.confirmCardPayment(clientSecret, {
 
       payment_method: {
@@ -127,19 +129,30 @@ const CheckoutForm: FC<IProps> = ({
             city: order.city,
             postal_code: order.postcode,
           },
-
         },
-
       }
     });
 
     if (result.error) {
+      setDisabled(false);
+
       // Show error to your customer (e.g., insufficient funds)
       setError(result.error.message);
       await axios.post("/.netlify/functions/sendmail", {
-        subject: 'Banana Blossom: Order failed', error: result.error.message, ...order, order: state.items
+        subject: 'Banana Blossom: Order failed', 
+        error: result.error.message, 
+        ...order,
+        order: state.items
       });
-      setDisabled(false);
+
+      await axios.post("/.netlify/functions/order-update", {
+        data: {
+          ...orderItem,
+          status: 'payment failed',
+          error: result.error.message,
+        },
+        id: response.data.ref['@ref'].id,
+      });
     } else {
       // The payment has been processed!
       if (result.paymentIntent.status === 'succeeded') {
@@ -152,6 +165,15 @@ const CheckoutForm: FC<IProps> = ({
           ...order, order: state.items
         })
         dispatch({ type: 'CART_CLEAR' });
+
+        await axios.post("/.netlify/functions/order-update", {
+          data: {
+            ...orderItem,
+            status: 'payment success',
+          },
+          id: response.data.ref['@ref'].id,
+        });
+
         navigate('/payment-success');
       }
       setDisabled(false);

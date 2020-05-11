@@ -8,6 +8,13 @@ import React, {
 
 import Card from '../Card';
 import CardBody from '../CardBody';
+import styled from 'styled-components';
+
+const Status = styled.strong<{status: string}>`
+  color: ${(props) => props.status === 'pending payment' 
+  ? 'orange' 
+  : props.status === 'payment failed' ? 'red' : 'green'};
+`;
 
 const Orders: FC = () => {
   const [orders, setOrders] = useState([]);
@@ -38,6 +45,9 @@ const Orders: FC = () => {
                 orders.map(({ data, ts }) => <tr>
                   <td>
                     {format(ts / 1000, 'dd MMMM yyyy')}
+                    <br />
+                    <Status status={data.status}>{data.status}</Status>
+                    <div><em>{data.error}</em></div>
                   </td>
                   <td>
                     <div>{data.customer.name}</div>

@@ -8,7 +8,7 @@ exports.handler = async (event) => {
   const { email, subject } = payload
 
   sgMail.setApiKey(SENDGRID_API_KEY);
-
+ 
   const body = Object.keys(payload).map((k) => {
     if (k === 'order_date') {
       return `Pickup/delivery date: ` + new Date(payload[k]).toDateString();
@@ -17,7 +17,7 @@ exports.handler = async (event) => {
       return `Pickup/delivery time: ${payload[k].hour}: ${payload[k].minute}`;
     }
     if (typeof payload[k] === 'object') {
-      return '<ul>' + payload[k].map((order) => `<li>${order.quantity}: ${order.attributes.name}</li>`) + '</ul>'
+      return '<ul>' + payload[k].map((order) => `<li>${order.quantity} ${order.product.name} ${order.sku.name}</li>`) + '</ul>'
         + `<br />${JSON.stringify(payload[k])}`;
     }
     return `${k}: ${payload[k]}`

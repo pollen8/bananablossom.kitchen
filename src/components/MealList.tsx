@@ -10,7 +10,7 @@ import MealListItem2 from './MealListItem';
 
 export const Grid = styled.div<{ columnCount?: number }>`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(49%, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
   grid-template-rows: auto;
   grid-column-gap: 1rem;
   margin: 0;
@@ -28,7 +28,8 @@ export const mergeImages = (allCloudinaryMedia) => (product): IProduct => {
       const src = allCloudinaryMedia.nodes.find((i) => i.public_id === sku.image);
       return {
         ...sku,
-        image: src ? src.secure_url : '',
+        image: src ? src.public_id : '',
+        secure_url: src ? src.secure_url : '',
       };
     });
   console.log(' merge images skus', skus);

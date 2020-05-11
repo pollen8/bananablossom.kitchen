@@ -1,7 +1,6 @@
 
 import axios from 'axios';
 import addDays from 'date-fns/addDays';
-import { Link } from 'gatsby';
 import React, {
   FC,
   useContext,
@@ -158,7 +157,7 @@ const Checkout: FC = () => {
   if (state.items.length === 0) {
     return <EmptyCart />;
   }
-
+console.log('state.items', state.items);
   return (
     <Layout>
       <ThisLayout>
@@ -242,7 +241,7 @@ const Checkout: FC = () => {
                             res = await axios.post("/.netlify/functions/paymentProcess", {
                               amount: discountedTotal * 100,
                               email: values.email,
-                              order: state.items.map((item) => `${item.quantity} x  ${item.product.name}: ${item.skus[item.selectedSKUIndex].name}`),
+                              order: state.items.map((item) => `${item.quantity} x  ${item.product.name}: ${item.sku.name}`),
                             });
                             if (res.data.statusCode !== 200) {
                               setIntentError(res.data.message);

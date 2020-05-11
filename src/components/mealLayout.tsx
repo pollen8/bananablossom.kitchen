@@ -1,7 +1,6 @@
 
 import './layout.css';
 
-import { Link } from 'gatsby';
 import React, {
   FC,
   useEffect,
@@ -40,7 +39,7 @@ const GlobalStyle = createGlobalStyle<any>`
   }
   `;
 
-const SubMenu = styled.ul`
+export const SubMenu = styled.ul`
   a {
     text-decoration: none;
   }
@@ -65,12 +64,6 @@ const Layout: FC = ({ children }) => {
     <>
       <SEO title={title} />
       <TopMenu>
-        <SubMenu>
-          <li><Link to="/courses/starters">Starters</Link></li>
-          <li><Link to="/courses/mains">Mains</Link></li>
-          <li><Link to="/courses/sides">Sides</Link></li>
-          <li><Link to="/courses/desserts">Desserts</Link></li>
-        </SubMenu>
       </TopMenu>
       <CardBody>{children}</CardBody>
       <GlobalStyle />
