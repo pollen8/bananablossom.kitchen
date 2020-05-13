@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
-const Stack = styled.div`
+const Stack = styled.div<{ reverse?: boolean }>`
   display: flex;
-  flex-direction: column;
+  flex-direction: ${(props) => props.reverse ? 'column-reverse' : 'column'};
   > * {
     margin: 1rem 0; 
   }

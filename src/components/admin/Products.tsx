@@ -31,6 +31,18 @@ const flatten = (d: { data: IProduct, ts: number, ref: any }) => ({
   id: getId(d.ref),
 });
 
+const Table = styled.table`
+@media (max-width: 640px){ 
+.description {
+  display:none;
+}
+`;
+
+const FlexRow = styled.div`
+  display:flex;
+  justify-content: space-between;
+`;
+
 const Products: FC<RouteComponentProps> = () => {
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
   const [showForm, setShowForm] = useState(false);
@@ -47,23 +59,25 @@ const Products: FC<RouteComponentProps> = () => {
   return (
     <>
       <h1>Products</h1>
-      <Button
-        onClick={() => {
-          setSelected(undefined);
-          setShowForm(true);
-        }}>New</Button>
-      <input type="search"
-        placeholder="search..."
-        onChange={(e) => setSearch(e.target.value)} />
-      <Stack>
+      <FlexRow>
+        <Button
+          onClick={() => {
+            setSelected(undefined);
+            setShowForm(true);
+          }}>New</Button>
+        <input type="search"
+          placeholder="search..."
+          onChange={(e) => setSearch(e.target.value)} />
+      </FlexRow>
+      <Stack reverse>
         <Card>
 
           <CardBody>
-            <table style={{ backgroundColor: '#fff' }}>
+            <Table style={{ backgroundColor: '#fff' }}>
               <thead>
                 <tr>
                   <th>Name</th>
-                  <th>Description</th>
+                  <th className="description">Description</th>
                   <th>
                     <Button size="sm"
                       onClick={async () => {
@@ -93,7 +107,7 @@ const Products: FC<RouteComponentProps> = () => {
                           </small>
                         </div>
                       </td>
-                      <td>{data.description}</td>
+                      <td className="description">{data.description}</td>
                       <td>
                         <input type="checkbox"
                           value={data.id}
@@ -112,7 +126,7 @@ const Products: FC<RouteComponentProps> = () => {
                 }
 
               </tbody>
-            </table>
+            </Table>
           </CardBody>
         </Card>
         <div>

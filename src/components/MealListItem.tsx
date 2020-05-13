@@ -14,6 +14,7 @@ import Button from './Button';
 import Card from './Card';
 import CardBody from './CardBody';
 import CardFooter from './CardFooter';
+import FoodInfo from './meals/FoodInfo';
 import Price from './Price';
 
 const MealImage = styled(Image)`
@@ -46,21 +47,6 @@ const SkuLabel = styled.label`
   div {
     margin: 0 0.2rem;
   }
-`;
-
-const Info = styled.span`
-  color: rgb(69, 178, 74);
-  font-weight: 600;
-  font-size: 0.6rem;
-  padding: 0 0.2rem;
-`;
-
-const Nuts = styled(Info)`
-  color: rgb(200, 100, 100);
-`;
-
-const Gluten = styled(Info)`
-  color: ${(props) => props.theme.colors.blue500};
 `;
 
 const SkuItem = styled(FlexRow)`
@@ -115,48 +101,30 @@ const MealListItem: FC<IProps> = ({
               unavailable &&
               <Alert color="info">Sorry, but this isn't available at the moment</Alert>
             }
-            {
-              product.skus.length > 1 &&
-              <div>
-                {
-                  product.skus.map((sku, i) => <SkuItem key={sku.id} direction="row" >
-                    <input
+            <div>
+              {
+                product.skus.map((sku, i) => <SkuItem key={sku.id} direction="row" >
+                  {
+                    product.skus.length > 1 && <input
                       type="radio"
                       id={`sku-${sku.id}`}
                       checked={selectedSKUIndex === i}
                       name={`sku-${product.id}[]`}
                       onChange={() => setSelectedSKUIndex(i)} />
-                    <SkuLabel
-                      htmlFor={`sku-${sku.id}`}>
-                      <div>
-                        {sku.name} <br />
-                        {
-                          sku.vegetarian && <Info title="Vegetarian">V</Info>
-                        }
-                        {
-                          sku.vegan && <Info title="Vegan">VE</Info>
-                        }
-                        {
-                          sku.glutenFree && <Gluten title="Gluten free">G</Gluten>
-                        }
-                        {
-                          sku.nuts && <Nuts title="May contain nuts">N</Nuts>
-                        }
-                      </div>
-                      <div>
-                        {formatter.format(Number(sku.price))}
-                      </div>
-                    </SkuLabel>
-                  </SkuItem>)
-                }
-              </div>
-            }
-            {
-              product.skus.length === 1 &&
-              <Price>
-                {formatter.format(Number(product.skus[0].price))}
-              </Price>
-            }
+                  }
+                  <SkuLabel
+                    htmlFor={`sku-${sku.id}`}>
+                    <div style={{ display: 'flex', flexGrow: 1 }}>
+                      {sku.name} <br />
+                    </div>
+                    <FoodInfo sku={sku} />
+                    <div>
+                      {formatter.format(Number(sku.price))}
+                    </div>
+                  </SkuLabel>
+                </SkuItem>)
+              }
+            </div>
           </CardBody>
         </FlexRow>
         <CardFooter direction="column" style={{ paddingTop: 0 }}>
