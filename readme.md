@@ -11,7 +11,7 @@
 * set up staging site
 * family meals
 * Testimonials
-* Gluten free / vegan / veg / nuts per product
+
 * Homepage design
 * Order special dishes on certain days
 * disable order delivery dates in past
@@ -50,3 +50,4 @@ Done:
 * Menu - responsive
 * Contact us info
 * loading indicator after pressing payment button (done in meals-from-fauna branch)
+* Gluten free / vegan / veg / nuts per product
