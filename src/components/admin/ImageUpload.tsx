@@ -27,8 +27,7 @@ const ImageUpload: FC<IProps> = ({
 }) => {
   const [isUploading, setIsUploading] = useState(false);
   const [progress, setProgress] = useState(0);
-  // @TODO - env var this
-  const cloudName = 'pollen8';
+  const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
   const upload_preset = 'fm9zzl3f';
   const onPhotoSelected = async (files) => {
     setIsUploading(true);

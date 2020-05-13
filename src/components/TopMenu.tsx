@@ -33,20 +33,40 @@ const Menu = styled.div<{ scrolled: boolean }>`
   a {
     color: #16311D;
   }
+  img,
+  > div > div, 
+  > div  >div > ul a,
+  > div  >div > ul li,
+  > div  >div > ul a {
+    transition: all 300ms ease;
+  }
   img {
+    margin-bottom: 0;
     margin-right: 2.5rem;
   }
   ${(props) => {
     if (props.scrolled) {
-      return `.gatsby-image-wrapper {
-        width: 125px !important;
+      return `img {
         height: 75px !important;
-      }`;
+      }
+      > div > div {
+        margin-top: 0.5rem;
+      }
+      > div  >div > ul a{
+        font-size: 1rem;
+      }
+      > div  >div > ul li {
+        margin-top: 0.2rem;
+      }
+      > div  >div > ul a{
+        font-size: 0.7rem;
+      }
+      `;
     }
     return ``;
   }}
   @media (max-width: 640px){
-    .gatsby-image-wrapper {
+    img {
       width: 135px !important;
       height: 75px !important;
     }
@@ -165,11 +185,11 @@ const TopMenu: FC<HTMLAttributes<HTMLDivElement>> = (props) => {
           </StyledLink>
           </li>
           <SubMenu>
-          <li><Link to="/courses/starters">Starters</Link></li>
-          <li><Link to="/courses/mains">Mains</Link></li>
-          <li><Link to="/courses/sides">Sides</Link></li>
-          <li><Link to="/courses/desserts">Desserts</Link></li>
-        </SubMenu>
+            <li><Link to="/courses/starters">Starters</Link></li>
+            <li><Link to="/courses/mains">Mains</Link></li>
+            <li><Link to="/courses/sides">Sides</Link></li>
+            <li><Link to="/courses/desserts">Desserts</Link></li>
+          </SubMenu>
           <li>
             <StyledLink to="/contact"
               activeStyle={activeStyle}>

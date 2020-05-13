@@ -64,7 +64,7 @@ const AddSku: FC<IProps> = ({
               <input type="checkbox"
                 checked={sku.vegetarian}
                 onChange={(e) => setData({ ...sku, vegetarian: e.target.checked })} />
-        vegetarian</label>
+              {' '}vegetarian</label>
           </FormGroup>
 
           <FormGroup>
@@ -72,7 +72,7 @@ const AddSku: FC<IProps> = ({
               <input type="checkbox"
                 checked={sku.vegan}
                 onChange={(e) => setData({ ...sku, vegan: e.target.checked })} />
-        vegan</label>
+              {' '}vegan</label>
           </FormGroup>
 
           <FormGroup>
@@ -80,7 +80,7 @@ const AddSku: FC<IProps> = ({
               <input type="checkbox"
                 checked={sku.glutenFree}
                 onChange={(e) => setData({ ...sku, glutenFree: e.target.checked })} />
-        gluten free</label>
+              {' '}gluten free</label>
           </FormGroup>
 
           <FormGroup>
@@ -88,7 +88,7 @@ const AddSku: FC<IProps> = ({
               <input type="checkbox"
                 checked={sku.nuts}
                 onChange={(e) => setData({ ...sku, nuts: e.target.checked })} />
-        may contain nuts</label>
+              {' '}may contain nuts</label>
           </FormGroup>
         </div>
       </Stack>
