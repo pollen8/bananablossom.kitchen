@@ -140,7 +140,7 @@ const MealListItem: FC<IProps> = ({
                           sku.glutenFree && <Gluten title="Gluten free">G</Gluten>
                         }
                         {
-                          sku.nuts && <Nuts title="Nuts">N</Nuts>
+                          sku.nuts && <Nuts title="May contain nuts">N</Nuts>
                         }
                       </div>
                       <div>
@@ -159,7 +159,7 @@ const MealListItem: FC<IProps> = ({
             }
           </CardBody>
         </FlexRow>
-        <CardFooter direction="column">
+        <CardFooter direction="column" style={{ paddingTop: 0 }}>
           <Button
             disabled={unavailable}
             style={{ marginTop: columnCount === 1 ? '1rem' : 0, width: '100%' }}

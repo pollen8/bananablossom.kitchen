@@ -25,8 +25,8 @@ const GlobalStyle = createGlobalStyle<any>`
     margin-bottom: 1.2rem;
   }
   h3 {
-    font-size: 1.2rem;
-    margin-bottom: 1.2rem;
+    font-size: 1.1rem;
+    margin-bottom: 0.9rem;
   }
   body {
     font-size: 0.75rem;

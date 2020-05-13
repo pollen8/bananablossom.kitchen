@@ -34,6 +34,7 @@ const flatten = (d: { data: IProduct, ts: number, ref: any }) => ({
 const Products: FC<RouteComponentProps> = () => {
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
   const [showForm, setShowForm] = useState(false);
+  const [search, setSearch] = useState('');
   const [products, setProducts] = useState<IProduct[]>([]);
   const [selectedProduct, setSelected] = useState<IProduct | undefined>()
   useEffect(() => {
@@ -51,6 +52,9 @@ const Products: FC<RouteComponentProps> = () => {
           setSelected(undefined);
           setShowForm(true);
         }}>New</Button>
+      <input type="search"
+        placeholder="search..."
+        onChange={(e) => setSearch(e.target.value)} />
       <Stack>
         <Card>
 
@@ -73,36 +77,38 @@ const Products: FC<RouteComponentProps> = () => {
               </thead>
               <tbody>
                 {
-                  products.map((data) => <Tr
-                    key={data.id}
-                    onClick={() => {
-                      setSelected(data);
-                      setShowForm(true);
-                    }}>
-                    <td>
-                      {data.name}
-                      <div>
-                        <small>
-                          {format(data.ts / 1000, 'dd MMMM yyyy')}
-                        </small>
-                      </div>
-                    </td>
-                    <td>{data.description}</td>
-                    <td>
-                      <input type="checkbox"
-                        value={data.id}
-                        onChange={(e) => {
-                          if (e.target.checked) {
-                            selectedRows.push(e.target.value);
-                            setSelectedRows(selectedRows);
-                          } else {
-                            setSelectedRows(selectedRows.filter((s) => s !== e.target.value));
-                          }
-                        }}
-                      />
-                    </td>
-                  </Tr>
-                  )
+                  products
+                    .filter((data) => search === '' || data.name.toLowerCase().includes(search.toLowerCase()))
+                    .map((data) => <Tr
+                      key={data.id}
+                      onClick={() => {
+                        setSelected(data);
+                        setShowForm(true);
+                      }}>
+                      <td>
+                        {data.name}
+                        <div>
+                          <small>
+                            {format(data.ts / 1000, 'dd MMMM yyyy')}
+                          </small>
+                        </div>
+                      </td>
+                      <td>{data.description}</td>
+                      <td>
+                        <input type="checkbox"
+                          value={data.id}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              selectedRows.push(e.target.value);
+                              setSelectedRows(selectedRows);
+                            } else {
+                              setSelectedRows(selectedRows.filter((s) => s !== e.target.value));
+                            }
+                          }}
+                        />
+                      </td>
+                    </Tr>
+                    )
                 }
 
               </tbody>
