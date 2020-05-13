@@ -15,7 +15,6 @@ import Card from './Card';
 import CardBody from './CardBody';
 import CardFooter from './CardFooter';
 import FoodInfo from './meals/FoodInfo';
-import Price from './Price';
 
 const MealImage = styled(Image)`
   border-radius:  0.3rem 0.3rem 0 0;
@@ -82,6 +81,7 @@ const MealListItem: FC<IProps> = ({
             product.skus.length > 0 && product.skus[selectedSKUIndex].image !== '' &&
             <div style={{ width: '100%', maxHeight: '300px', position: 'relative', overflow: 'hidden' }}>
               <MealImage
+                secure
                 cloudName="pollen8"
                 publicId={product.skus[selectedSKUIndex].image}
                 quality="auto:best"
