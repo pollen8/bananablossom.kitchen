@@ -58,7 +58,7 @@ const Cart: FC<IProps> = ({
 
   return (
     <Card>
-      <CardBody>
+      <CardBody style={{ maxWidth: '70rem', margin: 'auto' }}>
         <h3>
           {
             readonly ? 'Your order' : 'Cart'
