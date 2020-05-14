@@ -58,6 +58,7 @@ const GET_MAINS = graphql`{
       description
       id
       name
+      availableDays
       skus {
         id,
         glutenFree

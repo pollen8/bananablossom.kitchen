@@ -30,6 +30,7 @@ const updateProduct = async (data: IProduct) => {
 }
 
 const emptyProduct: IProduct = {
+  availableDays: [],
   id: '',
   name: '',
   course: 'main',
@@ -55,6 +56,7 @@ export interface IProduct {
   course: string,
   id: string;
   name: string;
+  availableDays: string[]
   description: string;
   price: number;
   ts: number;
@@ -124,6 +126,25 @@ const AddProduct: FC<IProps> = (props) => {
               </FormGroup>)
             }
 
+          </FormGroup>
+          <FormGroup>
+            <Label>Only available on</Label>
+            {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map((day) => <FormGroup key={day} check>
+              <input
+                type="checkbox"
+                id={`menu-${day}`}
+                checked={(data.availableDays ?? []).includes(day)}
+                name={`sku-name[]`}
+                onChange={(e) => {
+                  const availableDays = e.target.checked
+                    ? [...(data.availableDays ?? []), day]
+                    : (data.availableDays ?? []).filter((d) => d !== day);
+                  setData({ ...data, availableDays })
+                }} />
+              <Label check htmlFor={`menu-${day}`}>
+                {day}
+              </Label>
+            </FormGroup>)}
           </FormGroup>
         </Stack>
         <Skus

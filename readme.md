@@ -5,16 +5,12 @@
 
 #TODO
 
-
 * Allow ordering of products (move frozen to end of list)
 * look up product skus in backend and get prices from there - don't send total from front end
 * set up staging site
 * family meals
 * Testimonials
-
 * Homepage design
-* Order special dishes on certain days
-* disable order delivery dates in past
 * Special requests
   - intro 
   * Time picker allows you to select 2:15 which is grey'd out AND clicking 15h errors
@@ -51,3 +47,5 @@ Done:
 * Contact us info
 * loading indicator after pressing payment button (done in meals-from-fauna branch)
 * Gluten free / vegan / veg / nuts per product
+* Order special dishes on certain days
+* disable order delivery dates in past

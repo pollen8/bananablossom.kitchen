@@ -8,7 +8,7 @@ import {
   ISku,
 } from '../components/admin/AddProduct';
 
-interface IState {
+export interface IState {
   items: ICartItem[];
 }
 
@@ -24,7 +24,11 @@ export interface ICartItem {
   sku: ISku;
 }
 
-const store = createContext<any>(initialState);
+export interface ICartContext {
+  state: IState,
+  dispatch?: any,
+}
+const store = createContext<ICartContext>({ state: initialState });
 const { Provider } = store;
 
 export type Action = { type: 'CART_ADD'; item: ICartItem }

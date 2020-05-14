@@ -8,6 +8,7 @@ import styled from 'styled-components';
 
 import { store } from '../context/cartContext';
 import { formatter } from '../lib/formatter';
+import Alert from './Alert';
 import Button from './Button';
 import Card from './Card';
 import CardBody from './CardBody';
@@ -38,7 +39,7 @@ export const getCartTotal = () => {
   console.log('state', state);
   const total = state.items.reduce((total, item) => {
     console.log('item', item);
-    return total + (item.quantity * item.sku.price);
+    return total + (item.quantity * Number(item.sku.price));
   }, 0);
   return total;
 }
@@ -55,7 +56,10 @@ const Cart: FC<IProps> = ({
     ? total
     : total - (total * (discount / 100));
 
-
+  const availableDays = new Set<string>();
+  state.items.forEach((item) => {
+    (item.product.availableDays ?? []).forEach((d) => availableDays.add(d));
+  })
   return (
     <Card>
       <CardBody style={{ maxWidth: '70rem', margin: 'auto' }}>
@@ -66,6 +70,10 @@ const Cart: FC<IProps> = ({
         </h3>
         {
           state.items.length === 0 && <p>Your basket is empty</p>
+        }
+        {
+          availableDays.size > 1 &&
+          <Alert color="danger">You're cart contains items which can not be provided for on the same day</Alert>
         }
         {
           state.items.length > 0 &&
@@ -79,7 +87,8 @@ const Cart: FC<IProps> = ({
             {
               !readonly &&
               <Link to="/checkout" style={{ textDecoration: 'none' }}>
-                <Button color="primary" style={{ marginTop: '0.5rem', width: '100%' }}>
+                <Button color="primary" style={{ marginTop: '0.5rem', width: '100%' }}
+                  disabled={availableDays.size > 1}>
                   <div style={{ marginRight: '0.3rem' }}>{formatter.format(discountedTotal)}</div>{' '}
                   <div>Checkout</div>
                 </Button>

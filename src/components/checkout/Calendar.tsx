@@ -112,12 +112,14 @@ interface IProps {
   handleInputChange: (key: string, value: any) => void;
   orderDate: Date;
   orderTime: ITime;
+  disabledDaysOfWeek: number[];
 }
 
 const Calendar: FC<IProps> = ({
   handleInputChange,
   orderDate,
   orderTime,
+  disabledDaysOfWeek,
 }) => {
   const [values, setValues] = useState<[Date, ITime]>([orderDate, { hour: 10, minute: 0 }]);
   return (
@@ -127,6 +129,7 @@ const Calendar: FC<IProps> = ({
         <StyledDatePicker
           name="order_date"
           width="300px"
+          disabledDaysOfWeek={disabledDaysOfWeek}
           value={orderDate}
           onChange={(value) => {
             handleInputChange('order_date', value);

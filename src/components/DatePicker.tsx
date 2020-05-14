@@ -3,6 +3,7 @@ import addMonths from 'date-fns/addMonths';
 import format from 'date-fns/format';
 import getDay from 'date-fns/getDay';
 import getDaysInMonth from 'date-fns/getDaysInMonth';
+import isAfter from 'date-fns/isAfter';
 import isSameDay from 'date-fns/isSameDay';
 import isToday from 'date-fns/isToday';
 import isWithinInterval from 'date-fns/isWithinInterval';
@@ -54,7 +55,6 @@ const Controls = styled.div`
 
 `;
 
-
 const color = (props: IDayProps) => {
   if (props.isActive) {
     return '#fff';
@@ -80,6 +80,7 @@ interface IProps {
   id?: string;
   className?: string;
   disabledRanges?: Interval[];
+  disabledDaysOfWeek?: number[]
   value?: Date;
   width?: string | number;
   onChange?: (value: Date) => void;
@@ -89,6 +90,18 @@ const isDisabled = (date: Date, disabled: Interval[]) => {
   return disabled.some((d) => isWithinInterval(date, d));
 };
 
+const isDisabledDayOfWeek = (date: Date, daysOfWeek: number[]) => {
+  if (daysOfWeek.length === 0) {
+    return false;
+  }
+  const dayOfWeek = date.getDay();
+  return !daysOfWeek.includes(dayOfWeek);
+};
+
+const isPast = (date: Date) => {
+  return isAfter(new Date(), date);
+}
+
 const DatePicker: FC<IProps> = ({
   disabledRanges,
   id,
@@ -97,6 +110,7 @@ const DatePicker: FC<IProps> = ({
   value,
   width,
   className,
+  disabledDaysOfWeek,
 }) => {
   const [now, setNow] = useState(value || new Date());
   const daysInMonth = getDaysInMonth(now);
@@ -139,7 +153,7 @@ const DatePicker: FC<IProps> = ({
         {
           days.map((d) => {
             const thisDay = addDays(firstDateOfMonth, d);
-            const disabled = isDisabled(thisDay, disabledRanges);
+            const disabled = isDisabled(thisDay, disabledRanges) || isDisabledDayOfWeek(thisDay, disabledDaysOfWeek) || isPast(thisDay);
             const isActive = isSameDay(thisDay, now);
             return <Cell
               disabled={disabled}

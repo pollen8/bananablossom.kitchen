@@ -13,6 +13,7 @@ import {
   Validation,
 } from 'validate-promise';
 
+import { Redirect } from '@reach/router';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 
@@ -37,7 +38,11 @@ import Input from '../components/Input';
 import Label from '../components/Label';
 import Layout from '../components/layout';
 import TextArea from '../components/TextArea';
-import { store } from '../context/cartContext';
+import Pill from '../components/ui/Pill';
+import {
+  ICartContext,
+  store,
+} from '../context/cartContext';
 import { useFormWizard } from '../hooks/formWizard';
 import { useDiscount } from '../hooks/useDiscount';
 import { useForm } from '../hooks/useForm';
@@ -131,7 +136,7 @@ const applyDiscount = (value: number, discount: number) => {
     : value - (value * (discount / 100));
 }
 const Checkout: FC = () => {
-  const { state, dispatch } = useContext(store);
+  const { state, dispatch } = useContext<ICartContext>(store);
   const [discount, setDiscount] = useState(0);
   const [intentError, setIntentError] = useState('');
   const { value } = useDiscount(setDiscount);
@@ -157,7 +162,14 @@ const Checkout: FC = () => {
   if (state.items.length === 0) {
     return <EmptyCart />;
   }
-  console.log('state.items', state.items);
+  const availableDays = new Set<string>();
+  state.items.forEach((item) => {
+    (item.product.availableDays ?? []).forEach((d) => availableDays.add(d));
+  })
+  availableDays.forEach((a, b, c) => console.log('state days', a, b, c));
+  if (availableDays.size > 1) {
+    return <Redirect to="/cart" />
+  }
   return (
     <Layout>
       <ThisLayout>
@@ -371,10 +383,37 @@ const Checkout: FC = () => {
                               values.delivery === 'delivery'
                                 ? 'When would you like your order delivered?'
                                 : 'When would you like to pick up your order on?'
-                            }</Label>
+                            }
+                          </Label>
+                          {
+                            availableDays.size > 0 && <>
+                              You can only pick up on {Array.from(availableDays).map((d) => <Pill
+                              background="blue800"
+                              color="grey200" key={d}>{d}</Pill>)}
+                            </>
+                          }
                           <Calendar
                             orderDate={typeof values.order_date === 'string' ? new Date(values.order_date) : values.order_date}
                             orderTime={values.order_time}
+                            disabledDaysOfWeek={Array.from(availableDays).map((d) => {
+                              switch (d) {
+                                case 'Sunday':
+                                  return 0;
+                                case 'Monday':
+                                  return 1;
+                                case 'Tuesday':
+                                  return 2;
+                                case 'Wednesday':
+                                  return 3;
+                                case 'Thursday':
+                                  return 4;
+                                case 'Friday':
+                                  return 5;
+                                default:
+                                case 'Saturday':
+                                  return 6;
+                              }
+                            })}
                             handleInputChange={handleInputChange}
                           />
                         </FormGroup>

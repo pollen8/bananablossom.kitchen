@@ -15,6 +15,7 @@ import Card from './Card';
 import CardBody from './CardBody';
 import CardFooter from './CardFooter';
 import FoodInfo from './meals/FoodInfo';
+import Pill from './ui/Pill';
 
 const MealImage = styled(Image)`
   border-radius:  0.3rem 0.3rem 0 0;
@@ -59,6 +60,11 @@ const SkuItem = styled(FlexRow)`
     margin-right: 1rem;
   }
 `;
+const AvailableDay = styled.div`
+  color: ${(props) => props.theme.colors.grey500};
+  margin-bottom: 0.8rem;
+`;
+
 interface IProps {
   product: IProduct;
 }
@@ -73,6 +79,7 @@ const MealListItem: FC<IProps> = ({
     2
   );
   const unavailable = product.skus[selectedSKUIndex].unavailable === true;
+  const availableDays = product.availableDays ?? [];
   return (
     <>
       <MealCard data-dish={`data-${product.name.replace(' ', '-')}`}>
@@ -96,6 +103,17 @@ const MealListItem: FC<IProps> = ({
             <h3 style={{ lineHeight: '1.6rem' }}>
               {product.name}
             </h3>
+            {
+              availableDays.length > 0 &&
+              <AvailableDay>
+                <span>Only available on: </span>
+                {
+                  availableDays.map((day) => <Pill background="blue800"
+                    color="grey200"
+                    key={day}>{day}</Pill>)
+                }
+              </AvailableDay>
+            }
             <p>{product.description}</p>
             {
               unavailable &&
