@@ -75,7 +75,6 @@ const Cart: FC<IProps> = ({
               discount={discount}
               total={total}
               discountedTotal={discountedTotal}
-              showTotal={false}
               readonly={readonly} />
             {
               !readonly &&
