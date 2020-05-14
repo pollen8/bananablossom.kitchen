@@ -23,6 +23,7 @@ interface IProps {
   discount: number;
   total: number;
   discountedTotal: number;
+  showTotal?: boolean;
 }
 
 const CartContent: FC<IProps> = ({
@@ -30,34 +31,40 @@ const CartContent: FC<IProps> = ({
   discount,
   total,
   discountedTotal,
-  readonly
+  readonly,
+  showTotal = true,
 }) => {
   const { state } = useContext(store);
   return (
-    <Grid id={id} readonly={readonly}>
-      {state.items.map((item) => <CartItem
-        key={item.id}
-        readonly={readonly}
-        item={item} />)}
-      {
-        discount > 0 &&
-        <>
-          <div>{discount}% discount</div>
-          <div />
-          <div style={{ textAlign: 'right' }}>- {formatter.format(total - discountedTotal)}</div>
-          {
-            !readonly && <div />
-          }
-        </>
+    <div id={id}>
+      <Grid readonly={readonly}>
+        {state.items.map((item) => <CartItem
+          key={item.id}
+          readonly={readonly}
+          item={item} />)}
+        {
+          discount > 0 &&
+          <>
+            <div>{discount}% discount</div>
+            <div />
+            <div style={{ textAlign: 'right' }}>- {formatter.format(total - discountedTotal)}</div>
+            {
+              !readonly && <div />
+            }
+          </>
+        }
+        <div />
+        <div />
+
+      </Grid>
+      {showTotal &&
+        <div style={{ textAlign: 'right' }}>
+          <h4>
+            {formatter.format(discountedTotal)}
+          </h4>
+        </div>
       }
-      <div />
-      <div />
-      <div style={{ textAlign: 'right' }}>
-        <h4>
-          {formatter.format(discountedTotal)}
-        </h4>
-      </div>
-    </Grid>
+    </div>
   )
 }
 

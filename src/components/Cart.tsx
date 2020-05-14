@@ -14,10 +14,8 @@ import CardBody from './CardBody';
 import CartContent from './CartContent';
 import PromotionCode from './checkout/PromotionCode';
 import OrderHelp from './OrderHelp';
-import Price from './Price';
 import Facebook from './social/Facebook';
 import TripAdvisor from './TripAdvisor';
-import Badge from './ui/Badge';
 
 interface IProps {
   readonly?: boolean;
@@ -72,41 +70,25 @@ const Cart: FC<IProps> = ({
         {
           state.items.length > 0 &&
           <div id="controls">
-            {
-              discount === 0 &&
-              <Price id="price">
-                {formatter.format(total)}
-              </Price>
-            }
-            {
-              discount > 0 &&
-              <Price id="price">
-                <s>{formatter.format(total)}</s>{' '}
-                {formatter.format(discountedTotal)}
-              </Price>
-            }
             <CartContent
               id="cart-content"
               discount={discount}
               total={total}
               discountedTotal={discountedTotal}
+              showTotal={false}
               readonly={readonly} />
-
-            <PromotionCode
-              setDiscount={setDiscount}
-            />
             {
               !readonly &&
-              <Link to="/checkout">
-                <Button color="primary" style={{ marginTop: '0.5rem' }}>
-                  <Badge id="order-total-badge"
-                    background="white100" color="blue100">
-                    {state.items.length}
-                  </Badge>
-                  Checkout
+              <Link to="/checkout" style={{ textDecoration: 'none' }}>
+                <Button color="primary" style={{ marginTop: '0.5rem', width: '100%' }}>
+                  <div style={{ marginRight: '0.3rem' }}>{formatter.format(discountedTotal)}</div>{' '}
+                  <div>Checkout</div>
                 </Button>
               </Link>
             }
+            <PromotionCode
+              setDiscount={setDiscount}
+            />
           </div>
         }
         {

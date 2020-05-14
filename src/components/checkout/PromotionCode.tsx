@@ -34,11 +34,9 @@ const PromotionCode: FC<IProps> = ({ setDiscount }) => {
 
   if (value === 0) {
     return (
-      <FormGroup>
-        <Label>
-          Promotion code:
-        </Label>
+      <FormGroup style={{ marginTop: '0.5rem' }}>
         <Input
+          placeholder="Promotion code..."
           onFocus={() => setError('')}
           onBlur={async (e) => {
             window.sessionStorage.setItem('code', e.target.value);

@@ -14,11 +14,11 @@ export const Frame = styled.div`
 export const ThisLayout = styled.div`
 
 #meal-list{
-  margin-bottom: 6rem;
+  margin-bottom: 10rem;
 }
 
 .main-content{
-  margin-bottom: 6rem;
+  margin-bottom: 10rem;
 }
 #cart {
   padding: 0.25rem;
@@ -36,7 +36,6 @@ export const ThisLayout = styled.div`
     box-shadow: none;
   }
 
-
   h3 {
     display: none;
   }
@@ -45,6 +44,7 @@ export const ThisLayout = styled.div`
 
 #controls {
   display: flex;
+  flex-direction: row-reverse;
   justify-content: space-around;
   align-items: center;
 
