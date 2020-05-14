@@ -157,7 +157,7 @@ const Checkout: FC = () => {
   if (state.items.length === 0) {
     return <EmptyCart />;
   }
-console.log('state.items', state.items);
+  console.log('state.items', state.items);
   return (
     <Layout>
       <ThisLayout>
@@ -212,6 +212,7 @@ console.log('state.items', state.items);
                         <Label htmlFor="tel">Telephone * </Label>
                         <Input name="tel"
                           id="tel"
+                          type="tel"
                           defaultValue={values.tel}
                           autoComplete="tel"
                           valid={!errors.hasOwnProperty('tel')}
