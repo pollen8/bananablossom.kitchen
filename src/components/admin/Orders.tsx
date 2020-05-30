@@ -24,7 +24,6 @@ tr:nth-child(even) {
 }
 
 @media (min-width: 640px){ 
-  border: 1px solid green;
   .mobile {
     display: none;
   }
@@ -38,7 +37,6 @@ tr:nth-child(even) {
 }
 `;
 const Orders: FC = () => {
-  // const [toggle, setToggle] = useState<boolean[]>();
   const [toggle, setToggle] = useState<boolean[]>([false]);
   const [orders, setOrders] = useState([]);
   useEffect(() => {
