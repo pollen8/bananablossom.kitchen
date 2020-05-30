@@ -95,7 +95,7 @@ const isDisabledDayOfWeek = (date: Date, daysOfWeek: number[]) => {
     return false;
   }
   const dayOfWeek = date.getDay();
-  return !daysOfWeek.includes(dayOfWeek);
+  return daysOfWeek.includes(dayOfWeek);
 };
 
 const isPast = (date: Date) => {

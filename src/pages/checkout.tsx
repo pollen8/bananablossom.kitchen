@@ -166,10 +166,13 @@ const Checkout: FC = () => {
   state.items.forEach((item) => {
     (item.product.availableDays ?? []).forEach((d) => availableDays.add(d));
   })
-  availableDays.forEach((a, b, c) => console.log('state days', a, b, c));
+
   if (availableDays.size > 1) {
     return <Redirect to="/cart" />
   }
+  const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const disabledDaysOfWeek = availableDays.size > 0 ? days.filter((day) => !availableDays.has(day)) : ['Sunday'];
+
   return (
     <Layout>
       <ThisLayout>
@@ -395,25 +398,27 @@ const Checkout: FC = () => {
                           <Calendar
                             orderDate={typeof values.order_date === 'string' ? new Date(values.order_date) : values.order_date}
                             orderTime={values.order_time}
-                            disabledDaysOfWeek={Array.from(availableDays).map((d) => {
-                              switch (d) {
-                                case 'Sunday':
-                                  return 0;
-                                case 'Monday':
-                                  return 1;
-                                case 'Tuesday':
-                                  return 2;
-                                case 'Wednesday':
-                                  return 3;
-                                case 'Thursday':
-                                  return 4;
-                                case 'Friday':
-                                  return 5;
-                                default:
-                                case 'Saturday':
-                                  return 6;
-                              }
-                            })}
+                            disabledDaysOfWeek={
+                              (disabledDaysOfWeek).map((d) => {
+                                switch (d) {
+                                  case 'Sunday':
+                                    return 0;
+                                  case 'Monday':
+                                    return 1;
+                                  case 'Tuesday':
+                                    return 2;
+                                  case 'Wednesday':
+                                    return 3;
+                                  case 'Thursday':
+                                    return 4;
+                                  case 'Friday':
+                                    return 5;
+                                  default:
+                                  case 'Saturday':
+                                    return 6;
+                                }
+                              })
+                            }
                             handleInputChange={handleInputChange}
                           />
                         </FormGroup>
