@@ -37,6 +37,7 @@ import FormGroup from '../components/FormGroup';
 import Input from '../components/Input';
 import Label from '../components/Label';
 import Layout from '../components/layout';
+import Stack from '../components/layout/Stack';
 import TextArea from '../components/TextArea';
 import Pill from '../components/ui/Pill';
 import {
@@ -339,43 +340,41 @@ const Checkout: FC = () => {
                           total > deliveryFreeFrom && <>
                             {
                               values.delivery === 'delivery' &&
-                              <>
-                                <Row>
-                                  <Col xs={12}>
-                                    <p>Delivery address details:</p>
-                                    <FormGroup>
-                                      <Label htmlFor="address1">Address</Label>
-                                      <Input name="address1"
-                                        id="address1"
-                                        onBlur={(e) => handleInputChange('street', e.target.value)}
-                                        autoComplete="street-address address-line1" />
-                                    </FormGroup>
-                                    <FormGroup>
-                                      <Label htmlFor="town">Town</Label>
-                                      <Input name="town"
-                                        id="town"
-                                        onBlur={(e) => handleInputChange('city', e.target.value)}
-                                        autoComplete="street-address address-line2" />
-                                    </FormGroup>
+                              <Stack>
+                                <div>
+                                  <p>Delivery address details:</p>
+                                  <FormGroup>
+                                    <Label htmlFor="address1">Address</Label>
+                                    <Input name="address1"
+                                      id="address1"
+                                      onBlur={(e) => handleInputChange('street', e.target.value)}
+                                      autoComplete="street-address address-line1" />
+                                  </FormGroup>
+                                  <FormGroup>
+                                    <Label htmlFor="town">Town</Label>
+                                    <Input name="town"
+                                      id="town"
+                                      onBlur={(e) => handleInputChange('city', e.target.value)}
+                                      autoComplete="street-address address-line2" />
+                                  </FormGroup>
 
-                                    <FormGroup>
-                                      <Label htmlFor="postcode">Post code</Label>
-                                      <Input name="postcode"
-                                        id="postcode"
-                                        onBlur={(e) => handleInputChange('postcode', e.target.value)}
-                                        autoComplete="street-address postal-code" />
-                                    </FormGroup>
-                                  </Col>
-                                  <Col xs={12}>
-                                    <DeliveryMap
-                                      googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyDjdFEZgu3s8slEPabzamBDEjIP6pU1OSU&libraries=places"
-                                      loadingElement={<div style={{ height: `100%` }} />}
-                                      containerElement={<div style={{ height: `300px` }} />}
-                                      mapElement={<div style={{ height: `100%` }} />}
-                                      showDeliveryArea={values.delivery === 'delivery'} />
-                                  </Col>
-                                </Row>
-                              </>
+                                  <FormGroup>
+                                    <Label htmlFor="postcode">Post code</Label>
+                                    <Input name="postcode"
+                                      id="postcode"
+                                      onBlur={(e) => handleInputChange('postcode', e.target.value)}
+                                      autoComplete="street-address postal-code" />
+                                  </FormGroup>
+                                </div>
+                                <div>
+                                  <DeliveryMap
+                                    googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyDjdFEZgu3s8slEPabzamBDEjIP6pU1OSU&libraries=places"
+                                    loadingElement={<div style={{ height: `100%` }} />}
+                                    containerElement={<div style={{ height: `300px` }} />}
+                                    mapElement={<div style={{ height: `100%` }} />}
+                                    showDeliveryArea={values.delivery === 'delivery'} />
+                                </div>
+                              </Stack>
                             }
                           </>
                         }
@@ -478,7 +477,7 @@ const Checkout: FC = () => {
           <Cart readonly />
         </div>
       </ThisLayout>
-    </Layout >
+    </Layout>
   );
 }
 

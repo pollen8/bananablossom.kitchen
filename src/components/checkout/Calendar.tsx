@@ -7,6 +7,7 @@ import styled from 'styled-components';
 
 import DatePicker from '../DatePicker';
 import Label from '../Label';
+import Stack from '../layout/Stack';
 import TimePicker, {
   formatAmPm,
   ITime,
@@ -118,12 +119,12 @@ interface IProps {
 const Calendar: FC<IProps> = ({
   handleInputChange,
   orderDate,
-  orderTime,
+  orderTime = { hour: 10, minute: 0 },
   disabledDaysOfWeek,
 }) => {
-  const [values, setValues] = useState<[Date, ITime]>([orderDate, { hour: 10, minute: 0 }]);
+  const [values, setValues] = useState<[Date, ITime]>([orderDate, orderTime]);
   return (
-    <StyledRow style={{ justifyContent: 'space-between' }}>
+    <Stack>
       <div>
         <Label>Date: {values[0].toLocaleDateString()}</Label>
         <StyledDatePicker
@@ -154,7 +155,7 @@ const Calendar: FC<IProps> = ({
           hideValue
           available={deliveryAvailability} />
       </div>
-    </StyledRow>
+    </Stack>
   )
 }
 
