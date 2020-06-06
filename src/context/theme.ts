@@ -12,6 +12,7 @@ export const theme = {
     grey: 'hsl(208, 26%, 40%)',
     red500: 'hsl(0, 59.8%, 42.9%)',
     green100: 'hsl(93, 36.6%, 10%)',
+    green200: 'hsl(135, 29%, 16%)',
     green500: 'hsl(93, 36.6%, 50%)',
     green800: 'hsl(93, 86.9%, 88%)',
     blue100: 'hsl(200, 86%, 20%)',
@@ -20,5 +21,7 @@ export const theme = {
     blue600: 'hsl(200, 65%, 70%)',
     blue800: 'hsl(200, 46%, 88%)',
     blue900: 'hsl(200, 65%, 97%)',
+
+
   },
 }

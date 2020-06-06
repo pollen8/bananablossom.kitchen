@@ -2,15 +2,18 @@ import { Link } from 'gatsby';
 import React, {
   FC,
   HTMLAttributes,
+  useContext,
   useEffect,
   useState,
 } from 'react';
 import { AiOutlineMenu } from 'react-icons/ai';
 import styled from 'styled-components';
 
+import { store } from '../context/cartContext';
 import Button from './Button';
 import Logo from './Logo';
 import { SubMenu } from './mealLayout';
+import Pill from './ui/Pill';
 
 const Menu = styled.div<{ scrolled: boolean }>`
   background-color: rgba(255,255,255,1);
@@ -135,7 +138,17 @@ const StyledLink = styled(Link)`
     color : ${(props) => props.theme.colors.primary};
     border-color : ${(props) => props.theme.colors.primary} !important;
   }
+  display: flex;
+  align-items: center;
 `;
+
+const CartPill = styled(Pill)`
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 1.5rem;
+  margin-left: 0.6rem;
+`;
+
 const activeStyle = { borderBottom: '3px solid #F5728E' };
 
 const isPartiallyActive = (props) => {
@@ -152,6 +165,8 @@ const TopMenu: FC<HTMLAttributes<HTMLDivElement>> = (props) => {
   const { children, ...rest } = props;
   const [show, toggle] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { state } = useContext(store);
+
   useEffect(() => {
     const watchScroll = (e: any) => {
       setScrolled(window.pageYOffset > 200);
@@ -205,8 +220,9 @@ const TopMenu: FC<HTMLAttributes<HTMLDivElement>> = (props) => {
           <li>
             <StyledLink to="/cart"
               activeStyle={activeStyle}>
-              Cart
-          </StyledLink>
+              <div>Cart</div>
+              <CartPill>{state.items.length}</CartPill>
+            </StyledLink>
           </li>
         </ul>
 

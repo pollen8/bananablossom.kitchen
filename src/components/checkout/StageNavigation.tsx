@@ -9,12 +9,12 @@ const Circle = styled.div<{ active: boolean, completed: boolean }>`
   font-size: 0.6rem;
   text-align: center;
   background-color: ${(props) => props.active
-    ? props.theme.colors.primary
+    ? props.theme.colors.green200
     : props.completed ?
-      props.theme.colors.green800 : props.theme.colors.white100};
+      props.theme.colors.green200 : props.theme.colors.white100};
   color:  ${(props) => props.active ? props.theme.colors.white100 : props.theme.colors.grey500};
   border: 1px solid;
-  border-color: ${(props) => props.active ? 'transparent' : props.theme.colors.grey500};
+  border-color: ${(props) => props.active || props.completed ? props.theme.colors.green200 : props.theme.colors.grey500};
   z-index: 10;
 `;
 
