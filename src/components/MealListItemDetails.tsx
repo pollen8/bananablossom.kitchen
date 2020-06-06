@@ -13,6 +13,7 @@ import Alert from './Alert';
 import Button from './Button';
 import Card from './Card';
 import CardBody from './CardBody';
+import Stack from './layout/Stack';
 import FoodInfo from './meals/FoodInfo';
 import Pill from './ui/Pill';
 
@@ -82,10 +83,10 @@ const MealListItemDetails: FC<IProps> = ({
   return (
     <>
       <MealCard data-dish={`data-${product.name.replace(' ', '-')}`} style={{ marginBottom: '1rem' }}>
-        <FlexRow direction="row">
+        <Stack>
           {
             product.skus.length > 0 && product.skus[selectedSKUIndex].image !== '' &&
-            <div style={{ width: '60%', maxHeight: '300px', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ margin: 0, width: '100%', maxWidth: '50rem', maxHeight: '300px', position: 'relative', overflow: 'hidden' }}>
               <MealImage
                 secure
                 cloudName="pollen8"
@@ -151,7 +152,7 @@ const MealListItemDetails: FC<IProps> = ({
               }}>Order now
             </Button>
           </CardBody>
-        </FlexRow>
+        </Stack>
 
       </MealCard>
       <AddItemForm
