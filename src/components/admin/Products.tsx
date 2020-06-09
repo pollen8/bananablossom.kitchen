@@ -5,6 +5,11 @@ import React, {
   useEffect,
   useState,
 } from 'react';
+import {
+  queryCache,
+  useMutation,
+  useQuery,
+} from 'react-query';
 import styled from 'styled-components';
 
 import { RouteComponentProps } from '@reach/router';
@@ -25,12 +30,24 @@ cursor: pointer;
    background-color: ${(props) => props.theme.colors.blue900};
  }
 `;
-const flatten = (d: { data: IProduct, ts: number, ref: any }) => ({
+export const flatten = (d: { data: IProduct, ts: number, ref: any }) => ({
   ...d.data,
   ts: d.ts,
   id: getId(d.ref),
 });
 
+export const fetchProductList = async () => {
+  const res = await axios.post("/.netlify/functions/product-list");
+  return res.data.map(flatten);
+}
+
+const deleteProduct = async (selectedRows: string[]) => {
+  await axios.post("/.netlify/functions/product-delete", { ids: selectedRows });
+}
+
+const createProduct = async (data) => {
+
+}
 const Table = styled.table`
 @media (max-width: 640px){ 
 .description {
@@ -47,15 +64,24 @@ const Products: FC<RouteComponentProps> = () => {
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [search, setSearch] = useState('');
-  const [products, setProducts] = useState<IProduct[]>([]);
   const [selectedProduct, setSelected] = useState<IProduct | undefined>()
-  useEffect(() => {
-    const fetch = async () => {
-      const res = await axios.post("/.netlify/functions/product-list");
-      setProducts(res.data.map(flatten));
-    };
-    fetch();
-  }, []);
+
+  const mutationOptions = {
+    onSuccess: () => {
+      queryCache.refetchQueries('products')
+    },
+  };
+  const [mutate] = useMutation(createProduct, mutationOptions)
+  const [deleteMutate] = useMutation(deleteProduct, mutationOptions)
+
+  const products = useQuery<IProduct[], 'products'>('products', fetchProductList);
+  if (products.status === 'loading') {
+    return <>loading....</>
+  }
+
+  if (products.status === 'error') {
+    return <span>Error: {products.error.message}</span>
+  }
   return (
     <>
       <h1>Products</h1>
@@ -81,8 +107,7 @@ const Products: FC<RouteComponentProps> = () => {
                   <th>
                     <Button size="sm"
                       onClick={async () => {
-                        const res = await axios.post("/.netlify/functions/product-delete", { ids: selectedRows });
-                        setProducts(products.filter((p) => !selectedRows.includes(p.id)));
+                        deleteMutate(selectedRows);
                         setSelectedRows([]);
                       }}
                     >delete</Button>
@@ -92,6 +117,7 @@ const Products: FC<RouteComponentProps> = () => {
               <tbody>
                 {
                   products
+                    .data
                     .filter((data) => search === '' || data.name.toLowerCase().includes(search.toLowerCase()))
                     .map((data) => <Tr
                       key={data.id}
@@ -139,12 +165,14 @@ const Products: FC<RouteComponentProps> = () => {
               }}
               addProduct={(product) => {
                 const id = getId(product.ref);
-                const index = products.findIndex((p) => p.id === id);
-                if (index === -1) {
-                  setProducts([flatten(product), ...products]);
-                } else {
-                  setProducts(products.map((p, i) => i === index ? flatten(product) : p));
-                }
+                const index = products.data.findIndex((p) => p.id === id);
+                createProduct(product);
+                // if (index === -1) {
+                //   setProducts([flatten(product), ...products.data]);
+                // } else {
+                //   setProducts(products.data.map((p, i) => i === index ? flatten(product) : p));
+                // }
+
                 setShowForm(false);
               }}
             />

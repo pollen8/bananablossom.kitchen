@@ -17,7 +17,6 @@ const Stack = styled.div<{ reverse?: boolean }>`
       margin-left: 0;
     }
     > *:last-child {
-      min-width: 20rem;
       margin-right: 0;
     }
   }

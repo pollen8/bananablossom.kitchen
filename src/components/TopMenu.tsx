@@ -19,12 +19,11 @@ const Menu = styled.div<{ scrolled: boolean }>`
   background-color: rgba(255,255,255,1);
   padding: 0.75rem 1rem;
   display: flex;
-  position: sticky;
   z-index:100;
   box-shadow: 0 7px 14px 0 rgba(60,66,87, 0.12), 0 3px 6px 0 rgba(0,0,0, 0.12);
-  top: 0;
   ul {
     list-style: none;
+    z-index: 999;
     display: flex;
     padding: 0;
     margin: 0;
@@ -47,27 +46,22 @@ const Menu = styled.div<{ scrolled: boolean }>`
     margin-bottom: 0;
     margin-right: 2.5rem;
   }
-  ${(props) => {
-    if (props.scrolled) {
-      return `img {
-        height: 75px !important;
-      }
-      > div > div {
-        margin-top: 0.5rem;
-      }
-      > div  >div > ul a{
-        font-size: 1rem;
-      }
-      > div  >div > ul li {
-        margin-top: 0.2rem;
-      }
-      > div  >div > ul a{
-        font-size: 0.7rem;
-      }
-      `;
-    }
-    return ``;
-  }}
+  img {
+    height: 85px !important;
+  }
+  > div > div {
+    margin-top: 0.5rem;
+  }
+  > div  >div > ul a{
+    font-size: 1rem;
+  }
+  > div  >div > ul li {
+    margin-top: 0.2rem;
+  }
+  > div  >div > ul a{
+    font-size: 0.8rem;
+  }
+
   @media (max-width: 640px){
     img {
       width: 135px !important;

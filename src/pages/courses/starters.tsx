@@ -1,21 +1,17 @@
 import React from 'react';
 
-import Cart from '../../components/Cart';
+import CardBody from '../../components/CardBody';
 import Layout from '../../components/mealLayout';
 import StarterList from '../../components/StarterList';
-import { ThisLayout } from '../index';
 
 export default () => {
   return (
     <Layout>
-      <ThisLayout>
+      <CardBody>
         <div id="meal-list">
           <StarterList />
         </div>
-        <div id="cart">
-          <Cart />
-        </div>
-      </ThisLayout>
+      </CardBody>
     </Layout>
   );
 }

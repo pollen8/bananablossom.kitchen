@@ -9,7 +9,7 @@ import {
   ISkuNodes,
   mergeImages,
 } from './MealList';
-import MealListItem2 from './MealListItem';
+import MealListItem from './MealListItem';
 
 const GET_STARTERS = graphql`{
   allFaunaProduct(filter: {course: {eq: "starter"}}) {
@@ -51,7 +51,7 @@ const MealList = () => {
       <Grid>
         {
           products.map((product) => (
-            <MealListItem2
+            <MealListItem
               product={product}
               key={product.id}
             />

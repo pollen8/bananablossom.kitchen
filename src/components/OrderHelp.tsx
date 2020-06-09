@@ -1,32 +1,10 @@
-import axios from 'axios';
-import React, {
-  FC,
-  useEffect,
-  useState,
-} from 'react';
+import React, { FC } from 'react';
 
-import Alert from './Alert';
 import { deliveryFreeFrom } from './checkout/DeliveryOption';
 
 const OrderHelp: FC = () => {
-  const [promotions, setPromotions] = useState([]);
-  useEffect(() => {
-    const fetch = async () => {
-      const res = await axios.post("/.netlify/functions/promotion-list");
-      setPromotions(res.data);
-    };
-    fetch();
-  }, []);
   return (
     <>
-      {
-        promotions.length > 0 &&
-        <Alert color="info" style={{ marginTop: '0.5rem' }}>
-          Use the promotion code <code style={{ backgroundColor: '#fff' }}>
-            {promotions[0].data.code}
-          </code>{' '}to get {promotions[0].data.percentage}% off
-        </Alert>
-      }
       <div id="order-help" style={{ marginTop: '1rem', fontSize: '0.7rem' }}>
         <p>Delivery around Basingstoke for orders over £{deliveryFreeFrom}.00</p>
         <p>

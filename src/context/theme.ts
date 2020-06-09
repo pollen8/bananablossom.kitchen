@@ -2,6 +2,8 @@ export const theme = {
   colors: {
     white100: '#fff',
     primary: '#F5728E',
+    pink500: 'hsl(348, 71%, 59%)',
+    pink600: 'hsl(348, 71%, 64%)',
     grey200: 'hsl(164,11%, 20%)',
     grey300: 'hsl(164,11%, 25%)',
     grey400: 'hsl(164, 11%, 35%)',

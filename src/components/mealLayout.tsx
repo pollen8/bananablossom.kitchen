@@ -8,7 +8,7 @@ import React, {
 import styled, { createGlobalStyle } from 'styled-components';
 
 import Fonts from '../lib/fonts';
-import CardBody from './CardBody';
+import MobileCheckoutPane from './MobileCheckoutPane';
 import SEO from './seo';
 import TopMenu from './TopMenu';
 
@@ -33,9 +33,20 @@ const GlobalStyle = createGlobalStyle<any>`
     font-family: 'Comfortaa', cursive;
     background: #eedd;
     color: ${(props) => props.theme.colors.grey300};
+    
   }
+
+
+    html,
+    #___gatsby,
+    #gatsby-focus-wrapper,
+    body {
+      height: 100%;
+    }
+ 
+ 
   table {
-    font-size: 0.57rem;
+    font-size: 0.67rem;
   }
   `;
 
@@ -52,6 +63,28 @@ export const SubMenu = styled.ul`
   
 `;
 
+const Page = styled.div`
+  height: 100%; 
+  display: flex;
+  flex-direction: column;
+`;
+
+const PageHeader = styled.div`
+flex: 0 0 auto;
+z-index: 888;
+`;
+
+const PageContent = styled.div`
+  flex: 1 1 auto;
+  position: relative;
+  overflow-y: auto;
+`;
+
+const PageFooter = styled.div`
+flex: 0 0 auto;
+  background-color: #dcdcdc;
+  `;
+
 const Layout: FC = ({ children }) => {
   useEffect(() => {
     Fonts();
@@ -61,13 +94,19 @@ const Layout: FC = ({ children }) => {
   const title = "Banana Blossom, Eat like a Vietnamese";
 
   return (
-    <>
+    <Page>
       <SEO title={title} />
-      <TopMenu>
-      </TopMenu>
-      <CardBody>{children}</CardBody>
+      <PageHeader>
+        <TopMenu />
+      </PageHeader>
+      <PageContent>
+        {children}
+      </PageContent>
+      <PageFooter>
+        <MobileCheckoutPane />
+      </PageFooter>
       <GlobalStyle />
-    </>
+    </Page>
   );
 }
 

@@ -13,11 +13,12 @@ const Body = styled.div`
  padding: 0.3rem;
 }
 `;
+
 const CardBody: FC<HTMLAttributes<HTMLDivElement>> = (props) => {
   const { children, style, ...rest } = props;
   return <Body style={{ ...style }} {...rest}>
     {children}
   </Body>
-
 }
+
 export default CardBody;

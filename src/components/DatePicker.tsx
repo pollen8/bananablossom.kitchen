@@ -91,7 +91,7 @@ const isDisabled = (date: Date, disabled: Interval[]) => {
 };
 
 const isDisabledDayOfWeek = (date: Date, daysOfWeek: number[]) => {
-  if (daysOfWeek.length === 0) {
+  if (!daysOfWeek || daysOfWeek.length === 0) {
     return false;
   }
   const dayOfWeek = date.getDay();

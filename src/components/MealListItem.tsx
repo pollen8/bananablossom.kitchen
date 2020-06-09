@@ -158,7 +158,9 @@ const MealListItem: FC<IProps> = ({
       </MealCard>
       <AddItemForm
         isOpen={isOpen}
-        onToggle={onToggle}
+        onToggle={() => {
+          onToggle(false)
+        }}
         product={product}
         sku={product.skus[selectedSKUIndex]}
       />

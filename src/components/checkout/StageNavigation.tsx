@@ -76,7 +76,9 @@ const stageLabel = (i: string) => {
   }
 }
 const Text = styled.div`
-  font-size: 0.7rem;
+  font-size: 0.5rem;
+  line-height: 0.55rem;
+  padding-top: 0.3rem;
 `;
 
 const StageNavigation: FC<IProps> = ({

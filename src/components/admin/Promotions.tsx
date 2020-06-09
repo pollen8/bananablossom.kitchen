@@ -1,9 +1,14 @@
 import axios from 'axios';
 import React, {
   FC,
-  useEffect,
   useState,
 } from 'react';
+import {
+  queryCache,
+  useMutation,
+  useQuery,
+} from 'react-query';
+import Select from 'react-select';
 import styled from 'styled-components';
 
 import Button from '../Button';
@@ -13,35 +18,60 @@ import DatePicker from '../DatePicker';
 import FormGroup from '../FormGroup';
 import Input from '../Input';
 import Label from '../Label';
-
-;
+import {
+  fetchProductList,
+  flatten,
+} from './Products';
 
 const Row = styled.div`
   display: flex;
 `;
 
-const getId = (item: any) => {
-  return item['@ref'].id
+export interface IPromotion {
+  id: string;
+  ts: string;
+  percentage: number;
+  expiry: Date,
+  code: string;
+  productId?: string;
+}
+
+export const fetchPromotions = async (): Promise<IPromotion[]> => {
+  const res = await axios.post<any>("/.netlify/functions/promotion-list");
+  return res.data.map(flatten);
+}
+
+export const fetchPromotion = async (code: string): Promise<IPromotion> => await axios.post("/.netlify/functions/promotion-item", { code });
+
+const createPromotion = async (data: Partial<IPromotion>) => {
+  await axios.post("/.netlify/functions/promotion-create", data);
+}
+
+const deletePromotion = async (selected: string[]) => {
+  await axios.post("/.netlify/functions/promotion-delete", { ids: selected });
 }
 
 const Promotion: FC = () => {
   const [selected, setSelected] = useState<string[]>([]);
-  const [data, setData] = useState({ percentage: 0, expiry: new Date(), code: '' });
-  const [promotions, setPromotions] = useState([]);
-
-  useEffect(() => {
-    const fetch = async () => {
-      const res = await axios.post("/.netlify/functions/promotion-list");
-      setPromotions(res.data);
-    };
-    fetch();
-  }, []);
-
-  const createPromotion = async (data) => {
-    const response = await axios.post("/.netlify/functions/promotion-create", data);
-    setPromotions([...promotions, response.data]);
+  const [data, setData] = useState<Partial<IPromotion>>({ percentage: 0, expiry: new Date(), code: '', productId: '' });
+  const products = useQuery('products', fetchProductList);
+  const promotions = useQuery<IPromotion[], 'promotions'>('promotions', fetchPromotions);
+  const mutationOptions = {
+    onSuccess: () => {
+      queryCache.refetchQueries('promotions')
+    },
   };
+  const [mutate] = useMutation(createPromotion, mutationOptions)
+  const [deleteMutate] = useMutation(deletePromotion, mutationOptions)
 
+  if (products.status === 'loading' || promotions.status === 'loading') {
+    return <>loading....</>
+  }
+
+  if (products.status === 'error' || promotions.status === 'error') {
+    return <span>Error: {products.error.message}</span>
+  }
+  const productOptions = [{ value: '', label: 'any' }].concat(products.data.map((p) => ({ value: p.id, label: p.name })));
   return (
     <Row>
       <Card style={{ flexGrow: 1 }}>
@@ -51,15 +81,12 @@ const Promotion: FC = () => {
               <tr>
                 <th>Code</th>
                 <th>Percent off</th>
+                <th>Product</th>
                 <th>Expiry</th>
                 <th>
                   <Button size="sm"
                     onClick={async () => {
-                      console.log('click');
-                      const res = await axios.post("/.netlify/functions/promotion-delete", { ids: selected });
-                      console.log('res data', res.data);
-                      setPromotions(promotions.filter((p) => !selected.includes(p.ref['@ref'].id)));
-                      setSelected([]);
+                      deleteMutate(selected);
                     }}
                   >delete</Button>
                 </th>
@@ -67,14 +94,15 @@ const Promotion: FC = () => {
             </thead>
             <tbody>
               {
-                promotions.map(({ ref, data }) => <tr>
+                promotions.data.map((data) => <tr key={data.id}>
                   <td>{data.code}</td>
                   <td>{data.percentage}</td>
+                  <td>{products.data.find((p) => p.id === data.productId)?.name ?? 'any'}</td>
                   <td>{data.expiry}</td>
 
                   <td>
                     <input type="checkbox"
-                      value={getId(ref)}
+                      value={data.id}
                       onChange={(e) => {
                         e.preventDefault();
                         if (e.target.checked) {
@@ -115,6 +143,13 @@ const Promotion: FC = () => {
             max={100} />
         </FormGroup>
         <FormGroup>
+          <Label htmlFor="product">Product</Label>
+          <Select
+            onChange={(v) => setData({ ...data, productId: v.value })}
+            options={productOptions}
+          />
+        </FormGroup>
+        <FormGroup>
           <Label htmlFor="expiry">
             Expiry
       </Label>
@@ -125,7 +160,7 @@ const Promotion: FC = () => {
         <FormGroup>
           <Button
             type="button"
-            onClick={() => createPromotion(data)}
+            onClick={() => mutate(data)}
             color="primary">
             Submit
       </Button>

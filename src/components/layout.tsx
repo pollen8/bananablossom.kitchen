@@ -17,6 +17,7 @@ const GlobalStyle = createGlobalStyle<any>`
   html {
     font-size: 16px;
   }
+
   h1 {
     font-size: 1.3rem;
     margin-bottom: 1.2rem;
@@ -36,7 +37,7 @@ const GlobalStyle = createGlobalStyle<any>`
     color: ${(props) => props.theme.colors.grey300};
   }
   table {
-    font-size: 0.57rem;
+    font-size: 0.67rem;
   }
   `;
 

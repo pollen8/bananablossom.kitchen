@@ -31,7 +31,6 @@ const Skus: FC<IProps> = ({
   if (!product) {
     return null;
   }
-  console.log('SKUSSSSS re-render!');
   const skus = product.skus ?? [];
   const [isOpen, onToggle] = useState(false);
   const [isDeleteOpen, onToggleDelete] = useState(false);

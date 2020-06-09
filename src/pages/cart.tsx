@@ -1,9 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import Card from '../components/Card';
+import CardBody from '../components/CardBody';
 import Cart from '../components/Cart';
-import Layout from '../components/mealLayout';
-import MealList from '../components/MealList';
+import Layout from '../components/layout';
 
 const ThisLayout = styled.div`
 @media (min-width: 640px){
@@ -15,7 +16,11 @@ export default () => {
   return (
     <Layout>
       <ThisLayout>
-        <Cart />
+        <Card>
+          <CardBody>
+            <Cart />
+          </CardBody>
+        </Card>
       </ThisLayout>
     </Layout>
   );

@@ -124,7 +124,7 @@ const Calendar: FC<IProps> = ({
 }) => {
   const [values, setValues] = useState<[Date, ITime]>([orderDate, orderTime]);
   return (
-    <Stack>
+    <>
       <div>
         <Label>Date: {values[0].toLocaleDateString()}</Label>
         <StyledDatePicker
@@ -141,7 +141,7 @@ const Calendar: FC<IProps> = ({
           ]} />
       </div>
 
-      <div style={{ flexGrow: 1, maxWidth: '24rem', marginLeft: '1rem' }}>
+      <div style={{ flexGrow: 1, maxWidth: '24rem' }}>
         <Label>Time: {formatTime(values[1])}</Label>
         <StyledTimePicker
           onChange={(value) => {
@@ -155,7 +155,7 @@ const Calendar: FC<IProps> = ({
           hideValue
           available={deliveryAvailability} />
       </div>
-    </Stack>
+    </>
   )
 }
 

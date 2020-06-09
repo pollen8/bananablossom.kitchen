@@ -17,7 +17,6 @@ const Logo: FC<Partial<HTMLImageElement>> = ({
       }
   `)
 
-  console.log('allCloudinaryMedia', allCloudinaryMedia);
   if (allCloudinaryMedia.nodes.length === 0) {
     return null;
   }

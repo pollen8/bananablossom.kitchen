@@ -2,15 +2,16 @@ import axios from 'axios';
 import { format } from 'date-fns';
 import React, {
   FC,
-  useEffect,
   useState,
 } from 'react';
+import { useQuery } from 'react-query';
 import styled from 'styled-components';
 
 import Button from '../Button';
 import Card from '../Card';
 import CardBody from '../CardBody';
 import Pill from '../ui/Pill';
+import { flatten } from './Products';
 
 const Status = styled.strong<{ status: string }>`
   color: ${(props) => props.status === 'pending payment'
@@ -36,16 +37,26 @@ tr:nth-child(even) {
  }
 }
 `;
+
+const fetchOrders = async () => {
+  const res = await axios.post<any>("/.netlify/functions/order-list");
+  return res.data.map(flatten);
+}
+
+
 const Orders: FC = () => {
   const [toggle, setToggle] = useState<boolean[]>([false]);
-  const [orders, setOrders] = useState([]);
-  useEffect(() => {
-    const fetch = async () => {
-      const res = await axios.post("/.netlify/functions/order-list");
-      setOrders(res.data);
-    };
-    fetch();
-  }, []);
+
+  const orders = useQuery('orders', fetchOrders);
+
+  if (orders.status === 'loading') {
+    return <>loading....</>
+  }
+
+  if (orders.status === 'error') {
+    return <span>Error: {orders.error.message}</span>
+  }
+
   return (
     <>
       <h1>orders</h1>
@@ -64,9 +75,9 @@ const Orders: FC = () => {
             <tbody>
 
               {
-                orders.map(({ data, ts }, i) => <tr key={ts}>
+                orders.data.map((data, i) => <tr key={data.id}>
                   <td>
-                    {format(ts / 1000, 'dd MMMM yyyy')}
+                    {format(data.ts / 1000, 'dd MMMM yyyy')}
                     <br />
                     <Status status={data.status}>{data.status}</Status>
                     <div><em>{data.error}</em></div>
@@ -98,7 +109,7 @@ const Orders: FC = () => {
                       </div>
                     </div>
                   </td>
-                  <td key={ts}
+                  <td
                     className="desktop">
                     {
                       data.order.map((o) => <div key={o.product}>{o.quantity} {o.product}</div>)
@@ -115,7 +126,6 @@ const Orders: FC = () => {
                 </tr>
                 )
               }
-
             </tbody>
           </Table>
         </CardBody>

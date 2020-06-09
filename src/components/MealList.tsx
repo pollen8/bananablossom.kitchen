@@ -6,7 +6,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { IProduct } from './admin/AddProduct';
-import MealListItem2 from './MealListItem';
+import MealListItem from './MealListItem';
 
 export const Grid = styled.div<{ columnCount?: number }>`
   display: grid;
@@ -32,7 +32,7 @@ export const mergeImages = (allCloudinaryMedia) => (product): IProduct => {
         secure_url: src ? src.secure_url : '',
       };
     });
-  console.log(' merge images skus', skus);
+
   return {
     ...product,
     skus,
@@ -56,7 +56,7 @@ const GET_MAINS = graphql`{
   allFaunaProduct(filter: {course: {eq: "main"}}) {
     nodes {
       description
-      id
+      id: _id
       name
       availableDays
       skus {
@@ -93,7 +93,7 @@ const MealList = () => {
       <Grid>
         {
           products.map((product) => (
-            <MealListItem2
+            <MealListItem
               product={product}
               key={product.id}
             />

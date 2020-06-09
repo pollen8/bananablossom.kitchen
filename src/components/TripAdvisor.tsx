@@ -8,14 +8,16 @@ const Icon = styled.a`
    }
  }
 `;
-
-const TripAdvisor = () => {
+interface IProps {
+  size?: number;
+}
+const TripAdvisor: FC<IProps> = ({ size = 50 }) => {
   return (
     <Icon href="https://www.tripadvisor.co.uk/Restaurant_Review-g187054-d20104550-Reviews-Banana_Blossom_Kitchen-Basingstoke_Hampshire_England.html?m=19905">
       <svg id="Layer_1" data-name="Layer 1"
 
         xmlns="http://www.w3.org/2000/svg"
-        width="50" height="40"
+        width={size} height="40"
         viewBox="0 0 812.82 729.6"
       >
         <path d="M346.87,517.5a71.94,71.94,0,1,0-71.93-71.93A71.94,71.94,0,0,0,346.87,517.5Z"

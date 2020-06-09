@@ -11,14 +11,21 @@ const MediaButtonIcons = styled(ButtonIcon)`
   }
 `;
 
-const Facebook = () => {
+interface IProps {
+  size?: 52,
+}
+const Facebook: FC<IProps> = ({ size = 52 }) => {
   return (
     <MediaButtonIcons
       title="Visit our Facebook page"
       onClick={() => window.location.href = "https://www.facebook.com/bananablossom.kitchen"}>
-      <AiFillFacebook size={52} />
+      <AiFillFacebook size={size} />
     </MediaButtonIcons>
   )
+}
+
+Facebook.defaultProps = {
+  size: 52,
 }
 
 export default Facebook;
