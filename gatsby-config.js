@@ -9,7 +9,6 @@ module.exports = {
     author: `@pollen8`,
     siteUrl: `https://banana-blossom.kitchen`,
   },
-  plugins: []
   plugins: [
     `gatsby-plugin-sitemap`,
     // You can should only have one instance of this plugin
