@@ -7,8 +7,11 @@ module.exports = {
     title: `Banana Blossom - eat like a Vietnamese`,
     description: `Home cooked Vietnamese food in Basingstoke.`,
     author: `@pollen8`,
+    siteUrl: `https://banana-blossom.kitchen`,
   },
+  plugins: []
   plugins: [
+    `gatsby-plugin-sitemap`,
     // You can should only have one instance of this plugin
     {
       resolve: `gatsby-plugin-netlify-identity`,

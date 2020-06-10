@@ -25,6 +25,7 @@
     "gatsby-plugin-react-helmet": "^3.3.0",
     "gatsby-plugin-remote-images": "^2.1.0",
     "gatsby-plugin-sharp": "^2.6.0",
+    "gatsby-plugin-sitemap": "^2.4.5",
     "gatsby-plugin-stripe": "^1.2.4",
     "gatsby-plugin-styled-components": "^3.3.0",
     "gatsby-plugin-typescript": "^2.4.0",
