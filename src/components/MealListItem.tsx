@@ -78,6 +78,9 @@ const MealListItem: FC<IProps> = ({
     [3, 2, 1],
     2
   );
+  if (!product.skus[selectedSKUIndex]) {
+    return;
+  }
   const unavailable = product.skus[selectedSKUIndex].unavailable === true;
   const availableDays = product.availableDays ?? [];
   return (
