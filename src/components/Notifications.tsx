@@ -38,9 +38,10 @@ const Notifications = () => {
   const [r, setR] = useState([]);
   const { allFaunaNotification } = useStaticQuery<{ allFaunaNotification: { nodes: INotification[] } }>(GET_NOTIFICATIONS);
   console.log('allFaunaNotification', allFaunaNotification);
-  const read: string[] = typeof window === 'undefined'
-    ? []
-    : JSON.parse(window.localStorage.getItem('notificationsRead') ?? '[]');
+  if (typeof window === 'undefined') {
+    return null;
+  }
+  const read: string[] = JSON.parse(window.localStorage.getItem('notificationsRead') ?? '[]');
   const toShow = allFaunaNotification.nodes
     .filter((n) => !read.includes(n.id));
 
@@ -61,11 +62,10 @@ const Notifications = () => {
           </FlexRow> <ButtonIcon
             size="sm"
             onClick={() => {
-              if (typeof window !== 'undefined') {
-                const read = JSON.parse(window.localStorage.getItem('notificationsRead') ?? '[]');
-                window.localStorage.setItem('notificationsRead', JSON.stringify(read.concat(n.id)));
-                setR(read);
-              }
+
+              const read = JSON.parse(window.localStorage.getItem('notificationsRead') ?? '[]');
+              window.localStorage.setItem('notificationsRead', JSON.stringify(read.concat(n.id)));
+              setR(read);
             }}>
             <AiFillCloseCircle />
           </ButtonIcon>
