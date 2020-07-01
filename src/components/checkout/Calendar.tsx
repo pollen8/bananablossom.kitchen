@@ -115,15 +115,13 @@ const StyledRow = styled(Row)`
 `;
 
 const GET_HOLIDAYS = graphql`{
-  
   allFaunaHoliday {
     nodes {
-    id
-    start
-    end
+      id
+      start
+      end
     }
   }
-
 }`;
 
 interface IProps {
