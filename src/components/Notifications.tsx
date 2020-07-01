@@ -37,9 +37,9 @@ const Notice = styled.div<{ i: number }>`
 const Notifications = () => {
   const [r, setR] = useState([]);
   const { allFaunaNotification } = useStaticQuery<{ allFaunaNotification: { nodes: INotification[] } }>(GET_NOTIFICATIONS);
-  const read: string[] = window
-    ? JSON.parse(window.localStorage.getItem('notificationsRead') ?? '[]')
-    : [];
+  const read: string[] = typeof window === 'undefined'
+    ? []
+    : JSON.parse(window.localStorage.getItem('notificationsRead') ?? '[]');
   return allFaunaNotification.nodes
     .filter((n) => !read.includes(n.id))
     .map((n, i) => <Notice key={n.id} i={i}>
@@ -52,7 +52,7 @@ const Notifications = () => {
         </FlexRow> <ButtonIcon
           size="sm"
           onClick={() => {
-            if (window) {
+            if (typeof window !== 'undefined') {
               const read = JSON.parse(window.localStorage.getItem('notificationsRead') ?? '[]');
               window.localStorage.setItem('notificationsRead', JSON.stringify(read.concat(n.id)));
               setR(read);
