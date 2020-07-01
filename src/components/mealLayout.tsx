@@ -97,7 +97,7 @@ const Layout: FC = ({ children }) => {
   return (
     <Page>
       <SEO title={title} />
-      <Notifications />
+
       <PageHeader>
         <TopMenu />
       </PageHeader>
@@ -107,6 +107,7 @@ const Layout: FC = ({ children }) => {
       <PageFooter>
         <MobileCheckoutPane />
       </PageFooter>
+      <Notifications />
       <GlobalStyle />
     </Page>
   );
