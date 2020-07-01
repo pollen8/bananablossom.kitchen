@@ -9,6 +9,7 @@ import {
 } from 'react-icons/ai';
 import styled from 'styled-components';
 
+import { INotification } from './admin/Notification';
 import { ButtonIcon } from './Button';
 import { FlexRow } from './MealListItemDetails';
 
@@ -35,7 +36,7 @@ const Notice = styled.div<{ i: number }>`
 
 const Notifications = () => {
   const [r, setR] = useState([]);
-  const { allFaunaNotification } = useStaticQuery<any>(GET_NOTIFICATIONS);
+  const { allFaunaNotification } = useStaticQuery<{ allFaunaNotification: { nodes: INotification[] } }>(GET_NOTIFICATIONS);
   const read: string[] = window
     ? JSON.parse(window.localStorage.getItem('notificationsRead') ?? '[]')
     : [];

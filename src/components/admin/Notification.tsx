@@ -44,10 +44,6 @@ const createNotification = async (holiday: INotification) => {
   await axios.post("/.netlify/functions/notification-create", holiday);
 }
 
-const FlexRow = styled.div`
-  display:flex;
-  justify-content: space-between;
-`;
 
 const Availability: FC<RouteComponentProps> = () => {
   const mutationOptions = {
