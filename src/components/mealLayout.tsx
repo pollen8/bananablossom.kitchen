@@ -9,6 +9,7 @@ import styled, { createGlobalStyle } from 'styled-components';
 
 import Fonts from '../lib/fonts';
 import MobileCheckoutPane from './MobileCheckoutPane';
+import Notifications from './Notifications';
 import SEO from './seo';
 import TopMenu from './TopMenu';
 
@@ -96,6 +97,7 @@ const Layout: FC = ({ children }) => {
   return (
     <Page>
       <SEO title={title} />
+      <Notifications />
       <PageHeader>
         <TopMenu />
       </PageHeader>

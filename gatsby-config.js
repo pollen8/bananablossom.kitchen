@@ -83,6 +83,14 @@ module.exports = {
       },
     },
     {
+      resolve: `gatsby-source-faunadb`,
+      options: {
+        secret: process.env.FAUNADB_SECRET,
+        index: `all_notifications`,
+        type: "faunaNotification",
+      },
+    },
+    {
       resolve: `gatsby-source-cloudinary`,
       options: {
         cloudName: process.env.CLOUDINARY_CLOUD_NAME,

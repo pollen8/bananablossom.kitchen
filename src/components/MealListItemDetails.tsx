@@ -25,9 +25,10 @@ const MealImage = styled(Image)`
   margin-bottom: 0;
 `;
 
-const FlexRow = styled.div<{ direction: 'column' | 'row' }>`
+export const FlexRow = styled.div<{ direction?: 'column' | 'row', justifyContent?: string }>`
   display: flex;
-  flex-direction: ${(props) => props.direction};
+  justify-content: ${(props) => props.justifyContent ?? 'initial'};
+  flex-direction: ${(props) => props.direction ?? 'row'};
 `;
 
 

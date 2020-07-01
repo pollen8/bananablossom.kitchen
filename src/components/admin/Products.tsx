@@ -2,7 +2,6 @@ import axios from 'axios';
 import { format } from 'date-fns';
 import React, {
   FC,
-  useEffect,
   useState,
 } from 'react';
 import {
@@ -48,11 +47,11 @@ const deleteProduct = async (selectedRows: string[]) => {
 const createProduct = async (data) => {
 
 }
-const Table = styled.table`
-@media (max-width: 640px){ 
-.description {
-  display:none;
-}
+export const Table = styled.table`
+  @media (max-width: 640px){ 
+  .description {
+    display:none;
+  }
 `;
 
 const FlexRow = styled.div`
