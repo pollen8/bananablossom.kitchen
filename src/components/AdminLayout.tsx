@@ -65,7 +65,8 @@ const Layout: FC = ({ children }) => {
           isLoggedIn && isAdmin && <>
             <Link to="admin/products">Products</Link> |
             <Link to="admin/promotions">Promotions</Link> |
-            <Link to="admin/orders">Orders</Link>
+            <Link to="admin/orders">Orders</Link>|
+            <Link to="admin/availability">Availability</Link>
           </>
         }
 

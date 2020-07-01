@@ -17,6 +17,7 @@ import styled from 'styled-components';
 
 interface IDayProps {
   disabled?: boolean;
+  isSelected?: boolean;
   isToday?: boolean;
   isActive?: boolean;
 }
@@ -59,6 +60,7 @@ const color = (props: IDayProps) => {
   if (props.isActive) {
     return '#fff';
   }
+
   if (props.disabled) {
     return props.isToday ? 'hsl(100, 50%, 60%)' : '#ccc';
   }
@@ -69,7 +71,8 @@ export const Cell = styled.div<IDayProps>`
   text-align: center;
   color: ${(props) => color(props)};
   cursor: ${(props) => props.disabled ? 'not-allowed' : 'pointer'};
-  background-color: ${(props) => props.isActive ? 'hsl(200,50%, 60%);' : 'none'};
+  background-color: ${(props) => props.isSelected ? 'rgb(99, 181, 99)'
+    : props.isActive ? 'hsl(200,50%, 60%);' : 'none'};
   &:hover {
     box-shadow: ${(props) => props.disabled ? 'none' : '0 2px 7px 0 rgba(60,66,87, 0.12), 0 1px 2px 0 rgba(0,0,0, 0.12)'};
   }
@@ -80,6 +83,7 @@ interface IProps {
   id?: string;
   className?: string;
   disabledRanges?: Interval[];
+  selectedRanges?: Interval[];
   disabledDaysOfWeek?: number[]
   value?: Date;
   width?: string | number;
@@ -104,6 +108,7 @@ const isPast = (date: Date) => {
 
 const DatePicker: FC<IProps> = ({
   disabledRanges,
+  selectedRanges,
   id,
   name,
   onChange,
@@ -153,10 +158,12 @@ const DatePicker: FC<IProps> = ({
         {
           days.map((d) => {
             const thisDay = addDays(firstDateOfMonth, d);
+            const isSelected = isDisabled(thisDay, selectedRanges);
             const disabled = isDisabled(thisDay, disabledRanges) || isDisabledDayOfWeek(thisDay, disabledDaysOfWeek) || isPast(thisDay);
             const isActive = isSameDay(thisDay, now);
             return <Cell
               disabled={disabled}
+              isSelected={isSelected}
               className={`date-picker-cell ${isActive ? ' active' : ''} ${disabled ? ' disabled' : ''}`}
               isActive={isActive}
               isToday={isToday(thisDay)}
@@ -179,6 +186,7 @@ const DatePicker: FC<IProps> = ({
 
 DatePicker.defaultProps = {
   disabledRanges: [],
+  selectedRanges: [],
 };
 
 export default DatePicker;

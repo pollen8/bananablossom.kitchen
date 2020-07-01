@@ -75,6 +75,14 @@ module.exports = {
       },
     },
     {
+      resolve: `gatsby-source-faunadb`,
+      options: {
+        secret: process.env.FAUNADB_SECRET,
+        index: `all_holiday`,
+        type: "faunaHoliday",
+      },
+    },
+    {
       resolve: `gatsby-source-cloudinary`,
       options: {
         cloudName: process.env.CLOUDINARY_CLOUD_NAME,

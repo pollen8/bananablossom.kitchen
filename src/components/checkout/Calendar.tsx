@@ -1,10 +1,15 @@
 import { addDays } from 'date-fns';
+import {
+  graphql,
+  useStaticQuery,
+} from 'gatsby';
 import React, {
   FC,
   useState,
 } from 'react';
 import styled from 'styled-components';
 
+import { IHoliday } from '../admin/Availability';
 import DatePicker from '../DatePicker';
 import Label from '../Label';
 import Stack from '../layout/Stack';
@@ -109,6 +114,18 @@ const StyledRow = styled(Row)`
   }
 `;
 
+const GET_HOLIDAYS = graphql`{
+  
+  allFaunaHoliday {
+    nodes {
+    id
+    start
+    end
+    }
+  }
+
+}`;
+
 interface IProps {
   handleInputChange: (key: string, value: any) => void;
   orderDate: Date;
@@ -122,6 +139,8 @@ const Calendar: FC<IProps> = ({
   orderTime = { hour: 10, minute: 0 },
   disabledDaysOfWeek,
 }) => {
+
+  const { allFaunaHoliday } = useStaticQuery<{ allFaunaHoliday: { nodes: IHoliday[] } }>(GET_HOLIDAYS);
   const [values, setValues] = useState<[Date, ITime]>([orderDate, orderTime]);
   return (
     <>
@@ -137,6 +156,7 @@ const Calendar: FC<IProps> = ({
             setValues([value, values[1]]);
           }}
           disabledRanges={[
+            ...allFaunaHoliday.nodes.map((n) => ({ start: new Date(n.start), end: new Date(n.end) })),
             { start: addDays(new Date(), - 2), end: addDays(new Date(), - 1) }
           ]} />
       </div>
