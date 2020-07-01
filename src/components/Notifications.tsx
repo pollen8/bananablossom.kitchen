@@ -41,30 +41,38 @@ const Notifications = () => {
   const read: string[] = typeof window === 'undefined'
     ? []
     : JSON.parse(window.localStorage.getItem('notificationsRead') ?? '[]');
-  console.log(allFaunaNotification.nodes
-    .filter((n) => !read.includes(n.id)));
-  return allFaunaNotification.nodes
-    .filter((n) => !read.includes(n.id))
-    .map((n, i) => <Notice key={n.id} i={i}>
-      <FlexRow justifyContent="space-between">
-        <FlexRow>
-          <AiOutlineAlert size={20} />
-          <div>
-            {n.message}
-          </div>
-        </FlexRow> <ButtonIcon
-          size="sm"
-          onClick={() => {
-            if (typeof window !== 'undefined') {
-              const read = JSON.parse(window.localStorage.getItem('notificationsRead') ?? '[]');
-              window.localStorage.setItem('notificationsRead', JSON.stringify(read.concat(n.id)));
-              setR(read);
-            }
-          }}>
-          <AiFillCloseCircle />
-        </ButtonIcon>
-      </FlexRow>
-    </Notice>);
+  const toShow = allFaunaNotification.nodes
+    .filter((n) => !read.includes(n.id));
+
+  if (toShow.length === 0) {
+    return null;
+
+  }
+  console.log(toShow);
+  return <>
+    {toShow
+      .map((n, i) => <Notice key={n.id} i={i}>
+        <FlexRow justifyContent="space-between">
+          <FlexRow>
+            <AiOutlineAlert size={20} />
+            <div>
+              {n.message}
+            </div>
+          </FlexRow> <ButtonIcon
+            size="sm"
+            onClick={() => {
+              if (typeof window !== 'undefined') {
+                const read = JSON.parse(window.localStorage.getItem('notificationsRead') ?? '[]');
+                window.localStorage.setItem('notificationsRead', JSON.stringify(read.concat(n.id)));
+                setR(read);
+              }
+            }}>
+            <AiFillCloseCircle />
+          </ButtonIcon>
+        </FlexRow>
+      </Notice>)
+    }
+  </>;
 }
 
 export default Notifications;
