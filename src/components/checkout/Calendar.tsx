@@ -139,6 +139,7 @@ const Calendar: FC<IProps> = ({
 }) => {
 
   const { allFaunaHoliday } = useStaticQuery<{ allFaunaHoliday: { nodes: IHoliday[] } }>(GET_HOLIDAYS);
+  console.log('allFaunaHoliday', allFaunaHoliday);
   const [values, setValues] = useState<[Date, ITime]>([orderDate, orderTime]);
   return (
     <>

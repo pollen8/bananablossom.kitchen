@@ -49,7 +49,6 @@ const Notifications = () => {
     return null;
 
   }
-  console.log(toShow);
   return <>
     {toShow
       .map((n, i) => <Notice key={n.id} i={i}>
