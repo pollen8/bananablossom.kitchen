@@ -90,7 +90,7 @@ interface IProps {
   onChange?: (value: Date) => void;
 }
 
-const isDisabled = (date: Date, disabled: Interval[]) => {
+export const isDisabled = (date: Date, disabled: Interval[]) => {
   return disabled.some((d) => isWithinInterval(date, d));
 };
 

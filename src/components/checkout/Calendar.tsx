@@ -1,8 +1,4 @@
 import { addDays } from 'date-fns';
-import {
-  graphql,
-  useStaticQuery,
-} from 'gatsby';
 import React, {
   FC,
   useState,
@@ -114,21 +110,14 @@ const StyledRow = styled(Row)`
   }
 `;
 
-const GET_HOLIDAYS = graphql`{
-  allFaunaHoliday {
-    nodes {
-      id
-      start
-      end
-    }
-  }
-}`;
-
 interface IProps {
   handleInputChange: (key: string, value: any) => void;
   orderDate: Date;
   orderTime: ITime;
   disabledDaysOfWeek: number[];
+  allFaunaHoliday: {
+    nodes: IHoliday[];
+  };
 }
 
 const Calendar: FC<IProps> = ({
@@ -136,15 +125,13 @@ const Calendar: FC<IProps> = ({
   orderDate,
   orderTime = { hour: 10, minute: 0 },
   disabledDaysOfWeek,
+  allFaunaHoliday,
 }) => {
-
-  const { allFaunaHoliday } = useStaticQuery<{ allFaunaHoliday: { nodes: IHoliday[] } }>(GET_HOLIDAYS);
-  console.log('allFaunaHoliday', allFaunaHoliday);
   const [values, setValues] = useState<[Date, ITime]>([orderDate, orderTime]);
   return (
     <>
       <div>
-        <Label>Date: {values[0].toLocaleDateString()}</Label>
+        <Label>Date: {values[0].toLocaleDateString('en-GB')}</Label>
         <StyledDatePicker
           name="order_date"
           width="300px"

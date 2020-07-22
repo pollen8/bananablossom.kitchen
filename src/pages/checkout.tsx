@@ -1,6 +1,15 @@
 
 import axios from 'axios';
+import {
+  setHours,
+  setMinutes,
+  setSeconds,
+} from 'date-fns';
 import addDays from 'date-fns/addDays';
+import {
+  graphql,
+  useStaticQuery,
+} from 'gatsby';
 import React, {
   FC,
   useContext,
@@ -17,6 +26,7 @@ import { Redirect } from '@reach/router';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 
+import { IHoliday } from '../components/admin/Availability';
 import Alert from '../components/Alert';
 import Button from '../components/Button';
 import Card from '../components/Card';
@@ -29,6 +39,7 @@ import DeliveryOptions, { deliveryFreeFrom } from '../components/checkout/Delive
 import DeliverySummary from '../components/checkout/DeliverySummary';
 import EmptyCart from '../components/checkout/EmptyCart';
 import StageNavigation from '../components/checkout/StageNavigation';
+import { isDisabled } from '../components/DatePicker';
 import DeliveryMap from '../components/DeliveryMap';
 import Error from '../components/Error';
 import Fieldset from '../components/Fieldset';
@@ -136,18 +147,34 @@ const CartWrapper = styled.div`
   }
 `;
 
+const GET_HOLIDAYS = graphql`{
+  allFaunaHoliday {
+    nodes {
+      id
+      start
+      end
+    }
+  }
+}`;
+
 const Checkout: FC = () => {
   const { state } = useContext<ICartContext>(store);
   const [intentError, setIntentError] = useState('');
   const [clientSecret, setClientSecret] = useState('');
+  const { allFaunaHoliday } = useStaticQuery<{ allFaunaHoliday: { nodes: IHoliday[] } }>(GET_HOLIDAYS);
 
+  const holidays = allFaunaHoliday.nodes.map((n) => ({ start: new Date(n.start), end: setHours(new Date(n.end), 24) }))
+
+  const nextFreeDay = new Array(30).fill('')
+    .map((_, i) => setSeconds(setMinutes(setHours(addDays(new Date(), i + 1), 13), 0), 0))
+    .find((d) => !isDisabled(d, holidays));
   const discountedTotal = getCartTotal(state.items)
 
   const defaultValues = typeof window !== 'undefined' && sessionStorage.getItem('form-order')
     ? JSON.parse(sessionStorage.getItem('form-order'))
     : {
       delivery: 'pickup',
-      order_date: addDays(new Date(), 1),
+      order_date: nextFreeDay,
       order_time: { hour: 13, minute: 0 },
     };
   const { errors, values, handleInputChange, handleSubmit, formatError, validateTouched, validateSome } = useForm<IOrder>({
@@ -393,6 +420,7 @@ const Checkout: FC = () => {
                               </>
                             }
                             <Calendar
+                              allFaunaHoliday={allFaunaHoliday}
                               orderDate={typeof values.order_date === 'string' ? new Date(values.order_date) : values.order_date}
                               orderTime={values.order_time}
                               disabledDaysOfWeek={
