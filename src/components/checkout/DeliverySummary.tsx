@@ -20,14 +20,14 @@ const DeliverySummary: FC<IProps> = ({
         {
           order.delivery === 'pickup' && <>
             <Label text>Pickup</Label>
-            <div>On {new Date(order.order_date).toLocaleDateString()}{' '}
+            <div>On {new Date(order.order_date).toLocaleDateString('en-GB')}{' '}
               {formatTime(order.order_time)}</div>
           </>
         }
         {
           order.delivery === 'delivery' && <>
             <Label text>Delivery</Label>
-            <p>On {new Date(order.order_date).toLocaleDateString()}{' '}
+            <p>On {new Date(order.order_date).toLocaleDateString('en-GB')}{' '}
               {formatTime(order.order_time)}</p>
             <p>To: {order.street}<br />
               {order.city}<br />
