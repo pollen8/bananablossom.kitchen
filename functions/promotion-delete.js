@@ -1,4 +1,5 @@
 const faunadb = require('faunadb');
+const { rebuildSite } = require('./utilities/rebuild');
 
 /* configure faunaDB Client with our secret */
 const q = faunadb.query
@@ -13,6 +14,7 @@ exports.handler = async (event) => {
     const response = await Promise.all(
       data.ids.map((id) => client.query(q.Delete(q.Ref(q.Collection('promotion_codes'), id))))
     );
+    await rebuildSite();
     return {
       statusCode: 200,
       body: JSON.stringify(response)

@@ -1,5 +1,6 @@
 const faunadb = require('faunadb');
 const axios = require('axios');
+const { rebuildSite } = require('./utilities/rebuild');
 
 /* configure faunaDB Client with our secret */
 const q = faunadb.query
@@ -15,7 +16,7 @@ exports.handler = async (event) => {
     response = await client.query(q.Create(q.Ref("classes/products"), { data }));
     console.log("success", response);
 
-    axios.post('https://api.netlify.com/build_hooks/5e4207320a25ca7d73f7b00e');
+    await rebuildSite();
     return {
       statusCode: 200,
       body: JSON.stringify(response)

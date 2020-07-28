@@ -1,4 +1,5 @@
 const faunadb = require('faunadb');
+const { rebuildSite } = require('./utilities/rebuild');
 
 /* configure faunaDB Client with our secret */
 const q = faunadb.query
@@ -15,6 +16,7 @@ exports.handler = async (event) => {
   }
   try {
     const response = await client.query(q.Create(q.Ref("classes/holiday"), holidayItem));
+    await rebuildSite();
     return {
       statusCode: 200,
       body: JSON.stringify(response)
