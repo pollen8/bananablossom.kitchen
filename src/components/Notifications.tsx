@@ -28,7 +28,7 @@ const Notice = styled.div<{ i: number }>`
   background: hsl(200,36%,90%);
   color: hsl(200,26%,30%);
   border: 1px solid hsl(200,56%,80%);
-  height: 3rem;
+  min-height: 3rem;
   padding: 0.5rem;
   z-index: 1000;
   width: 100%;
