@@ -4,4 +4,23 @@
  * See: https://www.gatsbyjs.org/docs/node-apis/
  */
 
-// You can delete this file if you're not using it
+
+exports.createSchemaCustomization = ({ actions }) => {
+  const { createTypes } = actions;
+
+  // Avoid build errors if no notifications exist
+  createTypes(`
+    type allFaunaNotification implements Node {
+        _id: ID
+        message: String
+        nodes: String
+    }
+  `)
+
+  createTypes(`
+    type faunaNotification implements Node {
+        _id: ID
+        message: String
+    }
+  `)
+}
