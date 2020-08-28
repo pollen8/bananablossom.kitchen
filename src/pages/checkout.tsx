@@ -53,6 +53,7 @@ import TextArea from '../components/TextArea';
 import Pill from '../components/ui/Pill';
 import {
   ICartContext,
+  IState,
   store,
 } from '../context/cartContext';
 import { useFormWizard } from '../hooks/formWizard';
@@ -157,26 +158,73 @@ const GET_HOLIDAYS = graphql`{
   }
 }`;
 
+const dayToNumber = (d: string) => {
+  switch (d) {
+    case 'Sunday':
+      return 0;
+    case 'Monday':
+      return 1;
+    case 'Tuesday':
+      return 2;
+    case 'Wednesday':
+      return 3;
+    case 'Thursday':
+      return 4;
+    case 'Friday':
+      return 5;
+    default:
+    case 'Saturday':
+      return 6;
+  }
+}
+const getProductAvailableDays = (
+  state: IState,
+) => {
+  const availableDays = new Set<string>();
+  state.items.forEach((item) => {
+    (item.product.availableDays ?? []).forEach((d) => availableDays.add(d));
+  })
+  return availableDays;
+}
+
+// Get the first day the order can be placed on
+// Takes into account any holidays set
+// And if the cart contains items only available on certain days.
+const getNextFeeDay = (
+  state: IState,
+  holidays: { start: Date, end: Date }[],
+) => {
+  const days: number[] = Array.from(getProductAvailableDays(state)).map((d) => dayToNumber(d));
+  const nextFreeDay = new Array(30).fill('')
+    .map((_, i) => setSeconds(setMinutes(setHours(addDays(new Date(), i + 1), 13), 0), 0))
+    .filter((d) => days.length === 0 ?? days.includes(d.getDay()))
+    .find((d) => !isDisabled(d, holidays));
+  return nextFreeDay;
+}
+
 const Checkout: FC = () => {
   const { state } = useContext<ICartContext>(store);
+
   const [intentError, setIntentError] = useState('');
   const [clientSecret, setClientSecret] = useState('');
   const { allFaunaHoliday } = useStaticQuery<{ allFaunaHoliday: { nodes: IHoliday[] } }>(GET_HOLIDAYS);
 
   const holidays = allFaunaHoliday.nodes.map((n) => ({ start: new Date(n.start), end: setHours(new Date(n.end), 24) }))
 
-  const nextFreeDay = new Array(30).fill('')
-    .map((_, i) => setSeconds(setMinutes(setHours(addDays(new Date(), i + 1), 13), 0), 0))
-    .find((d) => !isDisabled(d, holidays));
-  const discountedTotal = getCartTotal(state.items)
+  const nextFreeDay = getNextFeeDay(state, holidays);
 
+  console.log('nextFreeDay', nextFreeDay);
   const defaultValues = typeof window !== 'undefined' && sessionStorage.getItem('form-order')
     ? JSON.parse(sessionStorage.getItem('form-order'))
     : {
       delivery: 'pickup',
-      order_date: nextFreeDay,
       order_time: { hour: 13, minute: 0 },
     };
+
+  if (!defaultValues.order_date) {
+    defaultValues.order_date = nextFreeDay;
+  }
+  console.log('defaultValues', defaultValues);
   const { errors, values, handleInputChange, handleSubmit, formatError, validateTouched, validateSome } = useForm<IOrder>({
     id: 'order',
     contract,
@@ -184,14 +232,12 @@ const Checkout: FC = () => {
   });
 
   const { stage, maxVisitedStage, changeStage } = useFormWizard({ stages });
+  const discountedTotal = getCartTotal(state.items);
 
   if (state.items.length === 0) {
     return <EmptyCart />;
   }
-  const availableDays = new Set<string>();
-  state.items.forEach((item) => {
-    (item.product.availableDays ?? []).forEach((d) => availableDays.add(d));
-  })
+  const availableDays = getProductAvailableDays(state);
 
   if (availableDays.size > 1) {
     return <Redirect to="/cart" />
@@ -424,25 +470,7 @@ const Checkout: FC = () => {
                               orderDate={typeof values.order_date === 'string' ? new Date(values.order_date) : values.order_date}
                               orderTime={values.order_time}
                               disabledDaysOfWeek={
-                                (disabledDaysOfWeek).map((d) => {
-                                  switch (d) {
-                                    case 'Sunday':
-                                      return 0;
-                                    case 'Monday':
-                                      return 1;
-                                    case 'Tuesday':
-                                      return 2;
-                                    case 'Wednesday':
-                                      return 3;
-                                    case 'Thursday':
-                                      return 4;
-                                    case 'Friday':
-                                      return 5;
-                                    default:
-                                    case 'Saturday':
-                                      return 6;
-                                  }
-                                })
+                                (disabledDaysOfWeek).map((d) => dayToNumber(d))
                               }
                               handleInputChange={handleInputChange}
                             />
