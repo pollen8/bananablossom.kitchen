@@ -9,7 +9,6 @@ import {
   IPromotion,
 } from '../admin/Promotions';
 import Alert from '../Alert';
-import FormFeedback from '../FormFeedback';
 import Stack from '../layout/Stack';
 import PromotionCodeField from './PromotionCodeField';
 

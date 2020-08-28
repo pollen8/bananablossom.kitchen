@@ -166,12 +166,6 @@ const Products: FC<RouteComponentProps> = () => {
                 const id = getId(product.ref);
                 const index = products.data.findIndex((p) => p.id === id);
                 createProduct(product);
-                // if (index === -1) {
-                //   setProducts([flatten(product), ...products.data]);
-                // } else {
-                //   setProducts(products.data.map((p, i) => i === index ? flatten(product) : p));
-                // }
-
                 setShowForm(false);
               }}
             />

@@ -77,6 +77,16 @@ const StripeForm = styled.form`
 }
 `;
 
+export interface IStoredOrder {
+  amount: number;
+  id?: string;
+  ts?: number;
+  error?: any;
+  order: { product: string, price: string, quantity: number }[];
+  customer: IOrder;
+  status: string;
+}
+
 const CheckoutForm: FC<IProps> = ({
   clientSecret,
   discountedTotal,
@@ -102,7 +112,7 @@ const CheckoutForm: FC<IProps> = ({
       // Make sure to disable form submission until Stripe.js has loaded.
       return;
     }
-    const orderItem = {
+    const orderItem: IStoredOrder = {
       amount: discountedTotal,
       order: state.items.map((item) => {
         const sku = item.sku;
@@ -117,67 +127,81 @@ const CheckoutForm: FC<IProps> = ({
     };
 
     const response = await axios.post("/.netlify/functions/order-create", orderItem);
-    const result = await stripe.confirmCardPayment(clientSecret, {
+    try {
+      const result = await stripe.confirmCardPayment(clientSecret, {
 
-      payment_method: {
-        card: elements.getElement(CardElement),
-        billing_details: {
-          name: order.name,
-          email: order.email,
-          address: {
-            line1: order.street,
-            city: order.city,
-            postal_code: order.postcode,
+        payment_method: {
+          card: elements.getElement(CardElement),
+          billing_details: {
+            name: order.name,
+            email: order.email,
+            address: {
+              line1: order.street,
+              city: order.city,
+              postal_code: order.postcode,
+            },
           },
-        },
-      }
-    });
-
-    if (result.error) {
-      setDisabled(false);
-
-      // Show error to your customer (e.g., insufficient funds)
-      setError(result.error.message);
-      await axios.post("/.netlify/functions/sendmail", {
-        subject: 'Banana Blossom: Order failed', 
-        error: result.error.message, 
-        ...order,
-        order: state.items
+        }
       });
 
-      await axios.post("/.netlify/functions/order-update", {
-        data: {
-          ...orderItem,
-          status: 'payment failed',
-          error: result.error.message,
-        },
-        id: response.data.ref['@ref'].id,
-      });
-    } else {
-      // The payment has been processed!
-      if (result.paymentIntent.status === 'succeeded') {
-        // Show a success message to your customer
-        // There's a risk of the customer closing the window before callback
-        // execution. Set up a webhook or plugin to listen for the
-        // payment_intent.succeeded event that handles any business critical
-        // post-payment actions.
+      if (result.error) {
+        setDisabled(false);
+
+        // Show error to your customer (e.g., insufficient funds)
+        setError(result.error.message);
         await axios.post("/.netlify/functions/sendmail", {
-          ...order, order: state.items
-        })
-        dispatch({ type: 'CART_CLEAR' });
+          subject: 'Banana Blossom: Order failed',
+          error: result.error.message,
+          ...order,
+          order: state.items
+        });
 
         await axios.post("/.netlify/functions/order-update", {
           data: {
             ...orderItem,
-            status: 'payment success',
+            status: 'payment failed',
+            error: result.error.message,
           },
           id: response.data.ref['@ref'].id,
         });
+      } else {
+        // The payment has been processed!
+        if (result.paymentIntent.status === 'succeeded') {
+          // Show a success message to your customer
+          // There's a risk of the customer closing the window before callback
+          // execution. Set up a webhook or plugin to listen for the
+          // payment_intent.succeeded event that handles any business critical
+          // post-payment actions.
+          await axios.post("/.netlify/functions/sendmail", {
+            ...order, order: state.items
+          })
+          dispatch({ type: 'CART_CLEAR' });
 
-        navigate('/payment-success');
+          await axios.post("/.netlify/functions/order-update", {
+            data: {
+              ...orderItem,
+              status: 'payment success',
+            },
+            id: response.data.ref['@ref'].id,
+          });
+
+          navigate('/payment-success');
+        }
+        setDisabled(false);
       }
+    } catch (err) {
+      setError(err.toString());
       setDisabled(false);
+      await axios.post("/.netlify/functions/order-update", {
+        data: {
+          ...orderItem,
+          status: 'payment failed',
+          error: err.toString(),
+        },
+        id: response.data.ref['@ref'].id,
+      });
     }
+
   };
 
   return (

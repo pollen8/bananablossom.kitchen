@@ -1,7 +1,10 @@
 * Running
 
-> npm run develop
+> npm start
 
+The local site will be available at:
+
+http://localhost:8888/
 
 #TODO
 

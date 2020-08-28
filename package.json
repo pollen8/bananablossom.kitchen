@@ -38,6 +38,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-dropzone": "^11.0.1",
+    "react-geocode": "^0.2.1",
     "react-google-maps": "^9.4.5",
     "react-helmet": "^6.0.0",
     "react-icons": "^3.10.0",
@@ -53,6 +54,7 @@
   "devDependencies": {
     "@types/axios": "^0.14.0",
     "@types/node": "^13.13.4",
+    "@types/react-geocode": "^0.2.0",
     "@types/styled-components": "^5.1.0",
     "prettier": "^2.0.5"
   },
