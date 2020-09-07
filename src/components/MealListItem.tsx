@@ -97,6 +97,7 @@ const MealListItem: FC<IProps> = ({
                 quality="auto:best"
                 effect="saturation:30"
                 crop="fill"
+                gravity="object"
                 client_hints
                 width="360"
                 height="300" />
