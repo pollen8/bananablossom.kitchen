@@ -34,7 +34,7 @@ const Map: FC<IProps> = ({
             editable: false,
             zIndex: 1,
           }}
-          radius={3500} />
+          radius={4700} />
       }
     </GoogleMap>
   )
