@@ -37,6 +37,7 @@ const GlobalStyle = createGlobalStyle<any>`
     font-size: 0.75rem;
     font-family: 'Comfortaa', cursive;
     background: #eedd;
+    font-display: swap;
     color: ${(props) => props.theme.colors.grey300};
   }
   table {

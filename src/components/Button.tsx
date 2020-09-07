@@ -59,6 +59,7 @@ const hover = (props: Props) => {
 
 const Btn = styled.button`
   font-family: 'Changa', sans-serif;
+  font-display: swap;
   background: ${(props) => backgroundColor(props)};
   color: ${(props) => props.text
     ? props.disabled ? '#ccc' : 'inherit'
