@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import styled from 'styled-components';
 
 const Icon = styled.a`
@@ -13,7 +13,9 @@ interface IProps {
 }
 const TripAdvisor: FC<IProps> = ({ size = 50 }) => {
   return (
-    <Icon href="https://www.tripadvisor.co.uk/Restaurant_Review-g187054-d20104550-Reviews-Banana_Blossom_Kitchen-Basingstoke_Hampshire_England.html?m=19905">
+    <Icon
+      aria-label="View our Trip Advisor page"
+      href="https://www.tripadvisor.co.uk/Restaurant_Review-g187054-d20104550-Reviews-Banana_Blossom_Kitchen-Basingstoke_Hampshire_England.html?m=19905">
       <svg id="Layer_1" data-name="Layer 1"
 
         xmlns="http://www.w3.org/2000/svg"
