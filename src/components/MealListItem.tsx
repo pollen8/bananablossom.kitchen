@@ -96,9 +96,10 @@ const MealListItem: FC<IProps> = ({
                 publicId={product.skus[selectedSKUIndex].image}
                 quality="auto:best"
                 effect="saturation:30"
-                crop="scale"
+                crop="fill"
                 client_hints
-                sizes="100vw" />
+                width="360"
+                height="300" />
             </div>
           }
 

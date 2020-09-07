@@ -86,78 +86,81 @@ const MealListItemDetails: FC<IProps> = ({
   const availableDays = product.availableDays ?? [];
   return (
     <>
-      <MealCard data-dish={`data-${product.name.replace(' ', '-')}`} style={{ marginBottom: '1rem' }}>
-        <Stack>
-          {
-            product.skus.length > 0 && product.skus[selectedSKUIndex].image !== '' &&
-            <div style={{ margin: 0, width: '100%', maxWidth: '50rem', maxHeight: '300px', position: 'relative', overflow: 'hidden' }}>
-              <MealImage
-                secure
-                cloudName="pollen8"
-                publicId={product.skus[selectedSKUIndex].image}
-                quality="auto:best"
-                effect="saturation:30"
-                crop="scale"
-                client_hints
-                sizes="100vw" />
-            </div>
-          }
+      <MealCard data-dish={`data-${product.name.replace(' ', '-')}`} style={{ marginBottom: '1rem', maxWidth: '70rem' }}>
+        <CardBody>
+          <Stack>
+            {
+              product.skus.length > 0 && product.skus[selectedSKUIndex].image !== '' &&
+              <div style={{ margin: 0, textAlign: 'center', width: '100%', maxWidth: '50rem', maxHeight: '300px', position: 'relative', overflow: 'hidden' }}>
+                <Image
+                  secure
+                  cloudName="pollen8"
+                  publicId={product.skus[selectedSKUIndex].image}
+                  quality="auto:best"
+                  effect="saturation:30"
+                  // crop="scale"
+                  client_hints
+                  fetchFormat="auto"
 
-          <CardBody style={{ width: '100%' }}>
-            <h3 style={{ lineHeight: '1.6rem' }}>
-              {product.name}
-            </h3>
-            {
-              availableDays.length > 0 &&
-              <AvailableDay>
-                <span>Only available on: </span>
-                {
-                  availableDays.map((day) => <Pill background="blue800"
-                    color="grey200"
-                    key={day}>{day}</Pill>)
-                }
-              </AvailableDay>
+                  width="400" />
+              </div>
             }
-            <p>{product.description}</p>
-            {
-              unavailable &&
-              <Alert color="info">Sorry, but this isn't available at the moment</Alert>
-            }
-            <div>
+
+            <CardBody style={{ width: '100%' }}>
+              <h3 style={{ lineHeight: '1.6rem' }}>
+                {product.name}
+              </h3>
               {
-                product.skus.map((sku, i) => <SkuItem key={sku.id} direction="row" >
+                availableDays.length > 0 &&
+                <AvailableDay>
+                  <span>Only available on: </span>
                   {
-                    product.skus.length > 1 && <input
-                      type="radio"
-                      id={`sku-${sku.id}`}
-                      checked={selectedSKUIndex === i}
-                      name={`sku-${product.id}[]`}
-                      onChange={() => setSelectedSKUIndex(i)} />
+                    availableDays.map((day) => <Pill background="blue800"
+                      color="grey200"
+                      key={day}>{day}</Pill>)
                   }
-                  <SkuLabel
-                    htmlFor={`sku-${sku.id}`}>
-                    <div style={{ display: 'flex', flexGrow: 1 }}>
-                      {sku.name} <br />
-                    </div>
-                    <FoodInfo sku={sku} />
-                    <div>
-                      {formatter.format(Number(sku.price))}
-                    </div>
-                  </SkuLabel>
-                </SkuItem>)
+                </AvailableDay>
               }
-            </div>
-            <Button
-              disabled={unavailable}
-              style={{ marginTop: columnCount === 1 ? '1rem' : 0, width: '100%' }}
-              color="primary"
-              onClick={() => {
-                onToggle(true);
-              }}>Order now
+              <p>{product.description}</p>
+              {
+                unavailable &&
+                <Alert color="info">Sorry, but this isn't available at the moment</Alert>
+              }
+              <div>
+                {
+                  product.skus.map((sku, i) => <SkuItem key={sku.id} direction="row" >
+                    {
+                      product.skus.length > 1 && <input
+                        type="radio"
+                        id={`sku-${sku.id}`}
+                        checked={selectedSKUIndex === i}
+                        name={`sku-${product.id}[]`}
+                        onChange={() => setSelectedSKUIndex(i)} />
+                    }
+                    <SkuLabel
+                      htmlFor={`sku-${sku.id}`}>
+                      <div style={{ display: 'flex', flexGrow: 1 }}>
+                        {sku.name} <br />
+                      </div>
+                      <FoodInfo sku={sku} />
+                      <div>
+                        {formatter.format(Number(sku.price))}
+                      </div>
+                    </SkuLabel>
+                  </SkuItem>)
+                }
+              </div>
+              <Button
+                disabled={unavailable}
+                style={{ marginTop: columnCount === 1 ? '1rem' : 0, width: '100%' }}
+                color="primary"
+                onClick={() => {
+                  onToggle(true);
+                }}>Order now
             </Button>
-          </CardBody>
-        </Stack>
-
+            </CardBody>
+          </Stack>
+        </CardBody>
       </MealCard>
       <AddItemForm
         isOpen={isOpen}
