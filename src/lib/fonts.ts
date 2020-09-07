@@ -3,8 +3,8 @@ import FontFaceObserver from 'fontfaceobserver';
 const Fonts = () => {
 
   const fonts = [
-    { name: 'Changa', href: 'https://fonts.googleapis.com/css?family=Changa' },
-    { name: 'Comfortaa', href: 'https://fonts.googleapis.com/css?family=Comfortaa' },
+    { name: 'Changa', href: 'https://fonts.googleapis.com/css?family=Changa&display=swap' },
+    { name: 'Comfortaa', href: 'https://fonts.googleapis.com/css?family=Comfortaa&display=swap' },
   ];
   fonts.forEach((font) => {
 
