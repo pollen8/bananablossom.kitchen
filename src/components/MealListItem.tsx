@@ -100,6 +100,7 @@ const MealListItem: FC<IProps> = ({
                 gravity="object"
                 client_hints
                 width="360"
+                alt={`${product.name}`}
                 height="300" />
             </div>
           }

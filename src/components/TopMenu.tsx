@@ -177,7 +177,7 @@ const TopMenu: FC<HTMLAttributes<HTMLDivElement>> = (props) => {
       <Burger
         show={show}>
         <Button id="burger-btn"
-
+          aria-label="menu"
           onClick={() => {
             toggle(!show);
           }}>

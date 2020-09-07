@@ -17,14 +17,6 @@ import Stack from './layout/Stack';
 import FoodInfo from './meals/FoodInfo';
 import Pill from './ui/Pill';
 
-const MealImage = styled(Image)`
-  border-radius:  0.3rem 0.3rem 0 0;
-  width: 100%;
-  object-fit: cover;
-  object-position: center center;
-  margin-bottom: 0;
-`;
-
 export const FlexRow = styled.div<{ direction?: 'column' | 'row', justifyContent?: string }>`
   display: flex;
   justify-content: ${(props) => props.justifyContent ?? 'initial'};
@@ -101,7 +93,7 @@ const MealListItemDetails: FC<IProps> = ({
                   // crop="scale"
                   client_hints
                   fetchFormat="auto"
-
+                  alt={`${product.name}`}
                   width="400" />
               </div>
             }
