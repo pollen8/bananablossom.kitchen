@@ -20,6 +20,7 @@ export default function BlogPost({ pageContext }) {
           <MealListItemDetails product={pageContext.product} />
         </div>
       </ThisLayout>
+      <button onClick={() => myUndefinedFunction()}>test</button>
     </Layout>
   );
 }
