@@ -5,6 +5,6 @@
 
   # explicit commands for building the site
   # and the folder to publish
-
+  command = "npm ci"
   command = "npm run build"
   publish = "build"
