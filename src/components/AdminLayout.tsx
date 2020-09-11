@@ -69,6 +69,7 @@ const Layout: FC = ({ children }) => {
             <Link to="admin/orders">Orders</Link> |
             <Link to="admin/availability">Availability</Link> |
             <Link to="admin/notification">Notifications</Link>
+            <img src="https://api.netlify.com/api/v1/badges/bc1199da-4265-4a8f-8bb6-5c84bba2a6bf/deploy-status" />
           </>
         }
 
