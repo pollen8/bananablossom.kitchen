@@ -128,10 +128,17 @@ const Calendar: FC<IProps> = ({
   allFaunaHoliday,
 }) => {
   const [values, setValues] = useState<[Date, ITime]>([orderDate, orderTime]);
+  console.log('Calendar: rderDate', orderDate);
+  let displayDate = '';
+  try {
+    displayDate = values[0].toLocaleDateString('en-GB');
+  } catch (e) {
+
+  }
   return (
     <>
       <div>
-        <Label>Date: {values[0].toLocaleDateString('en-GB')}</Label>
+        <Label>Date: {displayDate}</Label>
         <StyledDatePicker
           name="order_date"
           width="300px"

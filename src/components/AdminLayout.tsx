@@ -64,15 +64,15 @@ const Layout: FC = ({ children }) => {
         <Logo />
         {
           isLoggedIn && isAdmin && <>
-            <Link to="admin/products">Products</Link> |
-            <Link to="admin/promotions">Promotions</Link> |
-            <Link to="admin/orders">Orders</Link> |
-            <Link to="admin/availability">Availability</Link> |
-            <Link to="admin/notification">Notifications</Link>
+
+            <Link to="/admin/products">Products</Link> |
+            <Link to="/admin/promotions">Promotions</Link> |
+            <Link to="/admin/orders">Orders</Link> |
+            <Link to="/admin/availability">Availability</Link> |
+            <Link to="/admin/notification">Notifications</Link>
             <img src="https://api.netlify.com/api/v1/badges/bc1199da-4265-4a8f-8bb6-5c84bba2a6bf/deploy-status" />
           </>
         }
-
         <div style={{ textAlign: 'right' }}>
           <Button onClick={() => setDialog(true)}>
             {isLoggedIn ? `Hello ${name}, Log out here!` : "LOG IN"}

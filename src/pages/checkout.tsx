@@ -459,7 +459,9 @@ const Checkout: FC = () => {
                             }
                             <Calendar
                               allFaunaHoliday={allFaunaHoliday}
-                              orderDate={typeof values.order_date === 'string' ? new Date(values.order_date) : values.order_date}
+                              orderDate={typeof values.order_date === 'string'
+                                ? new Date(values.order_date)
+                                : values.order_date}
                               orderTime={values.order_time}
                               disabledDaysOfWeek={
                                 (disabledDaysOfWeek).map((d) => dayToNumber(d))
