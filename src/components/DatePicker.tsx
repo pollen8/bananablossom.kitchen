@@ -91,7 +91,13 @@ interface IProps {
 }
 
 export const isDisabled = (date: Date, disabled: Interval[]) => {
-  return disabled.some((d) => isWithinInterval(date, d));
+  return disabled.some((d) => {
+    try {
+      return isWithinInterval(date, d);
+    } catch (e) {
+      return false;
+    };
+  });
 };
 
 const isDisabledDayOfWeek = (date: Date, daysOfWeek: number[]) => {

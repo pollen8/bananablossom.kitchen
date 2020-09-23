@@ -63,7 +63,7 @@ const FlexRow = styled.div`
 const Availability: FC<RouteComponentProps> = () => {
   const mutationOptions = {
     onSuccess: () => {
-      queryCache.refetchQueries('holidays')
+      queryCache.getQueries('holidays')
     },
   };
   const [mutate] = useMutation(createHoliday, mutationOptions)
@@ -76,7 +76,7 @@ const Availability: FC<RouteComponentProps> = () => {
   }
 
   if (holidays.status === 'error') {
-    return <span>Error: {holidays.error.message}</span>
+    return <span>Error: {holidays.error}</span>
   }
   console.log('holidays', holidays.data);
   return (
