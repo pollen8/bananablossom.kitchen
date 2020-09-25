@@ -212,6 +212,12 @@ const TopMenu: FC<HTMLAttributes<HTMLDivElement>> = (props) => {
           </StyledLink>
           </li>
           <li>
+            <StyledLink to="/markets"
+              activeStyle={activeStyle}>
+              Markets
+          </StyledLink>
+          </li>
+          <li>
             <StyledLink to="/cart"
               activeStyle={activeStyle}>
               <div>Cart</div>
