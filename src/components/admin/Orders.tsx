@@ -152,7 +152,7 @@ const Orders: FC = () => {
                             data.customer.delivery === 'delivery'
                               ? <AiOutlineCar size="1rem" color={theme.colors.blue500} />
                               : <AiOutlineHome size="1rem" />
-                          }{' '}{format(new Date(data.customer.order_date), 'dd MMMM yy')} {data.customer.order_time.hour + ':' + data.customer.order_time.minute}</div>
+                          }{' '}{data.customer.order_date && format(new Date(data.customer.order_date), 'dd MMMM yy')} {data.customer.order_time.hour + ':' + data.customer.order_time.minute}</div>
                       </div>
                     </td>
                     <td>
@@ -170,7 +170,7 @@ const Orders: FC = () => {
                           : <AiOutlineHome size="1rem" />
                       }
                       {data.customer.delivery}
-                      <div>{format(new Date(data.customer.order_date), 'dd MMMM yy')}</div>
+                      <div>{data.customer.order_date && format(new Date(data.customer.order_date), 'dd MMMM yy')}</div>
                       <div>{data.customer.order_time.hour + ':' + data.customer.order_time.minute}</div>
                     </td>
                     <td className="desktop">
@@ -202,7 +202,7 @@ const Orders: FC = () => {
                 </div>
                 <h4>Type: {selectedOrder.customer.delivery}</h4>
 
-                <div>{format(new Date(selectedOrder.customer.order_date), 'dd MMMM yy')}</div>
+                <div>{selectedOrder.customer.order_date && format(new Date(selectedOrder.customer.order_date), 'dd MMMM yy')}</div>
                 <div>{selectedOrder.customer.order_time.hour + ':' + selectedOrder.customer.order_time.minute}</div>
                 {new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' }).format(selectedOrder.amount)}
 
