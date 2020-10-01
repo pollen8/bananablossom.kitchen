@@ -52,16 +52,17 @@ query {
                   </div>
                   <div>
 
-                    {/* <h2>
+                    <h2>
                       Find us at our local market.
                 </h2>
                     <h4>
-                      Sat 3rd October, <a href="https://www.portsmoutharmshatchwarren.co.uk/">The Portsmouth Arms</a>
+                      Sat 3rd October
                     </h4>
                     <h4>11am - 4pm</h4>
                     <p>
-                      We're back again at the Portsmouth Arms. Please come early as we've sold out each time before the end of the day. This weeks menu is:
+                      Unfortunately due to the predicated bad weather the Portsmouth Arms market will no longer take place.
                   </p>
+                    <p><strong>However, we are still taking phone orders on 7904 139992 for home pickup</strong></p>
 
                     <h5>
                       Crispy spring rolls
@@ -94,7 +95,7 @@ query {
                         <li>Vietnamese pulled pork £7.00 </li>
                         <li>Braised duck eggs £6.00</li>
                       </Ul>
-                    </p> */}
+                    </p>
                     <hr />
                     <h4>
                       26th September, <a href="https://www.portsmoutharmshatchwarren.co.uk/">The Portsmouth Arms</a>
