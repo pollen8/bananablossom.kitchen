@@ -9,6 +9,7 @@ import Card from '../components/Card';
 import CardBody from '../components/CardBody';
 import Layout from '../components/layout';
 import Stack from '../components/layout/Stack';
+import { OpeningTimes } from '../components/OpeningTimes';
 
 const Info = () => {
   const now = new Date();
@@ -81,39 +82,9 @@ query {
             </Stack>
           </CardBody>
         </Card>
-        <Card>
+        <Card style={{ minWidth: '30rem' }}>
           <CardBody>
-            <h1>Opening Times</h1>
-            <table>
-              <tr>
-                <th>Monday</th>
-                <td>10:00 - 20:00</td>
-              </tr>
-              <tr>
-                <th>Tuesday</th>
-                <td>10:00 - 20:00</td>
-              </tr>
-              <tr>
-                <th>Wednesday</th>
-                <td>10:00 - 20:00</td>
-              </tr>
-              <tr>
-                <th>Thursday</th>
-                <td>10:00 - 20:00</td>
-              </tr>
-              <tr>
-                <th>Friday</th>
-                <td>10:00 - 20:00</td>
-              </tr>
-              <tr>
-                <th>Saturday</th>
-                <td>10:00 - 20:00</td>
-              </tr>
-              <tr>
-                <th>Sunday</th>
-                <td>Closed</td>
-              </tr>
-            </table>
+            <OpeningTimes />
           </CardBody>
         </Card>
       </Stack>

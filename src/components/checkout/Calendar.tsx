@@ -8,7 +8,6 @@ import styled from 'styled-components';
 import { IHoliday } from '../admin/Availability';
 import DatePicker from '../DatePicker';
 import Label from '../Label';
-import Stack from '../layout/Stack';
 import TimePicker, {
   formatAmPm,
   ITime,
@@ -21,16 +20,7 @@ interface IDay {
 }
 
 
-const deliveryAvailability = [
-  {
-    start: { hour: 10, minute: 0 },
-    end: { hour: 14, minute: 0, },
-  },
-  {
-    start: { hour: 16, minute: 0 },
-    end: { hour: 18, minute: 30, },
-  },
-];
+
 
 const Row = styled.div`
   display: flex;
@@ -110,6 +100,58 @@ const StyledRow = styled(Row)`
   }
 `;
 
+const deliveryAvailability = [
+  {
+    start: { hour: 11, minute: 0 },
+    end: { hour: 14, minute: 30, },
+  },
+  {
+    start: { hour: 16, minute: 0 },
+    end: { hour: 18, minute: 30, },
+  },
+];
+
+export const times = [
+  {
+    startTime: { hour: 11, minute: 0 },
+    endTime: { hour: 20, minute: 0 },
+    deliveryAvailability,
+  },
+  {
+    startTime: { hour: 11, minute: 0 },
+    endTime: { hour: 20, minute: 0 },
+    deliveryAvailability,
+  },
+  {
+    startTime: { hour: 11, minute: 0 },
+    endTime: { hour: 20, minute: 0 },
+    deliveryAvailability,
+  },
+  {
+    startTime: { hour: 11, minute: 0 },
+    endTime: { hour: 20, minute: 0 },
+    deliveryAvailability,
+  },
+  {
+    startTime: { hour: 11, minute: 0 },
+    endTime: { hour: 20, minute: 0 },
+    deliveryAvailability,
+  },
+  {
+    startTime: { hour: 11, minute: 0 },
+    endTime: { hour: 20, minute: 0 },
+    deliveryAvailability,
+  },
+  {
+    startTime: { hour: 11, minute: 0 },
+    endTime: { hour: 15, minute: 0 },
+    deliveryAvailability: [{
+      start: { hour: 11, minute: 0 },
+      end: { hour: 15, minute: 0, },
+    }]
+  }
+];
+
 interface IProps {
   handleInputChange: (key: string, value: any) => void;
   orderDate: Date;
@@ -128,10 +170,11 @@ const Calendar: FC<IProps> = ({
   allFaunaHoliday,
 }) => {
   const [values, setValues] = useState<[Date, ITime]>([orderDate, orderTime]);
-  console.log('Calendar: rderDate', orderDate);
+  let dayOfWeek: number = 0;
   let displayDate = '';
   try {
     displayDate = values[0].toLocaleDateString('en-GB');
+    dayOfWeek = values[0].getDay();
   } catch (e) {
 
   }
@@ -146,7 +189,15 @@ const Calendar: FC<IProps> = ({
           value={orderDate}
           onChange={(value) => {
             handleInputChange('order_date', value);
-            setValues([value, values[1]]);
+            const newDayOfWeek = value.getDay();
+
+            const newTime = values[1].hour > times[newDayOfWeek].endTime.hour
+              ? { hour: times[newDayOfWeek].endTime.hour, minute: 0 }
+              : values[1].hour < times[newDayOfWeek].startTime.hour
+                ? { hour: times[newDayOfWeek].startTime.hour, minute: 0 }
+                : values[1]
+
+            setValues([value, newTime]);
           }}
           disabledRanges={[
             ...allFaunaHoliday.nodes.map((n) => ({ start: new Date(n.start), end: new Date(n.end) })),
@@ -161,12 +212,12 @@ const Calendar: FC<IProps> = ({
             handleInputChange('order_time', value);
             setValues([values[0], value]);
           }}
-          value={orderTime}
-          startTime={{ hour: 10, minute: 0 }}
-          endTime={{ hour: 19, minute: 0 }}
+          value={values[1]}
+          startTime={times[dayOfWeek].startTime}
+          endTime={times[dayOfWeek].endTime}
           useAmPm
           hideValue
-          available={deliveryAvailability} />
+          available={times[dayOfWeek].deliveryAvailability} />
       </div>
     </>
   )

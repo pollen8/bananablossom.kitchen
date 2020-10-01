@@ -205,6 +205,7 @@ const getNextFeeDay = (
 const Checkout: FC = () => {
   const { state } = useContext<ICartContext>(store);
 
+  const [loading, setLoading] = useState(false);
   const [intentError, setIntentError] = useState('');
   const [clientSecret, setClientSecret] = useState('');
   const { allFaunaHoliday } = useStaticQuery<{ allFaunaHoliday: { nodes: IHoliday[] } }>(GET_HOLIDAYS);
@@ -323,9 +324,11 @@ const Checkout: FC = () => {
                       <FormFooter>
                         <Button
                           type="button"
+                          disabled={loading}
                           onClick={async () => {
                             let res: any;
                             try {
+                              setLoading(true);
                               setIntentError('');
                               await validateSome(['name', 'email', 'tel']);
                               res = await axios.post("/.netlify/functions/paymentProcess", {
@@ -341,6 +344,9 @@ const Checkout: FC = () => {
                               }
                             } catch (e) {
                               console.log('ERROR', e, res);
+                            }
+                            finally {
+                              setLoading(false);
                             }
                           }}
                           color="primary"

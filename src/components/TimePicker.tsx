@@ -1,5 +1,6 @@
 import React, {
   FC,
+  useEffect,
   useState,
 } from 'react';
 
@@ -56,9 +57,10 @@ const nearestAvailableTime = (time: ITime, available: ITimeRange[]) => {
     return time;
   }
 
-  const range = available.find((a) => a.end.hour == time.hour);
+  const range = available.find((a) => a.end.hour === time.hour);
   if (!range) {
-    throw new Error('this shouldnt happen');
+    // cant find anything - default to the start of the day
+    return available[0].start;
   }
   return {
     ...time,
@@ -78,7 +80,7 @@ const TimePicker: FC<IProps> = ({
   hideValue,
   value,
 }) => {
-  const hours = Array.from(Array(endTime.hour - startTime.hour).keys());
+  const hours = Array.from(Array(endTime.hour + 1 - startTime.hour).keys());
   const intervals = Array.from(Array((Math.floor(60 / interval)) + 1).keys()).map((v) => v * interval)
     .filter((v) => v !== 60);
   const [start, setStart] = useState<ITime>(value ?? { hour: hours[0] + startTime.hour, minute: intervals[0] });
@@ -87,7 +89,11 @@ const TimePicker: FC<IProps> = ({
     setStart(clamped);
     onChange(clamped);
   };
-
+  useEffect(() => {
+    const t = value ?? { hour: hours[0] + startTime.hour, minute: intervals[0] };
+    const clamped = nearestAvailableTime(t, available);
+    setStart(clamped);
+  }, [value, available]);
   return (
     <Container width={width} className={className ?? 'time-picker'}>
       <div className="time-picker-header">
