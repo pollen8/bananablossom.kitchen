@@ -60,9 +60,9 @@ query {
                     </h4>
                     <h4>11am - 4pm</h4>
                     <p>
-                      Unfortunately due to the predicated bad weather the Portsmouth Arms market will no longer take place.
+                      Unfortunately due to the predicated bad weather the Portsmouth Arms market will no longer take place on the 3rd.
                   </p>
-                    <p><strong>However, we are still taking phone orders on 7904 139992 for home pickup</strong></p>
+                    <p><strong>However, we are still taking phone orders on 07904 139992 for home pickup.</strong></p>
 
                     <h5>
                       Crispy spring rolls
