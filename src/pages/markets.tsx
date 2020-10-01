@@ -89,100 +89,102 @@ query {
 
 
                     <h5>Vietnamese Sandwich <br />(Bánh mì)</h5>
-                    <p>
-                      <Ul>
-                        <li>Vietnamese pulled pork £7.00 </li>
-                        <li>Braised duck eggs £6.00</li>
-                      </Ul>
-                    </p>
-                    <hr />
-                    <h4>
-                      26th September, <a href="https://www.portsmoutharmshatchwarren.co.uk/">The Portsmouth Arms</a>
-                    </h4>
-                    <h4>11am - 4pm</h4>
-                    <p>
-                      After last weeks, great turn out we are back again at the <a href="https://www.portsmoutharmshatchwarren.co.uk/">The Portsmouth Arms</a>.
-                 </p>
-                    <p>It was fantastic to see lots of customers new and old. Please come early to avoid disappointment as we sold out very fast last week.</p>
-                    <p>This week we will be serving:</p>
-
-
-                    <h5>Vietnamese Sandwich <br />(Bánh mì)</h5>
                     <p>Homemade bread garnished with cucumber, spring onion, coriander, fresh chilli,
                    pickled carrot and its own sauce.<br />
-                      <Ul>
-                        <li>Grilled marinated pork £7.00</li>
-                        <li>
-                          Fried tofu with lemongrass (vegan) $6.00</li>
-                      </Ul>
-                    </p>
-                    <h5>Crispy spring rolls</h5>
-                    <p>
-                      <Ul>
-                        <li>3 x Chicken  £4.50</li>
-                        <li>3 x Vegetable (vegan) £3.50</li>
-                      </Ul>
-                    </p>
+                      <p>
+                        <Ul>
+                          <li>Vietnamese pulled pork £7.00 </li>
+                          <li>Braised duck eggs £6.00</li>
+                        </Ul>
+                      </p>
+                      <hr />
+                      <h4>
+                        26th September, <a href="https://www.portsmoutharmshatchwarren.co.uk/">The Portsmouth Arms</a>
+                      </h4>
+                      <h4>11am - 4pm</h4>
+                      <p>
+                        After last weeks, great turn out we are back again at the <a href="https://www.portsmoutharmshatchwarren.co.uk/">The Portsmouth Arms</a>.
+                 </p>
+                      <p>It was fantastic to see lots of customers new and old. Please come early to avoid disappointment as we sold out very fast last week.</p>
+                      <p>This week we will be serving:</p>
 
-                    <h5>Vermicelli salad<br />(Bún thịt nướng)</h5>
-                    <p>Rice vermicelli noodles salad with mint, pickled carrots, dressed
-                    in homemade 'nước chấm', topped with chive sauce and roasted peanuts.
+
+                      <h5>Vietnamese Sandwich <br />(Bánh mì)</h5>
+                      <p>Homemade bread garnished with cucumber, spring onion, coriander, fresh chilli,
+                   pickled carrot and its own sauce.<br />
+                        <Ul>
+                          <li>Grilled marinated pork £7.00</li>
+                          <li>
+                            Fried tofu with lemongrass (vegan) $6.00</li>
+                        </Ul>
+                      </p>
+                      <h5>Crispy spring rolls</h5>
+                      <p>
+                        <Ul>
+                          <li>3 x Chicken  £4.50</li>
+                          <li>3 x Vegetable (vegan) £3.50</li>
+                        </Ul>
+                      </p>
+
+                      <h5>Vermicelli salad<br />(Bún thịt nướng)</h5>
+                      <p>Rice vermicelli noodles salad with mint, pickled carrots, dressed
+                      in homemade 'nước chấm', topped with chive sauce and roasted peanuts.
                     <Ul>
-                        <li>Grilled pork with a chicken spring roll  £8.00</li>
+                          <li>Grilled pork with a chicken spring roll  £8.00</li>
 
-                        <li>Shiitake mushrooms with a vegetable spring roll
+                          <li>Shiitake mushrooms with a vegetable spring roll
 £7.50</li>
 
 
-                      </Ul>
-                    </p>
+                        </Ul>
+                      </p>
                   </div>
                 </Stack>
 
 
               </div>
-              <div>
+                <div>
 
-                <Img fixed={data.rating.childImageSharp.fixed} alt="Food hygiene rating: 5" />
-              </div>
+                  <Img fixed={data.rating.childImageSharp.fixed} alt="Food hygiene rating: 5" />
+                </div>
             </Stack>
           </CardBody>
         </Card >
-        <Card>
-          <CardBody>
-            <h1>Opening Times</h1>
-            <table>
-              <tr>
-                <th>Monday</th>
-                <td>10:00 - 20:00</td>
-              </tr>
-              <tr>
-                <th>Tuesday</th>
-                <td>10:00 - 20:00</td>
-              </tr>
-              <tr>
-                <th>Wednesday</th>
-                <td>10:00 - 20:00</td>
-              </tr>
-              <tr>
-                <th>Thursday</th>
-                <td>10:00 - 20:00</td>
-              </tr>
-              <tr>
-                <th>Friday</th>
-                <td>10:00 - 20:00</td>
-              </tr>
-              <tr>
-                <th>Saturday</th>
-                <td>10:00 - 20:00</td>
-              </tr>
-              <tr>
-                <th>Sunday</th>
-                <td>Closed</td>
-              </tr>
-            </table>
-          </CardBody>
-        </Card>
+          <Card>
+            <CardBody>
+              <h1>Opening Times</h1>
+              <table>
+                <tr>
+                  <th>Monday</th>
+                  <td>10:00 - 20:00</td>
+                </tr>
+                <tr>
+                  <th>Tuesday</th>
+                  <td>10:00 - 20:00</td>
+                </tr>
+                <tr>
+                  <th>Wednesday</th>
+                  <td>10:00 - 20:00</td>
+                </tr>
+                <tr>
+                  <th>Thursday</th>
+                  <td>10:00 - 20:00</td>
+                </tr>
+                <tr>
+                  <th>Friday</th>
+                  <td>10:00 - 20:00</td>
+                </tr>
+                <tr>
+                  <th>Saturday</th>
+                  <td>10:00 - 20:00</td>
+                </tr>
+                <tr>
+                  <th>Sunday</th>
+                  <td>Closed</td>
+                </tr>
+              </table>
+            </CardBody>
+          </Card>
       </Stack >
     </Layout >
   )
