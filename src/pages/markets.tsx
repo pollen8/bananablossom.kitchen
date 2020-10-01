@@ -44,13 +44,8 @@ query {
             <Stack>
               <div>
 
-                <h2>
-                  Find us at our local market.
-                </h2>
-                <h4>
-                  26th September, <a href="https://www.portsmoutharmshatchwarren.co.uk/">The Portsmouth Arms</a>
-                </h4>
-                <h4>11am - 4pm</h4>
+
+
                 <Stack>
                   <div>
                     <Img style={{ float: 'left', marginRight: '1rem' }}
@@ -58,6 +53,53 @@ query {
                       fixed={data.portsmouthArmsMarket.childImageSharp.fixed} />
                   </div>
                   <div>
+
+                    <h2>
+                      Find us at our local market.
+                </h2>
+                    <h4>
+                      Sat 3rd October, <a href="https://www.portsmoutharmshatchwarren.co.uk/">The Portsmouth Arms</a>
+                    </h4>
+                    <h4>11am - 4pm</h4>
+                    <p>
+                      We're back again at the Portsmouth Arms. Please come early as we've sold out each time before the end of the day. This weeks menu is:
+                  </p>
+
+                    <h5>
+                      Crispy spring rolls
+                  </h5>
+                    <p>
+                      <Ul>
+                        <li>3 x Chicken (Gluten free)  £4.50</li>
+                        <li>3 x Vegetable (vegan) (Gluten free) £3.50</li>
+                      </Ul>
+                    </p>
+
+
+                    <h5>
+                      Bao Bun
+                  </h5>
+                    <p>
+                      <Ul>
+                        <li>Steamed Pork Bao Bun: £3.50 </li>
+                        <li>Steamed Vegetables Bao Bun (Vegan) £3.00</li>
+                      </Ul>
+                    </p>
+
+
+
+                    <h5>Vietnamese Sandwich <br />(Bánh mì)</h5>
+                    <p>
+                      <Ul>
+                        <li>Vietnamese pulled pork £7.00 </li>
+                        <li>Braised duck eggs £6.00</li>
+                      </Ul>
+                    </p>
+                    <hr />
+                    <h4>
+                      26th September, <a href="https://www.portsmoutharmshatchwarren.co.uk/">The Portsmouth Arms</a>
+                    </h4>
+                    <h4>11am - 4pm</h4>
                     <p>
                       After last weeks, great turn out we are back again at the <a href="https://www.portsmoutharmshatchwarren.co.uk/">The Portsmouth Arms</a>.
                  </p>
