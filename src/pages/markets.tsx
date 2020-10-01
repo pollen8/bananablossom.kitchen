@@ -62,8 +62,8 @@ query {
                     <p>
                       Unfortunately due to the predicated bad weather the Portsmouth Arms market will no longer take place on the 3rd.
                   </p>
-                    <p><strong>However, we are still taking phone orders on 07904 139992 for home pickup.</strong></p>
-
+                    <p><strong>However, we are still taking pre-orders by phone on Friday for Saturday on 07904 139992 for home pickup.</strong></p>
+                    <h4>Menu for Saturday only:</h4>
                     <h5>
                       Crispy spring rolls
                   </h5>
