@@ -62,6 +62,7 @@ query {
                     </h4>
                     <h4>11am - 4pm</h4>
                   <hr />
+                  <h2>Previous Markets</h2>
                     <h4>
                       Sat 3rd October
                     </h4>
