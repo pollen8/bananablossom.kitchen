@@ -54,7 +54,14 @@ query {
 
                     <h2>
                       Find us at our local market.
-                </h2>
+                
+                  </h2>
+
+                  <h4>
+                      Wed 7th October,Basingstoke Market: Top of Town 
+                    </h4>
+                    <h4>11am - 4pm</h4>
+                  <hr />
                     <h4>
                       Sat 3rd October
                     </h4>
