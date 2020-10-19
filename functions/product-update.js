@@ -2,12 +2,15 @@ const faunadb = require('faunadb');
 const axios = require('axios');
 
 /* configure faunaDB Client with our secret */
-const q = faunadb.query
-const client = new faunadb.Client({
-  secret: process.env.FAUNADB_SECRET
-})
+
 
 exports.handler = async (event) => {
+
+  const q = faunadb.query
+  const client = new faunadb.Client({
+    secret: process.env.FAUNADB_SECRET
+  })
+
   const { data, id } = JSON.parse(event.body)
   console.log("Function `product-update` invoked", data, id)
 
