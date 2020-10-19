@@ -24,6 +24,7 @@ const SidesList = () => {
           image
           name
           price
+          unavailable
           vegan
           vegetarian
         }

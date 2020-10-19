@@ -12,9 +12,9 @@ const OrderHelp: FC = () => {
         </p>
         <p>
           All our dishes are freshly made to order, please orders by 11:00pm for next day collection. </p>
-        <p>
+        {/* <p>
           The “Pho bo” beef broth is only available on Thursdays by order the previous day.
-        </p>
+        </p> */}
       </div>
     </>
   )

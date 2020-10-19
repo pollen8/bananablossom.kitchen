@@ -31,8 +31,7 @@ const ImageUpload: FC<IProps> = ({
   const upload_preset = 'fm9zzl3f';
   const onPhotoSelected = async (files) => {
     setIsUploading(true);
-    const url = `https://api.cloudinary.com/v1_1/${
-      cloudName
+    const url = `https://api.cloudinary.com/v1_1/${cloudName
       }/upload`;
     // const title = this.titleEl.value;
 

@@ -34,59 +34,54 @@ query {
   return (
     <Layout>
       <Stack>
-        <Card>
-          <CardBody>
-            <Stack>
-              <div>
+        <CardBody>
+          <Stack>
+            <div>
 
-                <h2>
-                  Banana Blossom offers authentic home cooked vietnamese food, one of the healthiest cuisines in the world.
+              <h2>
+                Banana Blossom offers authentic home cooked vietnamese food, one of the healthiest cuisines in the world.
                 </h2>
-                <h6>
+              {/* <h6>
                   Order our food and make your lunchtime a memorable experience!
-                </h6>
-                <h3><Img style={{ float: 'left', marginRight: '1rem' }} fixed={data.kitchen.childImageSharp.fixed} alt="Linh Clayburn in the kitchen" />Meet Linh</h3>
-                <p>
-                  Linh was born in Vietnam, where her family has run a successful street food restaurant in
-                  Ho Chi Minh City for over 20 years.
-                  They source all their food from local markets and enjoy experiencing the
-                  pleasure their cooking gives their customers.
-                  As with many Vietnamese street vendors they specialise in a particular dish.
-                  In this case this is Cơm tấm - grilled pork, shredded pork, pork skin,
-                  fried egg, pork meatloaf, pickled carrot, and sliced cucumber.
+                </h6> */}
+              <h3><Img style={{ float: 'left', marginRight: '1rem' }} fixed={data.kitchen.childImageSharp.fixed} alt="Linh Clayburn in the kitchen" />Meet Linh</h3>
+              <p>
+                Linh was born in Vietnam, where her family has run a successful street food restaurant in
+                Ho Chi Minh City for over 20 years.
+                They source all their food from local markets and enjoy experiencing the
+                pleasure their cooking gives their customers.
+                As with many Vietnamese street vendors they specialise in a particular dish.
+                In this case this is Cơm tấm - grilled pork, shredded pork, pork skin,
+                fried egg, pork meatloaf, pickled carrot, and sliced cucumber.
                 </p>
-                <p>At the age of 18 Linh moved to La Rochelle, France.
-                After having completed her initial studies in French, Linh worked
+              <p>At the age of 18 Linh moved to La Rochelle, France.
+              After having completed her initial studies in French, Linh worked
                 for <a href="http://planetesesame.com/">Planète Sésame</a>,
                   a charity whose aim is to aid female immigrants to get their first job in a kitchen. This experience gave
                   Linh a veritable introduction into world cuisine, especially those originating from North Africa.
 </p>
-                <p>Then in 2012 she attended <a href="https://www.apprentissage.cma17.fr/">CFA De Lagord</a> where she obtained a
+              <p>Then in 2012 she attended <a href="https://www.apprentissage.cma17.fr/">CFA De Lagord</a> where she obtained a
                     Baccalauréat Professionnel in cuisine, whilst working
                     as the second chef at <a href="https://le-bistrot-dla-chaine.business.site/">La Bistro de La Chaine</a>.
                 </p>
-                <p>Linh has been living and working in England for the last 4 years, where she was a chef de partie at
+              <p>Linh has been living and working in England for the last 4 years, where she was a chef de partie at
                   the <a href="www.whitehartoverton.co.uk">White Hart Overton</a> and
                   at the<a href="https://www.fourseasons.com/hampshire"> Four Seasons Hotel</a> where she was responsible for
                   creating their Café Santé asian fusion menus.</p>
 
-                <p>In 2020 Linh decided to start Banana Blossom with the aim of providing high quality authentic
-                Vietnamese cuisine, encapsulating and transcribing her family's wealth of culinary knowledge for your
-                tasting pleasure.
+              <p>In 2020 Linh decided to start Banana Blossom with the aim of providing high quality authentic
+              Vietnamese cuisine, encapsulating and transcribing her family's wealth of culinary knowledge for your
+              tasting pleasure.
                   </p>
-              </div>
-              <div>
+            </div>
 
-                <Img fixed={data.rating.childImageSharp.fixed} alt="Food hygiene rating: 5" />
-              </div>
-            </Stack>
-          </CardBody>
-        </Card>
-        <Card style={{ minWidth: '30rem' }}>
+          </Stack>
+        </CardBody>
+        <div style={{ minWidth: '30rem' }}>
           <CardBody>
             <OpeningTimes />
           </CardBody>
-        </Card>
+        </div>
       </Stack>
     </Layout>
   )

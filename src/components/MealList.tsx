@@ -57,7 +57,7 @@ const GET_MAINS = graphql`{
     nodes {
       description
       id: _id
-      name
+      name 
       availableDays
       skus {
         id,

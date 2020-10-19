@@ -20,7 +20,7 @@ const Logo: FC<Partial<HTMLImageElement>> = ({
   if (allCloudinaryMedia.nodes.length === 0) {
     return null;
   }
-  return <img src={allCloudinaryMedia.nodes[0].secure_url} alt={alt} title={alt} height={100} />
+  return <img src={allCloudinaryMedia.nodes[0].secure_url} alt={alt} title={alt} height={60} />
 }
 
 export default Logo

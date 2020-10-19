@@ -10,7 +10,7 @@ const Body = styled.div`
 }
 
 @media (max-width: 640px){ 
- padding: 0.3rem;
+ padding: 0.5rem;
 }
 `;
 

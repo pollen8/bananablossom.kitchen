@@ -17,10 +17,10 @@ import Pill from './ui/Pill';
 
 const Menu = styled.div<{ scrolled: boolean }>`
   background-color: rgba(255,255,255,1);
-  padding: 0.75rem 1rem;
+  padding: 0.75rem 1rem 0 0.75rem;
   display: flex;
   z-index:100;
-  box-shadow: 0 7px 14px 0 rgba(60,66,87, 0.12), 0 3px 6px 0 rgba(0,0,0, 0.12);
+  box-shadow: 0 1px 3px 0 rgba(60,66,87, 0.12), 0 3px 6px 0 rgba(0,0,0, 0.12);
   ul {
     list-style: none;
     z-index: 999;
@@ -45,12 +45,10 @@ const Menu = styled.div<{ scrolled: boolean }>`
   img {
     margin-bottom: 0;
     margin-right: 2.5rem;
-  }
-  img {
-    height: 85px !important;
+    height: 75px !important;
   }
   > div > div {
-    margin-top: 0.5rem;
+    margin-top: 1.1rem;
   }
   > div  >div > ul a{
     font-size: 1rem;
@@ -185,6 +183,20 @@ const TopMenu: FC<HTMLAttributes<HTMLDivElement>> = (props) => {
         </Button>
         <ul>
           <li>
+            <StyledLink to="/"
+              activeClassName="active"
+              activeStyle={activeStyle}
+            >Home
+            </StyledLink>
+          </li>
+          <li>
+            <StyledLink to="/pre-order"
+              activeClassName="active"
+              activeStyle={activeStyle}
+            >Pre-order
+            </StyledLink>
+          </li>
+          {/* <li>
             <StyledLink to="/courses/mains"
               activeClassName="active"
               getProps={isPartiallyActive}
@@ -192,13 +204,13 @@ const TopMenu: FC<HTMLAttributes<HTMLDivElement>> = (props) => {
             >
               Menu
           </StyledLink>
-          </li>
-          <SubMenu>
+          </li> */}
+          {/* <SubMenu>
             <li><Link to="/courses/starters">Starters</Link></li>
             <li><Link to="/courses/mains">Mains</Link></li>
             <li><Link to="/courses/sides">Sides</Link></li>
             <li><Link to="/courses/desserts">Desserts</Link></li>
-          </SubMenu>
+          </SubMenu> */}
           <li>
             <StyledLink to="/contact"
               activeStyle={activeStyle}>
@@ -211,12 +223,12 @@ const TopMenu: FC<HTMLAttributes<HTMLDivElement>> = (props) => {
               Info
           </StyledLink>
           </li>
-          <li>
+          {/* <li>
             <StyledLink to="/markets"
               activeStyle={activeStyle}>
               Markets
           </StyledLink>
-          </li>
+          </li> */}
           <li>
             <StyledLink to="/cart"
               activeStyle={activeStyle}>
