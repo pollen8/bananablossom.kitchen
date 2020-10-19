@@ -5,13 +5,7 @@ import React, {
 import styled from 'styled-components';
 
 const Body = styled.div`
-@media (min-width: 640px){ 
   padding: 1rem;
-}
-
-@media (max-width: 640px){ 
- padding: 0.5rem;
-}
 `;
 
 const CardBody: FC<HTMLAttributes<HTMLDivElement>> = (props) => {

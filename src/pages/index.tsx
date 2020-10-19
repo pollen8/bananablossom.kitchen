@@ -132,12 +132,6 @@ query {
               </Ul>
 
             </div>
-
-
-
-            {/* <div>
-
-                  </div> */}
           </Stack>
           <div>
             <Img fixed={data.hr.childImageSharp.fixed} />
@@ -146,14 +140,8 @@ query {
             <Img fixed={data.rating.childImageSharp.fixed} alt="Food hygiene rating: 5" />
           </div>
         </CardBody>
-        {/* </Card > */}
-        {/* <Card>
-          <CardBody>
-            <OpeningTimes />
-          </CardBody>
-        </Card> */}
-      </Stack >
-    </Layout >
+      </Stack>
+    </Layout>
   )
 }
 

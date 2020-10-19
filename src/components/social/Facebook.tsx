@@ -1,18 +1,16 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { AiFillFacebook } from 'react-icons/ai';
 import styled from 'styled-components';
 
 import { ButtonIcon } from '../Button';
 
 const MediaButtonIcons = styled(ButtonIcon)`
-  display: none;
-  @media (min-width: 640px){ 
-    display: block;
-  }
+  padding: 0;
+  margin-top: 0;
 `;
 
 interface IProps {
-  size?: 52,
+  size?: number,
 }
 const Facebook: FC<IProps> = ({ size = 52 }) => {
   return (

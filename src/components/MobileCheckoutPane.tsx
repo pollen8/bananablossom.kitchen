@@ -28,11 +28,6 @@ const Container = styled.div`
   text-align: center;
   }
 
-  @media (max-width: 640px){ 
-    svg {
-      display: none;
-    }
-   }
 `;
 
 const Icons = styled.div`
@@ -55,10 +50,13 @@ const MobileCheckoutPane: FC = () => {
           <CheckoutButton />
         }
 
-        <Icons>
-          <Facebook size={30} />
-          <TripAdvisor size={30} />
-        </Icons>
+        {
+          state.items.length === 0 &&
+          <Icons>
+            <Facebook size={30} />
+            <TripAdvisor size={30} />
+          </Icons>
+        }
       </div>
     </Container>
   )
