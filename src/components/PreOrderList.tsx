@@ -12,7 +12,7 @@ import {
 import MealListItem2 from './MealListItem';
 
 const GET_PREORDERS = graphql`{
-  allFaunaProduct(filter: {id: {in: ["f44dee22-3c27-5989-9e59-b47824973209"]}}) {
+  allFaunaProduct {
     nodes {
       description
       id
