@@ -77,11 +77,11 @@ query {
 
           </Stack>
         </CardBody>
-        <div style={{ minWidth: '30rem' }}>
+        {/* <div style={{ minWidth: '30rem' }}>
           <CardBody>
             <OpeningTimes />
           </CardBody>
-        </div>
+        </div> */}
       </Stack>
     </Layout>
   )
