@@ -11,7 +11,7 @@ export default () => {
       <CardBody>
         <div id="pre-order">
           <Alert color="info">
-            Only available on days outside of our market days.</Alert>
+            Orders are only available for delivery on Monday's and for pick up from our market locations.</Alert>
           <br />
           <PreOrderList />
         </div>

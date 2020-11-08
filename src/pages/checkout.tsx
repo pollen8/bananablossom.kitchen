@@ -15,6 +15,7 @@ import React, {
   useContext,
   useState,
 } from 'react';
+import { MarkerProps } from 'react-google-maps';
 import styled from 'styled-components';
 import {
   email,
@@ -33,14 +34,16 @@ import Card from '../components/Card';
 import CardBody from '../components/CardBody';
 import Cart from '../components/Cart';
 import CartContent, { getCartTotal } from '../components/CartContent';
-import Calendar from '../components/checkout/Calendar';
+import Calendar, { ITimes } from '../components/checkout/Calendar';
 import CheckoutForm from '../components/checkout/CheckoutForm';
-import DeliveryOptions, { deliveryFreeFrom } from '../components/checkout/DeliveryOption';
+import AvailableDaysInfo from '../components/checkout/delivery/AvailableDaysInfo';
+import Delivery from '../components/checkout/delivery/Delivery';
+import DeliveryMap from '../components/checkout/delivery/DeliveryMap';
+import DeliveryOptions from '../components/checkout/DeliveryOption';
 import DeliverySummary from '../components/checkout/DeliverySummary';
 import EmptyCart from '../components/checkout/EmptyCart';
 import StageNavigation from '../components/checkout/StageNavigation';
 import { isDisabled } from '../components/DatePicker';
-import DeliveryMap from '../components/DeliveryMap';
 import Error from '../components/Error';
 import Fieldset from '../components/Fieldset';
 import FormFooter from '../components/FormFooter';
@@ -50,6 +53,7 @@ import Label from '../components/Label';
 import Layout from '../components/layout';
 import Stack from '../components/layout/Stack';
 import TextArea from '../components/TextArea';
+import { ITime } from '../components/TimePicker';
 import Pill from '../components/ui/Pill';
 import {
   ICartContext,
@@ -72,6 +76,7 @@ export interface IOrder {
   email: string;
   tel: string;
   delivery: 'pickup' | 'delivery';
+  pickupLocation: IPickupLocation;
   street: string;
   city: string;
   postcode: string;
@@ -81,32 +86,49 @@ export interface IOrder {
   order_time: any;
 }
 
+export interface IPickupLocation {
+  name: string;
+  address: Record<string, string>;
+  daytimes: {
+    day: string, time: { start: ITime, end: ITime }
+  }[];
 
-const Row = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-`;
-
-interface ICol {
-  xs?: number;
+  position: MarkerProps['position'];
 }
-const Col = styled.div<ICol>`
-  margin: 0 0.125rem;
-  flex-grow: 1;
-  ${(props) => {
-    if (props.xs) {
-      return `
-      width: ${(props.xs / 12) * 100}%;
-      `;
-    }
-    return `
-    @media (min-width: 640px){
-      flex-grow: 1;
-    }
-    `;
-  }}
-`;
+
+export interface ICheckoutConfig {
+  deliveryFreeFrom: number;
+  pickupLocations: IPickupLocation[];
+}
+
+export const checkoutConfig: ICheckoutConfig = {
+  deliveryFreeFrom: 14,
+  pickupLocations: [{
+    name: 'Portsmouth Arms',
+    address: {
+      'p-street-address': 'Hatch Warren Lane',
+      'p-extended-address': 'Hatch Warren',
+      'p-locality': 'Basingstoke',
+      'p-postal-code': ' RG22 4RA',
+    },
+    position: { lat: 51.2339256, lng: -1.1178977 },
+    daytimes: [{
+      day: 'Saturday', time: { start: { hour: 10, minute: 0 }, end: { hour: 13, minute: 0 } },
+    }],
+  },
+  {
+    name: 'Basingstoke Market',
+    address: {
+      'p-street-address': 'Top of town',
+      'p-locality': 'Basingstoke',
+    },
+    position: { lat: 51.2594192, lng: -1.0865909 },
+    daytimes: [{
+      day: 'Wednesday', time: { start: { hour: 11, minute: 0 }, end: { hour: 16, minute: 0 } },
+    }]
+  }]
+};
+
 
 const stages = ['details',
   'deliveryChoice',
@@ -179,8 +201,18 @@ const dayToNumber = (d: string) => {
 }
 const getProductAvailableDays = (
   state: IState,
+  values?: IOrder,
 ) => {
   const availableDays = new Set<string>();
+  if (values?.delivery === 'pickup') {
+    values.pickupLocation.daytimes.forEach((dt) => {
+      availableDays.add(dt.day);
+    })
+    return availableDays;
+  }
+  if (values?.delivery == 'delivery') {
+    return new Set(['Monday']);
+  }
   state.items.forEach((item) => {
     (item.product.availableDays ?? []).forEach((d) => availableDays.add(d));
   })
@@ -214,7 +246,6 @@ const Checkout: FC = () => {
 
   const nextFreeDay = getNextFeeDay(state, holidays);
 
-  console.log('nextFreeDay', nextFreeDay);
   const defaultValues = typeof window !== 'undefined' && sessionStorage.getItem('form-order')
     ? JSON.parse(sessionStorage.getItem('form-order'))
     : {
@@ -225,7 +256,7 @@ const Checkout: FC = () => {
   if (!defaultValues.order_date) {
     defaultValues.order_date = nextFreeDay;
   }
-  console.log('defaultValues', defaultValues);
+
   const { errors, values, handleInputChange, handleSubmit, formatError, validateTouched, validateSome } = useForm<IOrder>({
     id: 'order',
     contract,
@@ -238,7 +269,7 @@ const Checkout: FC = () => {
   if (state.items.length === 0) {
     return <EmptyCart />;
   }
-  const availableDays = getProductAvailableDays(state);
+  const availableDays = getProductAvailableDays(state, values);
 
   if (availableDays.size > 1) {
     return <Redirect to="/cart" />
@@ -269,7 +300,7 @@ const Checkout: FC = () => {
                       <Fieldset>
                         <legend>
                           Your contact details
-                    </legend>
+                        </legend>
                         <FormGroup>
                           <Label htmlFor="name">Name *</Label>
                           <Input
@@ -363,6 +394,7 @@ const Checkout: FC = () => {
                         <DeliveryOptions
                           selected={values.delivery}
                           total={discountedTotal}
+                          checkoutConfig={checkoutConfig}
                           toggle={(v) => {
                             handleInputChange('delivery', v);
                           }} />
@@ -371,25 +403,10 @@ const Checkout: FC = () => {
                         <Label>
                           {values.delivery === 'pickup' ? 'Pick up location' : 'Our delivery area'}
                         </Label>
-                        <Row>
-                          {
-                            values.delivery === 'pickup' &&
-                            <Col xs={12}>
-                              <strong>Pick up from: </strong>
-                              <div className="adr">
-                                <div className="street-address">35 Morley Road</div>
-                                <div className="locality">Basingstoke</div>
-                                <div className="region">Hampshire</div>
-                                <div className="postal-code">RG21 3LH</div>
-                              </div>
-                            </Col>
-                          }
-                          <Col xs={12}>
-                            <DeliveryMap
-                              showDeliveryArea={values.delivery === 'delivery'} />
-                          </Col>
-                        </Row>
-
+                        <Delivery
+                          checkoutConfig={checkoutConfig}
+                          handleInputChange={handleInputChange}
+                          values={values} />
                       </Fieldset>
 
                       <FormFooter>
@@ -410,7 +427,7 @@ const Checkout: FC = () => {
                         <legend>Delivery / Pickup</legend>
                         <div>
                           {
-                            discountedTotal > deliveryFreeFrom && <>
+                            discountedTotal > checkoutConfig.deliveryFreeFrom && <>
                               {
                                 values.delivery === 'delivery' &&
                                 <Stack>
@@ -441,7 +458,11 @@ const Checkout: FC = () => {
                                   </div>
                                   <div>
                                     <DeliveryMap
-                                      showDeliveryArea={values.delivery === 'delivery'} />
+                                      markers={[{
+                                        position: { lat: 51.2550075, lng: -1.0959825 },
+                                        showDeliveryArea: true,
+                                      }]}
+                                    />
                                   </div>
                                 </Stack>
                               }
@@ -456,13 +477,11 @@ const Checkout: FC = () => {
                                   : 'When would you like to pick up your order on?'
                               }
                             </Label>
-                            {
-                              availableDays.size > 0 && <>
-                                You can only pick up on {Array.from(availableDays).map((d) => <Pill
-                                background="blue800"
-                                color="grey200" key={d}>{d}</Pill>)}
-                              </>
-                            }
+                            <AvailableDaysInfo
+                              delivery={values.delivery}
+                              availableDays={availableDays}
+                            />
+
                             <Calendar
                               allFaunaHoliday={allFaunaHoliday}
                               orderDate={typeof values.order_date === 'string'
@@ -473,6 +492,11 @@ const Checkout: FC = () => {
                                 (disabledDaysOfWeek).map((d) => dayToNumber(d))
                               }
                               handleInputChange={handleInputChange}
+                              availability={
+                                values.delivery === 'pickup' ?
+                                  locationToTimes(values.pickupLocation)
+                                  : mondayDeliveryTimes()
+                              }
                             />
                           </FormGroup>
                         </div>
@@ -538,3 +562,43 @@ const Checkout: FC = () => {
 }
 
 export default Checkout;
+
+const locationToTimes = (location: IPickupLocation) => {
+  const times: ITimes[] = new Array(7).fill({
+    startTime: { hour: 11, minute: 0 },
+    endTime: { hour: 20, minute: 0 },
+    deliveryAvailability: [{
+      start: { hour: 0, minute: 0 },
+      end: { hour: 0, minute: 0 },
+    }]
+  });
+  location.daytimes.forEach((t) => {
+    const i = dayToNumber(t.day);
+    times[i] = {
+      startTime: { hour: 11, minute: 0 },
+      endTime: { hour: 20, minute: 0 },
+      deliveryAvailability: [t.time]
+    }
+  })
+  return times;
+}
+
+const mondayDeliveryTimes = () => {
+  const times: ITimes[] = new Array(7).fill({
+    startTime: { hour: 11, minute: 0 },
+    endTime: { hour: 20, minute: 0 },
+    deliveryAvailability: [{
+      start: { hour: 0, minute: 0 },
+      end: { hour: 0, minute: 0 },
+    }]
+  });
+  times[1].deliveryAvailability = [{
+    start: { hour: 11, minute: 0 },
+    end: { hour: 14, minute: 30, },
+  },
+  {
+    start: { hour: 16, minute: 0 },
+    end: { hour: 18, minute: 30, },
+  }];
+  return times;
+}

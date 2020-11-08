@@ -8,26 +8,7 @@ import styled from 'styled-components';
 import { IHoliday } from '../admin/Availability';
 import DatePicker from '../DatePicker';
 import Label from '../Label';
-import TimePicker, {
-  formatAmPm,
-  ITime,
-} from '../TimePicker';
-
-interface IDay {
-  id: string;
-  start: string;
-  end: string;
-}
-
-
-
-
-const Row = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-`;
-
+import TimePicker, { ITime } from '../TimePicker';
 
 const StyledDatePicker = styled(DatePicker)`
   border: 1px solid ${(props) => props.theme.colors.grey700};
@@ -93,13 +74,6 @@ border: 1px solid ${(props) => props.theme.colors.grey700};
   }
 `;
 
-const StyledRow = styled(Row)`
-  flex-directon: row;
-  @media (min-width: 640px){
-    flex-directon: column;
-  }
-`;
-
 const deliveryAvailability = [
   {
     start: { hour: 11, minute: 0 },
@@ -111,7 +85,16 @@ const deliveryAvailability = [
   },
 ];
 
-export const times = [
+interface IHourMin { hour: number; minute: number };
+export interface ITimes {
+  startTime: IHourMin;
+  endTime: IHourMin;
+  deliveryAvailability: {
+    start: IHourMin;
+    end: IHourMin;
+  }[]
+}
+export const times: ITimes[] = [
   {
     startTime: { hour: 11, minute: 0 },
     endTime: { hour: 20, minute: 0 },
@@ -160,6 +143,7 @@ interface IProps {
   allFaunaHoliday: {
     nodes: IHoliday[];
   };
+  availability?: ITimes[],
 }
 
 const Calendar: FC<IProps> = ({
@@ -168,6 +152,7 @@ const Calendar: FC<IProps> = ({
   orderTime = { hour: 10, minute: 0 },
   disabledDaysOfWeek,
   allFaunaHoliday,
+  availability = times,
 }) => {
   const [values, setValues] = useState<[Date, ITime]>([orderDate, orderTime]);
   let dayOfWeek: number = 0;
@@ -217,14 +202,14 @@ const Calendar: FC<IProps> = ({
           endTime={times[dayOfWeek].endTime}
           useAmPm
           hideValue
-          available={times[dayOfWeek].deliveryAvailability} />
+          available={availability[dayOfWeek].deliveryAvailability} />
       </div>
     </>
   )
 }
 
 export const formatTime = (time: ITime) => {
-  const hour = (time.hour <= 12) ? 12 : time.hour - 12;
+  const hour = (time.hour <= 12) ? time.hour : time.hour - 12;
   const ampm = (time.hour <= 12) ? 'am' : 'pm';
   const min = time.minute == 0 ? '' : `:${time.minute}`;
   return `${hour}${min}${ampm}`;

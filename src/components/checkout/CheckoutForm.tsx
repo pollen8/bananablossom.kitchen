@@ -99,7 +99,6 @@ const CheckoutForm: FC<IProps> = ({
   const [disabled, setDisabled] = useState(false);
   const { state, dispatch } = useContext(store);
 
-  console.log('order', state.items);
   const handleSubmit = async (event) => {
     setError('');
     setDisabled(true);
