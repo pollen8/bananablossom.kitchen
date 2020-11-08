@@ -204,7 +204,7 @@ const getProductAvailableDays = (
   values?: IOrder,
 ) => {
   const availableDays = new Set<string>();
-  if (values?.delivery === 'pickup') {
+  if (values?.delivery === 'pickup' && values.pickupLocation) {
     values.pickupLocation.daytimes.forEach((dt) => {
       availableDays.add(dt.day);
     })
@@ -251,6 +251,7 @@ const Checkout: FC = () => {
     : {
       delivery: 'pickup',
       order_time: { hour: 13, minute: 0 },
+      pickupLocation: checkoutConfig.pickupLocations[0],
     };
 
   if (!defaultValues.order_date) {
