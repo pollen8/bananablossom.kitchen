@@ -6,9 +6,11 @@ import Img from 'gatsby-image';
 import React from 'react';
 import styled from 'styled-components';
 
+import Card from '../components/Card';
 import CardBody from '../components/CardBody';
 import Layout from '../components/layout';
 import Stack from '../components/layout/Stack';
+import { FlexRow } from '../components/MealListItemDetails';
 
 const Ul = styled.ul`
 margin-top: 0.75rem;
@@ -49,6 +51,8 @@ query {
         } 
         }
   }
+
+
   hr: file(relativePath: { eq: "hr.png" }) {
     childImageSharp {
           fixed(width: 200) {
@@ -75,14 +79,42 @@ query {
             <Img
               fixed={data.sign.childImageSharp.fixed} alt="Authentic Vietnamese Cuisine in Basingstoke" />
           </div>
+
+          <Card style={{ marginTop: '2rem', marginBottom: '3rem', textAlign: 'left', maxWidth: '60rem', margin: 'auto', backgroundColor: 'rgb(253, 237, 240)' }}>
+            <CardBody>
+              <h1>Special Phở  beef noodle soup night, Thursday 10th December</h1>
+              <hr />
+              <p>on Thursday the 10th of December, we will be doing a special Phở night.
+                </p>
+              <ul>
+              </ul>
+              <FlexRow>
+                <div>
+                  <div style={{ fontSize: '1.1rem' }}>Slow cooked beef broth with tender beef brisket, rare beef and beef meatballs. Served with flat rice noodles, beansprouts and traditional fresh Vietnamese herbs. </div>
+                  <p>(Gluten free)</p>
+                </div>
+                <div style={{ marginLeft: '2rem' }}>
+                  <div style={{ fontSize: '1.1rem' }}>&pound;10.00</div>
+                  Only
+                </div>
+              </FlexRow>
+              <p>Our kitchen will be opened for <strong>collection</strong> and <strong>delivery</strong> on the 10th of December from 6pm to 8pm. <br />Free delivery is available with orders starting from 3 portions. Please contact us to make sure that you are in free delivery zone.</p>
+              <p>Pre-order is essential by Tuesday 8th of December via <a href="https://www.facebook.com/bananablossom.kitchen">Messenger on our Facebook page</a>. The payment link will be sent when you place your order.</p>
+
+              <a style={{ fontWeight: 'bold' }} href="https://www.facebook.com/bananablossom.kitchen">Order now, via Messenger on our Facebook page</a>
+            </CardBody>
+          </Card>
+
           <h1 style={{ marginTop: '1rem' }}>
             Find us at our local Hampshire markets.
           </h1>
           <p>Sample our freshly made home cooked Vietnamese cuisine.</p>
           <Stack style={{ maxWidth: '60rem', margin: 'auto' }}>
 
+
             <div>
               <Stack>
+
                 <div>
                   <a href="https://www.portsmoutharmshatchwarren.co.uk/">
                     <Img style={{ clipPath: 'circle(100px at center)' }}
