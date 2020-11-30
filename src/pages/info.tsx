@@ -65,7 +65,7 @@ query {
                     as the second chef at <a href="https://le-bistrot-dla-chaine.business.site/">La Bistro de La Chaine</a>.
                 </p>
               <p>Linh has been living and working in England for the last 4 years, where she was a chef de partie at
-                  the <a href="www.whitehartoverton.co.uk">White Hart Overton</a> and
+                  the <a href="https://www.whitehartoverton.co.uk">White Hart Overton</a> and
                   at the<a href="https://www.fourseasons.com/hampshire"> Four Seasons Hotel</a> where she was responsible for
                   creating their Café Santé asian fusion menus.</p>
 
