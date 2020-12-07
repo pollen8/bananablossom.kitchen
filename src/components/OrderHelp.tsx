@@ -10,8 +10,8 @@ const OrderHelp: FC = () => {
         <p>
           Dishes may contain allergens. If you have any dietary requirements, please let us know when you place your order.
         </p>
-        <p>
-          All our dishes are freshly made to order, please orders by 10:00am for next day collection. </p>
+        {/* <p>
+          All our dishes are freshly made to order, please orders by 10:00am for next day collection. </p> */}
         {/* <p>
           The “Pho bo” beef broth is only available on Thursdays by order the previous day.
         </p> */}
