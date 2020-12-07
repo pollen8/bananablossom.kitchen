@@ -102,7 +102,7 @@ export interface ICheckoutConfig {
 }
 
 export const checkoutConfig: ICheckoutConfig = {
-  deliveryFreeFrom: 14,
+  deliveryFreeFrom: 1400000000,
   pickupLocations: [{
     name: 'Portsmouth Arms',
     address: {
@@ -113,7 +113,7 @@ export const checkoutConfig: ICheckoutConfig = {
     },
     position: { lat: 51.2339256, lng: -1.1178977 },
     daytimes: [{
-      day: 'Saturday', time: { start: { hour: 10, minute: 0 }, end: { hour: 13, minute: 0 } },
+      day: 'Saturday', time: { start: { hour: 10, minute: 0 }, end: { hour: 15, minute: 0 } },
     }],
   },
   {
@@ -390,12 +390,13 @@ const Checkout: FC = () => {
                     stage === 'deliveryChoice' &&
                     <>
                       <Fieldset>
-                        <legend>Delivery / Pickup</legend>
+                        {/* <legend>Delivery / Pickup</legend> */}
                         <p>Choose whether you want your order delivered</p>
                         <DeliveryOptions
                           selected={values.delivery}
                           total={discountedTotal}
                           checkoutConfig={checkoutConfig}
+                          showDisabled={false}
                           toggle={(v) => {
                             handleInputChange('delivery', v);
                           }} />
@@ -425,7 +426,7 @@ const Checkout: FC = () => {
                     stage == 'deliveryOptions' &&
                     <>
                       <Fieldset>
-                        <legend>Delivery / Pickup</legend>
+                        {/* <legend>Delivery / Pickup</legend> */}
                         <div>
                           {
                             discountedTotal > checkoutConfig.deliveryFreeFrom && <>

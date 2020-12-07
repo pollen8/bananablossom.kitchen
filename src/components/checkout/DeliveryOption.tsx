@@ -15,6 +15,7 @@ interface IProps {
   toggle: (selected: TDeliveryOptions) => void;
   total: number;
   checkoutConfig: ICheckoutConfig;
+  showDisabled?: boolean;
 }
 
 const DeliveryOptions: FC<IProps> = ({
@@ -22,8 +23,10 @@ const DeliveryOptions: FC<IProps> = ({
   total,
   toggle,
   checkoutConfig,
+  showDisabled,
 }) => {
   const { deliveryFreeFrom } = checkoutConfig;
+  const disabled = total < deliveryFreeFrom;
   const theme = useTheme();
   return (
     <div style={{ display: 'flex', justifyContent: 'space-around', margin: '0.25rem 0' }}>
@@ -34,15 +37,19 @@ const DeliveryOptions: FC<IProps> = ({
       >
         <AiOutlineHome size="2rem" />
       </BigCheckbox>
-      <BigCheckbox
-        disabled={total < deliveryFreeFrom}
-        title={total < deliveryFreeFrom ? `Delivery available for orders over £${deliveryFreeFrom}.00` : ''}
-        onClick={() => total >= deliveryFreeFrom && toggle('delivery')}
-        label="Delivered"
-        active={selected === 'delivery'}
-      >
-        <AiOutlineCar size="2rem" color={total < deliveryFreeFrom ? theme.colors.grey500 : theme.colors.grey300} />
-      </BigCheckbox>
+      {
+        ((showDisabled && disabled) || !disabled) &&
+        <BigCheckbox
+          disabled={disabled}
+          title={disabled ? `Delivery available for orders over £${deliveryFreeFrom}.00` : ''}
+          onClick={() => total >= deliveryFreeFrom && toggle('delivery')}
+          label="Delivered"
+          active={selected === 'delivery'}
+        >
+          <AiOutlineCar size="2rem" color={disabled ? theme.colors.grey500 : theme.colors.grey300} />
+        </BigCheckbox>
+      }
+
     </div>
   );
 };
