@@ -6,6 +6,7 @@ import {
   IOrder,
 } from '../../../pages/checkout';
 import Col from '../../layout/Col';
+import { IPickupLocation } from '../pickupLocations';
 import DeliveryMap from './DeliveryMap';
 import PickupAddress from './PickupAddress';
 
@@ -18,20 +19,21 @@ const Row = styled.div`
 interface IProps {
   checkoutConfig: ICheckoutConfig;
   values: IOrder;
-  handleInputChange: (key: string, value: any) => void;
+  onClick: (location: IPickupLocation) => void;
 }
 
 const Delivery: FC<IProps> = ({
   checkoutConfig,
   values,
-  handleInputChange,
+  onClick,
 }) => {
   const markers = values.delivery === 'pickup'
-    ? checkoutConfig.pickupLocations.map((location) => ({
-      showDeliveryArea: false,
-      position: location.position,
-      info: location.name,
-    }))
+    ? checkoutConfig.pickupLocations
+      .map((location) => ({
+        showDeliveryArea: false,
+        position: location.position,
+        info: location.name,
+      }))
     : [{
       position: { lat: 51.2550075, lng: -1.0959825 },
       showDeliveryArea: true,
@@ -44,7 +46,7 @@ const Delivery: FC<IProps> = ({
           {
             checkoutConfig.pickupLocations.map((location, i) => <PickupAddress key={i}
               selected={values.pickupLocation.name === location.name}
-              onClick={() => handleInputChange('pickupLocation', location)}
+              onClick={() => onClick(location)}
               location={location} />)
           }
         </Col>

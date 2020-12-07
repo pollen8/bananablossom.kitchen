@@ -31,6 +31,22 @@ export const useForm = <T extends object>(props: IProps<T>) => {
     callback && await callback(values);
   }
 
+  const handleInputChanges = async (newValues: Partial<T>) => {
+    const newTouched = touched.concat(name);
+    try {
+      const newData = { ...values, ...newValues };
+      setTouched(newTouched);
+      setValues(newData);
+      sessionStorage.setItem('form-' + id, JSON.stringify(newData));
+      if (contract) {
+        await validate(contract, newData);
+      }
+    } catch (e) {
+      const touchedErrors = {};
+      Object.keys(e).filter((k) => newTouched.includes(k as keyof T)).forEach((k) => touchedErrors[k] = e[k]);
+      setErrors(touchedErrors);
+    }
+  }
   const handleInputChange = async (name: keyof T, value: any) => {
     const newTouched = touched.concat(name);
     try {
@@ -81,5 +97,6 @@ export const useForm = <T extends object>(props: IProps<T>) => {
     formatError,
     validateTouched,
     validateSome,
+    handleInputChanges,
   }
 }

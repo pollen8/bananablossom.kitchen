@@ -37,7 +37,7 @@ const Notice = styled.div<{ i: number }>`
 const Notifications = () => {
   const [r, setR] = useState([]);
   const { allFaunaNotification } = useStaticQuery<{ allFaunaNotification: { nodes: INotification[] } }>(GET_NOTIFICATIONS);
-  console.log('allFaunaNotification', allFaunaNotification);
+
   if (typeof window === 'undefined') {
     return null;
   }

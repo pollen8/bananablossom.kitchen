@@ -1,4 +1,9 @@
-import { addDays } from 'date-fns';
+import {
+  addDays,
+  setHours,
+  setMinutes,
+  setSeconds,
+} from 'date-fns';
 import React, {
   FC,
   useState,
@@ -140,9 +145,7 @@ interface IProps {
   orderDate: Date;
   orderTime: ITime;
   disabledDaysOfWeek: number[];
-  allFaunaHoliday: {
-    nodes: IHoliday[];
-  };
+  disabledRanges: IHoliday[];
   availability?: ITimes[],
 }
 
@@ -151,7 +154,7 @@ const Calendar: FC<IProps> = ({
   orderDate,
   orderTime = { hour: 10, minute: 0 },
   disabledDaysOfWeek,
-  allFaunaHoliday,
+  disabledRanges,
   availability = times,
 }) => {
   const [values, setValues] = useState<[Date, ITime]>([orderDate, orderTime]);
@@ -184,10 +187,7 @@ const Calendar: FC<IProps> = ({
 
             setValues([value, newTime]);
           }}
-          disabledRanges={[
-            ...allFaunaHoliday.nodes.map((n) => ({ start: new Date(n.start), end: new Date(n.end) })),
-            { start: addDays(new Date(), - 2), end: addDays(new Date(), - 1) }
-          ]} />
+          disabledRanges={disabledRanges} />
       </div>
 
       <div style={{ flexGrow: 1, maxWidth: '24rem' }}>

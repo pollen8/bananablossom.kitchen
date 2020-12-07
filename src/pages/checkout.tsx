@@ -1,10 +1,6 @@
 
 import axios from 'axios';
-import {
-  setHours,
-  setMinutes,
-  setSeconds,
-} from 'date-fns';
+import { setHours } from 'date-fns';
 import addDays from 'date-fns/addDays';
 import {
   graphql,
@@ -15,7 +11,6 @@ import React, {
   useContext,
   useState,
 } from 'react';
-import { MarkerProps } from 'react-google-maps';
 import styled from 'styled-components';
 import {
   email,
@@ -23,7 +18,6 @@ import {
   Validation,
 } from 'validate-promise';
 
-import { Redirect } from '@reach/router';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 
@@ -42,8 +36,12 @@ import DeliveryMap from '../components/checkout/delivery/DeliveryMap';
 import DeliveryOptions from '../components/checkout/DeliveryOption';
 import DeliverySummary from '../components/checkout/DeliverySummary';
 import EmptyCart from '../components/checkout/EmptyCart';
+import {
+  IPickupLocation,
+  pickupLocations,
+} from '../components/checkout/pickupLocations';
+import { possiblePickupDates } from '../components/checkout/possiblePickupDates';
 import StageNavigation from '../components/checkout/StageNavigation';
-import { isDisabled } from '../components/DatePicker';
 import Error from '../components/Error';
 import Fieldset from '../components/Fieldset';
 import FormFooter from '../components/FormFooter';
@@ -53,11 +51,8 @@ import Label from '../components/Label';
 import Layout from '../components/layout';
 import Stack from '../components/layout/Stack';
 import TextArea from '../components/TextArea';
-import { ITime } from '../components/TimePicker';
-import Pill from '../components/ui/Pill';
 import {
   ICartContext,
-  IState,
   store,
 } from '../context/cartContext';
 import { useFormWizard } from '../hooks/formWizard';
@@ -77,6 +72,7 @@ export interface IOrder {
   tel: string;
   delivery: 'pickup' | 'delivery';
   pickupLocation: IPickupLocation;
+  possibleDates: Date[];
   street: string;
   city: string;
   postcode: string;
@@ -86,16 +82,6 @@ export interface IOrder {
   order_time: any;
 }
 
-export interface IPickupLocation {
-  name: string;
-  address: Record<string, string>;
-  daytimes: {
-    day: string, time: { start: ITime, end: ITime }
-  }[];
-
-  position: MarkerProps['position'];
-}
-
 export interface ICheckoutConfig {
   deliveryFreeFrom: number;
   pickupLocations: IPickupLocation[];
@@ -103,34 +89,11 @@ export interface ICheckoutConfig {
 
 export const checkoutConfig: ICheckoutConfig = {
   deliveryFreeFrom: 1400000000,
-  pickupLocations: [{
-    name: 'Portsmouth Arms',
-    address: {
-      'p-street-address': 'Hatch Warren Lane',
-      'p-extended-address': 'Hatch Warren',
-      'p-locality': 'Basingstoke',
-      'p-postal-code': ' RG22 4RA',
-    },
-    position: { lat: 51.2339256, lng: -1.1178977 },
-    daytimes: [{
-      day: 'Saturday', time: { start: { hour: 10, minute: 0 }, end: { hour: 15, minute: 0 } },
-    }],
-  },
-  {
-    name: 'Basingstoke Market',
-    address: {
-      'p-street-address': 'Top of town',
-      'p-locality': 'Basingstoke',
-    },
-    position: { lat: 51.2594192, lng: -1.0865909 },
-    daytimes: [{
-      day: 'Wednesday', time: { start: { hour: 11, minute: 0 }, end: { hour: 16, minute: 0 } },
-    }]
-  }]
+  pickupLocations: pickupLocations,
 };
 
-
-const stages = ['details',
+const stages = [
+  'details',
   'deliveryChoice',
   'deliveryOptions',
   'info',
@@ -180,6 +143,8 @@ const GET_HOLIDAYS = graphql`{
   }
 }`;
 
+const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
 const dayToNumber = (d: string) => {
   switch (d) {
     case 'Sunday':
@@ -199,40 +164,6 @@ const dayToNumber = (d: string) => {
       return 6;
   }
 }
-const getProductAvailableDays = (
-  state: IState,
-  values?: IOrder,
-) => {
-  const availableDays = new Set<string>();
-  if (values?.delivery === 'pickup' && values.pickupLocation) {
-    values.pickupLocation.daytimes.forEach((dt) => {
-      availableDays.add(dt.day);
-    })
-    return availableDays;
-  }
-  if (values?.delivery == 'delivery') {
-    return new Set(['Monday']);
-  }
-  state.items.forEach((item) => {
-    (item.product.availableDays ?? []).forEach((d) => availableDays.add(d));
-  })
-  return availableDays;
-}
-
-// Get the first day the order can be placed on
-// Takes into account any holidays set
-// And if the cart contains items only available on certain days.
-const getNextFeeDay = (
-  state: IState,
-  holidays: { start: Date, end: Date }[],
-) => {
-  const days: number[] = Array.from(getProductAvailableDays(state)).map((d) => dayToNumber(d));
-  const nextFreeDay = new Array(30).fill('')
-    .map((_, i) => setSeconds(setMinutes(setHours(addDays(new Date(), i + 1), 13), 0), 0))
-    .filter((d) => days.length === 0 ?? days.includes(d.getDay()))
-    .find((d) => !isDisabled(d, holidays));
-  return nextFreeDay;
-}
 
 const Checkout: FC = () => {
   const { state } = useContext<ICartContext>(store);
@@ -242,27 +173,27 @@ const Checkout: FC = () => {
   const [clientSecret, setClientSecret] = useState('');
   const { allFaunaHoliday } = useStaticQuery<{ allFaunaHoliday: { nodes: IHoliday[] } }>(GET_HOLIDAYS);
 
-  const holidays = allFaunaHoliday.nodes.map((n) => ({ start: new Date(n.start), end: setHours(new Date(n.end), 24) }))
+  const holidays: IHoliday[] = allFaunaHoliday.nodes.map((n) => ({ start: new Date(n.start), end: setHours(new Date(n.end), 24) }))
 
-  const nextFreeDay = getNextFeeDay(state, holidays);
-
+  const defaultPickupDates = possiblePickupDates({ location: checkoutConfig.pickupLocations[0], holidays })
   const defaultValues = typeof window !== 'undefined' && sessionStorage.getItem('form-order')
     ? JSON.parse(sessionStorage.getItem('form-order'))
     : {
       delivery: 'pickup',
       order_time: { hour: 13, minute: 0 },
+      order_date: defaultPickupDates.length > 0 ? defaultPickupDates[0] : null,
+      possibleDates: defaultPickupDates,
       pickupLocation: checkoutConfig.pickupLocations[0],
     };
 
-  if (!defaultValues.order_date) {
-    defaultValues.order_date = nextFreeDay;
-  }
-
-  const { errors, values, handleInputChange, handleSubmit, formatError, validateTouched, validateSome } = useForm<IOrder>({
+  const { errors, values, handleInputChange, handleInputChanges, handleSubmit, formatError, validateSome } = useForm<IOrder>({
     id: 'order',
     contract,
     defaultValues,
   });
+
+  const availableDays = new Set(values.pickupLocation.daytimes.map((d) => d.day));
+  const disabledDaysOfWeek = availableDays.size > 0 ? days.filter((day) => !availableDays.has(day)) : ['Sunday'];
 
   const { stage, maxVisitedStage, changeStage } = useFormWizard({ stages });
   const discountedTotal = getCartTotal(state.items);
@@ -270,13 +201,6 @@ const Checkout: FC = () => {
   if (state.items.length === 0) {
     return <EmptyCart />;
   }
-  const availableDays = getProductAvailableDays(state, values);
-
-  if (availableDays.size > 1) {
-    return <Redirect to="/cart" />
-  }
-  const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-  const disabledDaysOfWeek = availableDays.size > 0 ? days.filter((day) => !availableDays.has(day)) : ['Sunday'];
 
   return (
     <Layout>
@@ -400,14 +324,19 @@ const Checkout: FC = () => {
                           toggle={(v) => {
                             handleInputChange('delivery', v);
                           }} />
-
-
                         <Label>
                           {values.delivery === 'pickup' ? 'Pick up location' : 'Our delivery area'}
                         </Label>
                         <Delivery
                           checkoutConfig={checkoutConfig}
-                          handleInputChange={handleInputChange}
+                          onClick={(location) => {
+                            const possibleDates = possiblePickupDates({ location, holidays });
+                            handleInputChanges({
+                              pickupLocation: location,
+                              possibleDates,
+                              order_date: possibleDates.length > 0 ? possibleDates[0] : null,
+                            })
+                          }}
                           values={values} />
                       </Fieldset>
 
@@ -485,7 +414,8 @@ const Checkout: FC = () => {
                             />
 
                             <Calendar
-                              allFaunaHoliday={allFaunaHoliday}
+                              disabledRanges={holidays.concat({ start: new Date(), end: addDays(new Date(), 1) })}
+
                               orderDate={typeof values.order_date === 'string'
                                 ? new Date(values.order_date)
                                 : values.order_date}
@@ -494,11 +424,7 @@ const Checkout: FC = () => {
                                 (disabledDaysOfWeek).map((d) => dayToNumber(d))
                               }
                               handleInputChange={handleInputChange}
-                              availability={
-                                values.delivery === 'pickup' ?
-                                  locationToTimes(values.pickupLocation)
-                                  : mondayDeliveryTimes()
-                              }
+                              availability={locationToTimes(values.pickupLocation)}
                             />
                           </FormGroup>
                         </div>
@@ -582,25 +508,5 @@ const locationToTimes = (location: IPickupLocation) => {
       deliveryAvailability: [t.time]
     }
   })
-  return times;
-}
-
-const mondayDeliveryTimes = () => {
-  const times: ITimes[] = new Array(7).fill({
-    startTime: { hour: 11, minute: 0 },
-    endTime: { hour: 20, minute: 0 },
-    deliveryAvailability: [{
-      start: { hour: 0, minute: 0 },
-      end: { hour: 0, minute: 0 },
-    }]
-  });
-  times[1].deliveryAvailability = [{
-    start: { hour: 11, minute: 0 },
-    end: { hour: 14, minute: 30, },
-  },
-  {
-    start: { hour: 16, minute: 0 },
-    end: { hour: 18, minute: 30, },
-  }];
   return times;
 }
