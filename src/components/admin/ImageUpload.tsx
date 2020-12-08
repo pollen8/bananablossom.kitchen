@@ -27,8 +27,11 @@ const ImageUpload: FC<IProps> = ({
 }) => {
   const [isUploading, setIsUploading] = useState(false);
   const [progress, setProgress] = useState(0);
-  const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
+  const cloudName = process.env.GATSBY_CLOUDINARY_CLOUD_NAME;
   const upload_preset = 'fm9zzl3f';
+  if (!cloudName) {
+    return <p>sorry no cloud name defined</p>
+  }
   const onPhotoSelected = async (files) => {
     setIsUploading(true);
     const url = `https://api.cloudinary.com/v1_1/${cloudName
