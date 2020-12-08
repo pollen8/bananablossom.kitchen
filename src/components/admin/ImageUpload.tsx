@@ -27,6 +27,7 @@ const ImageUpload: FC<IProps> = ({
 }) => {
   const [isUploading, setIsUploading] = useState(false);
   const [progress, setProgress] = useState(0);
+  console.log(process.env);
   const cloudName = process.env.GATSBY_CLOUDINARY_CLOUD_NAME;
   const upload_preset = 'fm9zzl3f';
   if (!cloudName) {
