@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, {
   FC,
+  FormEvent,
   useContext,
   useState,
 } from 'react';
@@ -99,12 +100,13 @@ const CheckoutForm: FC<IProps> = ({
   const [disabled, setDisabled] = useState(false);
   const { state, dispatch } = useContext(store);
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event: FormEvent) => {
     setError('');
     setDisabled(true);
     // We don't want to let default form submission happen here,
     // which would refresh the page.
     event.preventDefault();
+    event.stopPropagation();
 
     if (!stripe || !elements) {
       // Stripe.js has not yet loaded.
@@ -142,18 +144,22 @@ const CheckoutForm: FC<IProps> = ({
           },
         }
       });
-
+      console.log(result);
       if (result.error) {
         setDisabled(false);
 
         // Show error to your customer (e.g., insufficient funds)
         setError(result.error.message);
-        await axios.post("/.netlify/functions/sendmail", {
-          subject: 'Banana Blossom: Order failed',
-          error: result.error.message,
-          ...order,
-          order: state.items
-        });
+        try {
+          await axios.post("/.netlify/functions/sendmail", {
+            subject: 'Banana Blossom: Order failed',
+            error: result.error.message,
+            ...order,
+            order: state.items
+          });
+        } catch (e) {
+          /// swallow
+        }
 
         await axios.post("/.netlify/functions/order-update", {
           data: {
@@ -171,9 +177,13 @@ const CheckoutForm: FC<IProps> = ({
           // execution. Set up a webhook or plugin to listen for the
           // payment_intent.succeeded event that handles any business critical
           // post-payment actions.
-          await axios.post("/.netlify/functions/sendmail", {
-            ...order, order: state.items
-          })
+          try {
+            await axios.post("/.netlify/functions/sendmail", {
+              ...order, order: state.items
+            })
+          } catch (e) {
+            // swallow....
+          }
           dispatch({ type: 'CART_CLEAR' });
 
           await axios.post("/.netlify/functions/order-update", {
@@ -189,6 +199,7 @@ const CheckoutForm: FC<IProps> = ({
         setDisabled(false);
       }
     } catch (err) {
+      console.log('error', err);
       setError(err.toString());
       setDisabled(false);
       await axios.post("/.netlify/functions/order-update", {
@@ -204,7 +215,7 @@ const CheckoutForm: FC<IProps> = ({
   };
 
   return (
-    <StripeForm onSubmit={handleSubmit}>
+    <StripeForm>
       <FormGroup>
         <Label>
           Card information
@@ -217,6 +228,9 @@ const CheckoutForm: FC<IProps> = ({
       }
       <FormFooter>
         <Button
+          onClick={async (e) => {
+            await handleSubmit(e);
+          }}
           disabled={disabled}
           color="primary"
           style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem' }}
