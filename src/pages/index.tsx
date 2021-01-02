@@ -82,15 +82,13 @@ query {
 
           <Card style={{ marginTop: '2rem', marginBottom: '3rem', textAlign: 'left', maxWidth: '60rem', margin: 'auto', backgroundColor: 'rgb(253, 237, 240)' }}>
             <CardBody>
-              <h1>Special Phở  beef noodle soup night, Thursday 10th December</h1>
+              <h1>Special Bún bò Huế night, Thursday 7th January</h1>
               <hr />
-              <p>on Thursday the 10th of December, we will be doing a special Phở night.
-                </p>
-              <ul>
-              </ul>
               <FlexRow>
                 <div>
-                  <div style={{ fontSize: '1.1rem' }}>Slow cooked beef broth with tender beef brisket, rare beef and beef meatballs. Served with flat rice noodles, beansprouts and traditional fresh Vietnamese herbs. </div>
+                  <div style={{ fontSize: '1.0rem' }}> <p>It's a beef noodle soup originating from the Huế region, a central province of Vietnam.</p>
+                    <p>This noodle soup is beefy, spicy &amp; has a robust broth.
+                If you love Pho and you love a bit of spice then definitely give Bun Bo Hue a try.</p> </div>
                   <p>(Gluten free)</p>
                 </div>
                 <div style={{ marginLeft: '2rem' }}>
@@ -98,8 +96,12 @@ query {
                   Only
                 </div>
               </FlexRow>
-              <p>Our kitchen will be opened for <strong>collection</strong> and <strong>delivery</strong> on the 10th of December from 6pm to 8pm. <br />Free delivery is available with orders starting from 3 portions. Please contact us to make sure that you are in free delivery zone.</p>
-              <p>Pre-order is essential by Tuesday 8th of December via <a href="https://www.facebook.com/bananablossom.kitchen">Messenger on our Facebook page</a>. The payment link will be sent when you place your order.</p>
+              <p>Our kitchen will be opened for <strong>collection</strong> and <strong>delivery</strong>
+              &nbsp; on the 7th of January from 5:30pm to 8pm. <br />
+              Free delivery is available with orders starting from 3 portions. Please contact us to make sure
+              that you are in free delivery zone.</p>
+              <p>Pre-order is essential by 11pm Tuesday 5th of January via <a href="https://www.facebook.com/bananablossom.kitchen">Messenger on our Facebook page</a>.
+              The payment link will be sent when you place your order.</p>
 
               <a style={{ fontWeight: 'bold' }} href="https://www.facebook.com/bananablossom.kitchen">Order now, via Messenger on our Facebook page</a>
             </CardBody>
