@@ -11,7 +11,7 @@ export default () => {
       <CardBody>
         <div id="pre-order">
           <Alert color="info">
-            Our kitchen will be opened for collection and delivery  on the 7th of January from 5:30pm to 8pm.<br />
+            Our kitchen will be opened for collection and delivery on Thursdays from 5:30pm to 8pm.<br />
 Free delivery is available with orders starting from 3 portions. Please contact us to make sure that you are in free delivery zone.</Alert>
           <br />
           <ThursdayList />

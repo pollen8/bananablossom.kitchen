@@ -126,13 +126,13 @@ query {
                   <h3>The Portsmouth Arms</h3>
                   <p>Hatch Warren, every Saturday 11am - 4pm</p>
                 </div>
-                <div>
+                {/* <div>
                   <Img style={{ clipPath: 'circle(100px at center)' }}
                     alt="Vietnamese market in Basingstoke"
                     fixed={data.springroll.childImageSharp.fixed} />
                   <h3>Basingstoke Top of Town</h3>
                   <p>Every Wednesday 11am - 4pm</p>
-                </div>
+                </div> */}
               </Stack>
               <Img fixed={data.hr.childImageSharp.fixed} />
               <h4 style={{ marginTop: '2rem' }}>Example menu</h4>
