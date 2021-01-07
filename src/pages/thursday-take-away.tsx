@@ -3,7 +3,7 @@ import React from 'react';
 import Alert from '../components/Alert';
 import CardBody from '../components/CardBody';
 import Layout from '../components/mealLayout';
-import PreOrderList from '../components/PreOrderList';
+import ThursdayList from '../components/ThursdayList';
 
 export default () => {
   return (
@@ -11,9 +11,10 @@ export default () => {
       <CardBody>
         <div id="pre-order">
           <Alert color="info">
-            Pre-orders are only available for delivery on Monday's and for pick up from our market locations.</Alert>
+            Our kitchen will be opened for collection and delivery  on the 7th of January from 5:30pm to 8pm.<br />
+Free delivery is available with orders starting from 3 portions. Please contact us to make sure that you are in free delivery zone.</Alert>
           <br />
-          <PreOrderList />
+          <ThursdayList />
         </div>
       </CardBody>
     </Layout>

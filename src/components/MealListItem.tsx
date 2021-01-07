@@ -81,13 +81,14 @@ const MealListItem: FC<IProps> = ({
   if (!product.skus[selectedSKUIndex]) {
     return null;
   }
-  const unavailable = product.skus[selectedSKUIndex].unavailable === true;
+  const unavailable = product.skus.every((sku) => sku.unavailable === true);
 
   if (unavailable) {
     return null;
   }
 
   const availableDays = product.availableDays ?? [];
+
   return (
     <>
       <MealCard data-dish={`data-${product.name.replace(' ', '-')}`}>

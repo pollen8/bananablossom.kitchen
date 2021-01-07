@@ -39,12 +39,12 @@ const GET_PREORDERS = graphql`{
   }
 }`;
 
-const PreOrderList = () => {
+const ThursdayList = () => {
 
   const { allFaunaProduct, allCloudinaryMedia } = useStaticQuery<ISkuNodes>(GET_PREORDERS);
   const products = allFaunaProduct.nodes
     .filter((node) => Array.isArray(node.skus))
-    .filter((node) => node.id === 'f44dee22-3c27-5989-9e59-b47824973209')
+    .filter((node) => node.id !== 'f44dee22-3c27-5989-9e59-b47824973209')
     .map(mergeImages(allCloudinaryMedia));
 
   return (
@@ -64,4 +64,4 @@ const PreOrderList = () => {
   );
 };
 
-export default PreOrderList;
+export default ThursdayList;
