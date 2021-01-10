@@ -80,7 +80,7 @@ query {
               fixed={data.sign.childImageSharp.fixed} alt="Authentic Vietnamese Cuisine in Basingstoke" />
           </div>
 
-          <Card style={{ marginTop: '2rem', marginBottom: '3rem', textAlign: 'left', maxWidth: '60rem', margin: 'auto', backgroundColor: 'rgb(253, 237, 240)' }}>
+          {/* <Card style={{ marginTop: '2rem', marginBottom: '3rem', textAlign: 'left', maxWidth: '60rem', margin: 'auto', backgroundColor: 'rgb(253, 237, 240)' }}>
             <CardBody>
               <h1>Special Bún bò Huế night, Thursday 7th January</h1>
               <hr />
@@ -105,7 +105,7 @@ query {
 
               <a style={{ fontWeight: 'bold' }} href="https://www.facebook.com/bananablossom.kitchen">Order now, via Messenger on our Facebook page</a>
             </CardBody>
-          </Card>
+          </Card> */}
 
           <h1 style={{ marginTop: '1rem' }}>
             Find us at our local Hampshire markets.
