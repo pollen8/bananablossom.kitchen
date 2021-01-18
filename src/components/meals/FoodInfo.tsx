@@ -31,7 +31,7 @@ const FoodInfo: FC<IProps> = ({ sku }) => {
         sku.vegan && <Info title="Suitable for vegetarians and vegan">VE</Info>
       }
       {
-        sku.glutenFree && <Gluten title="Gluten free">G</Gluten>
+        sku.glutenFree && <Gluten title="Gluten free">GF</Gluten>
       }
       {
         sku.nuts && <Nuts title="May contain nuts">N</Nuts>
