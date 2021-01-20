@@ -197,6 +197,13 @@ const TopMenu: FC<HTMLAttributes<HTMLDivElement>> = (props) => {
             </StyledLink>
           </li>
           <li>
+            <StyledLink to="/specials"
+              activeClassName="active"
+              activeStyle={activeStyle}
+            >Special dates
+            </StyledLink>
+          </li>
+          <li>
             <StyledLink to="/pre-order"
               activeClassName="active"
               activeStyle={activeStyle}

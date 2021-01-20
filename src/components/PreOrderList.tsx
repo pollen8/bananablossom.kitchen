@@ -45,9 +45,8 @@ const PreOrderList = () => {
   const products = allFaunaProduct.nodes
     .filter((node) => Array.isArray(node.skus))
     .filter((node) => node.id === 'f44dee22-3c27-5989-9e59-b47824973209')
-    .filter((node) => node.availableDate === null)
+    .filter((node) => !node.hasOwnProperty('availableDate'))
     .map(mergeImages(allCloudinaryMedia));
-
   return (
     <>
       <Grid>

@@ -43,6 +43,7 @@ exports.createPages = async ({ graphql, actions }) => {
             name
             glutenFree
             image
+            availableDate
             nuts
             price
             unavailable

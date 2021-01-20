@@ -47,7 +47,6 @@ const SpecialsList = () => {
     .filter((node) => Array.isArray(node.skus))
     .filter((node) => node.availableDate !== null)
     .map(mergeImages(allCloudinaryMedia));
-
   return (
     <>
       <Grid>
