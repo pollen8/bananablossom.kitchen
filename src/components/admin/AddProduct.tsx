@@ -9,6 +9,8 @@ import useTraceUpdate from 'use-trace-update';
 import Button from '../Button';
 import Card from '../Card';
 import CardBody from '../CardBody';
+import DatePicker from '../DatePicker';
+import FormFooter from '../FormFooter';
 import FormGroup from '../FormGroup';
 import Input from '../Input';
 import Label from '../Label';
@@ -31,6 +33,7 @@ const updateProduct = async (data: IProduct) => {
 
 const emptyProduct: IProduct = {
   availableDays: [],
+  availableDate: null,
   id: '',
   name: '',
   course: 'main',
@@ -56,7 +59,8 @@ export interface IProduct {
   course: string,
   id: string;
   name: string;
-  availableDays: string[]
+  availableDays: string[];
+  availableDate: Date | null;
   description: string;
   price: number;
   ts: number;
@@ -76,6 +80,9 @@ const AddProduct: FC<IProps> = (props) => {
     product,
     addProduct,
   } = props;
+  if (typeof product.availableDate === 'string') {
+    product.availableDate = new Date(product.availableDate);
+  }
   const [data, setData] = useState(product ?? emptyProduct);
   useEffect(() => {
     setData(product ?? emptyProduct);
@@ -127,25 +134,36 @@ const AddProduct: FC<IProps> = (props) => {
             }
 
           </FormGroup>
-          <FormGroup>
-            <Label>Only available on</Label>
-            {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map((day) => <FormGroup key={day} check>
-              <input
-                type="checkbox"
-                id={`menu-${day}`}
-                checked={(data.availableDays ?? []).includes(day)}
-                name={`sku-name[]`}
-                onChange={(e) => {
-                  const availableDays = e.target.checked
-                    ? [...(data.availableDays ?? []), day]
-                    : (data.availableDays ?? []).filter((d) => d !== day);
-                  setData({ ...data, availableDays })
+        </Stack>
+        <Stack>
+          <div>
+            <FormGroup>
+              <Label>Only available on</Label>
+              {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map((day) => <FormGroup key={day} check>
+                <input
+                  type="checkbox"
+                  id={`menu-${day}`}
+                  checked={(data.availableDays ?? []).includes(day)}
+                  name={`sku-name[]`}
+                  onChange={(e) => {
+                    const availableDays = e.target.checked
+                      ? [...(data.availableDays ?? []), day]
+                      : (data.availableDays ?? []).filter((d) => d !== day);
+                    setData({ ...data, availableDays, availableDate: null })
+                  }} />
+                <Label check htmlFor={`menu-${day}`}>
+                  {day}
+                </Label>
+              </FormGroup>)}
+            </FormGroup>
+            <FormGroup>
+              <Label>Or exact date</Label>
+              <DatePicker value={data.availableDate === undefined ? null : data.availableDate}
+                onChange={(v) => {
+                  setData({ ...data, availableDays: [], availableDate: v })
                 }} />
-              <Label check htmlFor={`menu-${day}`}>
-                {day}
-              </Label>
-            </FormGroup>)}
-          </FormGroup>
+            </FormGroup>
+          </div>
         </Stack>
         <Skus
           product={data}
@@ -173,7 +191,7 @@ const AddProduct: FC<IProps> = (props) => {
             setData(p);
             updateProduct(p);
           }} />
-        <FormGroup>
+        <FormFooter align="space-between">
           <Button
             outline
             onClick={cancel}
@@ -195,7 +213,7 @@ const AddProduct: FC<IProps> = (props) => {
             color="primary">
             Submit
       </Button>
-        </FormGroup>
+        </FormFooter>
       </CardBody>
     </Card>
   )

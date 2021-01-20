@@ -71,8 +71,10 @@ export const Cell = styled.div<IDayProps>`
   text-align: center;
   color: ${(props) => color(props)};
   cursor: ${(props) => props.disabled ? 'not-allowed' : 'pointer'};
-  background-color: ${(props) => props.isSelected ? 'rgb(99, 181, 99)'
-    : props.isActive ? 'hsl(200,50%, 60%);' : 'none'};
+  background-color: ${(props) => props.isSelected
+    ? 'rgb(99, 181, 99)'
+    : props.isActive
+      ? 'hsl(200,50%, 60%);' : 'none'};
   &:hover {
     box-shadow: ${(props) => props.disabled ? 'none' : '0 2px 7px 0 rgba(60,66,87, 0.12), 0 1px 2px 0 rgba(0,0,0, 0.12)'};
   }
