@@ -17,6 +17,7 @@ const GET_PREORDERS = graphql`{
       description
       id
       name
+      availableDate
       skus {
         id,
         glutenFree
@@ -45,9 +46,9 @@ const ThursdayList = () => {
   const products = allFaunaProduct.nodes
     .filter((node) => Array.isArray(node.skus))
     .filter((node) => node.id !== 'f44dee22-3c27-5989-9e59-b47824973209')
-    .filter((node) => !node.hasOwnProperty('availableDate'))
+    .filter((node) => node.availableDate === null)
     .map(mergeImages(allCloudinaryMedia));
-
+  console.log('products', products);
   return (
     <>
       <Grid>
