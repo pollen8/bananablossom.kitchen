@@ -31,7 +31,7 @@ import CartContent, { getCartTotal } from '../components/CartContent';
 import Calendar, { ITimes } from '../components/checkout/Calendar';
 import CheckoutForm from '../components/checkout/CheckoutForm';
 import AvailableDaysInfo from '../components/checkout/delivery/AvailableDaysInfo';
-import Delivery from '../components/checkout/delivery/Delivery';
+import Delivery, { getAvailableLocation } from '../components/checkout/delivery/Delivery';
 import DeliveryMap from '../components/checkout/delivery/DeliveryMap';
 import DeliveryOptions from '../components/checkout/DeliveryOption';
 import DeliverySummary from '../components/checkout/DeliverySummary';
@@ -175,15 +175,34 @@ const Checkout: FC = () => {
 
   const holidays: IHoliday[] = allFaunaHoliday.nodes.map((n) => ({ start: new Date(n.start), end: setHours(new Date(n.end), 24) }))
 
-  const defaultPickupDates = possiblePickupDates({ location: checkoutConfig.pickupLocations[0], holidays })
+  let specialDate: Date | null | string = state.items.find((i) => i.product.availableDate !== null)?.product?.availableDate ?? null;
+  if (typeof specialDate === 'string') {
+    specialDate = new Date(specialDate);
+  }
+
+  const availableLocations = getAvailableLocation(checkoutConfig.pickupLocations, [], specialDate);
+  const defaultPickupDates = possiblePickupDates({ location: availableLocations[0], holidays })
+
+  const orderDate = specialDate ? specialDate.toString()
+    : defaultPickupDates.length > 0 ? defaultPickupDates[0] : null;
+
   const defaultValues = typeof window !== 'undefined' && sessionStorage.getItem('form-order')
     ? JSON.parse(sessionStorage.getItem('form-order'))
     : {
       delivery: 'pickup',
       order_time: { hour: 13, minute: 0 },
-      order_date: defaultPickupDates.length > 0 ? defaultPickupDates[0] : null,
+      order_date: orderDate,
       possibleDates: defaultPickupDates,
-      pickupLocation: checkoutConfig.pickupLocations[0],
+      pickupLocation: availableLocations[0],
+      additional_info: '',
+      city: '',
+      email: '',
+      name: '',
+      postcode: '',
+      street: '',
+      tel: '',
+      total: '',
+      order: '',
     };
 
   const { errors, values, handleInputChange, handleInputChanges, handleSubmit, formatError, validateSome } = useForm<IOrder>({
@@ -328,6 +347,10 @@ const Checkout: FC = () => {
                           {values.delivery === 'pickup' ? 'Pick up location' : 'Our delivery area'}
                         </Label>
                         <Delivery
+                          days={state.items.reduce((p, n) => {
+                            return [...p, ...n.product.availableDays];
+                          }, [] as string[])}
+                          specialDate={specialDate}
                           checkoutConfig={checkoutConfig}
                           onClick={(location) => {
                             const possibleDates = possiblePickupDates({ location, holidays });
@@ -414,6 +437,7 @@ const Checkout: FC = () => {
                             />
 
                             <Calendar
+                              specialDate={specialDate}
                               disabledRanges={holidays.concat({ start: new Date(), end: addDays(new Date(), 1) })}
 
                               orderDate={typeof values.order_date === 'string'

@@ -147,6 +147,7 @@ interface IProps {
   disabledDaysOfWeek: number[];
   disabledRanges: IHoliday[];
   availability?: ITimes[],
+  specialDate: Date | null;
 }
 
 const Calendar: FC<IProps> = ({
@@ -156,6 +157,7 @@ const Calendar: FC<IProps> = ({
   disabledDaysOfWeek,
   disabledRanges,
   availability = times,
+  specialDate,
 }) => {
   const [values, setValues] = useState<[Date, ITime]>([orderDate, orderTime]);
   let dayOfWeek: number = 0;
@@ -173,8 +175,9 @@ const Calendar: FC<IProps> = ({
         <StyledDatePicker
           name="order_date"
           width="300px"
+          specialDate={specialDate}
           disabledDaysOfWeek={disabledDaysOfWeek}
-          value={orderDate}
+          value={specialDate ? specialDate : orderDate}
           onChange={(value) => {
             handleInputChange('order_date', value);
             const newDayOfWeek = value.getDay();

@@ -1,19 +1,22 @@
+import { format } from 'date-fns';
 import React, { FC } from 'react';
 
-import { IPickupLocation } from '../../../pages/checkout';
 import BigCheckbox from '../../ui/BigCheckbox';
 import { formatTime } from '../Calendar';
+import { IPickupLocation } from '../pickupLocations';
 
 interface IProps {
   location: IPickupLocation;
   selected: boolean;
   onClick: () => void;
+  specialDate: Date
 }
 
 const PickupAddress: FC<IProps> = ({
   location,
   selected,
   onClick,
+  specialDate,
 }) => {
   return (
     <div className="h-event">
@@ -28,7 +31,9 @@ const PickupAddress: FC<IProps> = ({
           </BigCheckbox>
         </h3>
         {location.daytimes.map((dt) => <h4>
-          {dt.day}
+          {dt.day}  {
+            specialDate && format(specialDate, 'dd MMMM yyyy')
+          }<br /><br />
           <span className="dt-start"> {formatTime(dt.time.start)} </span>
     to <span className="dt-end">{formatTime(dt.time.end)}</span>
         </h4>)}

@@ -14,7 +14,7 @@ interface IProps {
   holidays: IHoliday[];
 }
 
-const dayToNumber = (d: string) => {
+export const dayToNumber = (d: string) => {
   switch (d) {
     case 'Sunday':
       return 0;

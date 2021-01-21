@@ -43,7 +43,6 @@ const deleteHoliday = async (selectedRows: string[]) => {
 }
 
 const createHoliday = async (holiday: IHoliday) => {
-  console.log('create holiday ', holiday);
   await axios.post("/.netlify/functions/holiday-create", holiday);
 }
 
@@ -78,7 +77,6 @@ const Availability: FC<RouteComponentProps> = () => {
   if (holidays.status === 'error') {
     return <span>Error: {holidays.error}</span>
   }
-  console.log('holidays', holidays.data);
   return (
     <>
       <h1>Time off</h1>

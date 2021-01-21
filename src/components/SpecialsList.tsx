@@ -18,6 +18,7 @@ const GET_PREORDERS = graphql`{
       id
       name
       availableDate
+      availableDays
       skus {
         id,
         glutenFree

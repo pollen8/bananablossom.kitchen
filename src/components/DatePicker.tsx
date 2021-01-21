@@ -90,6 +90,7 @@ interface IProps {
   value?: Date;
   width?: string | number;
   onChange?: (value: Date) => void;
+  specialDate?: Date | null;
 }
 
 export const isDisabled = (date: Date, disabled: Interval[]) => {
@@ -124,6 +125,7 @@ const DatePicker: FC<IProps> = ({
   width,
   className,
   disabledDaysOfWeek,
+  specialDate,
 }) => {
   const [now, setNow] = useState(value || new Date());
   const daysInMonth = getDaysInMonth(now);
@@ -167,7 +169,8 @@ const DatePicker: FC<IProps> = ({
           days.map((d) => {
             const thisDay = addDays(firstDateOfMonth, d);
             const isSelected = isDisabled(thisDay, selectedRanges);
-            const disabled = isDisabled(thisDay, disabledRanges) || isDisabledDayOfWeek(thisDay, disabledDaysOfWeek) || isPast(thisDay);
+            const disabled = (specialDate !== null && !isSameDay(thisDay, specialDate))
+              || isDisabled(thisDay, disabledRanges) || isDisabledDayOfWeek(thisDay, disabledDaysOfWeek) || isPast(thisDay);
             const isActive = isSameDay(thisDay, now);
             return <Cell
               disabled={disabled}
