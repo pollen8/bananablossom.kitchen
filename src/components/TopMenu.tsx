@@ -200,7 +200,7 @@ const TopMenu: FC<HTMLAttributes<HTMLDivElement>> = (props) => {
             <StyledLink to="/specials"
               activeClassName="active"
               activeStyle={activeStyle}
-            >Special dates
+            >Valentine's Day
             </StyledLink>
           </li>
           <li>

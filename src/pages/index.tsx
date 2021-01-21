@@ -6,11 +6,12 @@ import Img from 'gatsby-image';
 import React from 'react';
 import styled from 'styled-components';
 
-import Card from '../components/Card';
+import { useNavigate } from '@reach/router';
+
+import Button from '../components/Button';
 import CardBody from '../components/CardBody';
 import Layout from '../components/layout';
 import Stack from '../components/layout/Stack';
-import { FlexRow } from '../components/MealListItemDetails';
 
 const Ul = styled.ul`
 margin-top: 0.75rem;
@@ -19,6 +20,7 @@ margin-bottom: 0.75rem;
 `;
 
 const Info = () => {
+  const navigate = useNavigate();
   const now = new Date();
   const data = useStaticQuery(graphql` 
 query {
@@ -107,6 +109,30 @@ query {
             </CardBody>
           </Card> */}
 
+          <div style={{ display: 'flex', justifyContent: 'center', position: 'relative', minHeight: '15rem' }}>
+            <div style={{ position: 'absolute', top: 0 }}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="250" height="250" viewBox="0 0 500 500">
+
+                <path fill="rgba(227, 84, 114, 0.7)" fillRule="evenodd" d="M243.228,189.969C163.1-66.868-232.649,82.624,229.3,414.543c5.97,32.482,55.026,33.695,38.468-3.02C237.394,344.185,417.15,272.9,464.785,226.194c81.993-80.4-47.6-301.836-221.557-36.225h0ZM228.3,206.694c-70.254-222.522-369.864-78.282-.091,192.3,8.011-63.325,151.775-109.5,201.866-171.819,42.194-52.485-14.312-152.292-102.946-85.444C299.558,162.506,269.711,200,247.291,268.716c-9.265,24.042-67.056,8.336-18.994-62.022h0Z" />
+              </svg>
+            </div>
+            <h1 style={{ marginTop: '1rem', position: 'absolute', top: '5rem', fontSize: '2rem', }}>
+              Special Valentine's Day Meal
+          </h1>
+            <div style={{ position: 'absolute', bottom: '3rem' }}>
+              <Button
+                onClick={() => navigate('/specials')}
+                color="primary" style={{ width: '10rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 500 500">
+
+                  <path fill="#fff" fillRule="evenodd" d="M243.228,189.969C163.1-66.868-232.649,82.624,229.3,414.543c5.97,32.482,55.026,33.695,38.468-3.02C237.394,344.185,417.15,272.9,464.785,226.194c81.993-80.4-47.6-301.836-221.557-36.225h0ZM228.3,206.694c-70.254-222.522-369.864-78.282-.091,192.3,8.011-63.325,151.775-109.5,201.866-171.819,42.194-52.485-14.312-152.292-102.946-85.444C299.558,162.506,269.711,200,247.291,268.716c-9.265,24.042-67.056,8.336-18.994-62.022h0Z" />
+                </svg>
+                <div>Order Now</div></Button>
+
+            </div>
+          </div>
+
+          <Img fixed={data.hr.childImageSharp.fixed} />
           <h1 style={{ marginTop: '1rem' }}>
             Find us at our local Hampshire markets.
           </h1>
