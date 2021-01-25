@@ -85,7 +85,7 @@ const Orders: FC = () => {
       }
     },
   });
-
+  console.log('orders', orders);
   useEffect(() => {
 
     (async function () {
@@ -121,9 +121,7 @@ const Orders: FC = () => {
         <Card>
           <CardBody>
             <Button onClick={async () => {
-              await axios.post("/.netlify/functions/sendmail", {
-                ...orders.data[0],
-              })
+              await axios.post("/.netlify/functions/testmail", {})
             }}>Test email</Button>
             <Table style={{ backgroundColor: '#fff' }}>
               <thead>
