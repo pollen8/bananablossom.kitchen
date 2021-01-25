@@ -9,25 +9,23 @@ exports.handler = async (event) => {
 
   sgMail.setApiKey(SENDGRID_API_KEY);
 
-  var body = '';
-  try {
-    body = parseBody(payload);
-  } catch (e) {
-    body = 'failed to parse message - please check admin site orders<br>' + JSON.stringify(e);
-  }
-  const msg = {
-    to: ['bananablossom.kitchen@gmail.com', 'fabrikar@gmail.com'],
-    from: 'bananablossom.kitchen@gmail.com',
-    subject: subject ? subject : 'banana-blossom.kitchen: Order',
-    html: `email from: ${email}<br /><br /> ${body}`,
-  };
+
 
   try {
+
+    const body = parseBody(payload);
+    const msg = {
+      to: ['bananablossom.kitchen@gmail.com', 'fabrikar@gmail.com'],
+      from: 'bananablossom.kitchen@gmail.com',
+      subject: subject ? subject : 'banana-blossom.kitchen: Order',
+      html: `email from: ${email}<br /><br /> ${body}`,
+    };
+
     await sgMail.send(msg)
 
     return {
       statusCode: 200,
-      body: "Message sent"
+      body: "Message sent: " + body
     }
   } catch (e) {
     return {
