@@ -8,21 +8,13 @@ exports.handler = async (event) => {
   const { email, subject } = payload
 
   sgMail.setApiKey(SENDGRID_API_KEY);
- 
-  const body = Object.keys(payload).map((k) => {
-    if (k === 'order_date') {
-      return `Pickup/delivery date: ` + new Date(payload[k]).toDateString();
-    }
-    if (k === 'order_time') {
-      return `Pickup/delivery time: ${payload[k].hour}: ${payload[k].minute}`;
-    }
-    if (typeof payload[k] === 'object') {
-      return '<ul>' + payload[k].map((order) => `<li>${order.quantity} ${order.product.name} ${order.sku.name}</li>`) + '</ul>'
-        + `<br />${JSON.stringify(payload[k])}`;
-    }
-    return `${k}: ${payload[k]}`
-  }).join("<br/>");
 
+  var body = '';
+  try {
+    body = parseBody(payload);
+  } catch (e) {
+    body = 'failed to parse message - please check admin site orders';
+  }
   const msg = {
     to: ['bananablossom.kitchen@gmail.com', 'fabrikar@gmail.com'],
     from: 'bananablossom.kitchen@gmail.com',
@@ -44,3 +36,28 @@ exports.handler = async (event) => {
     }
   }
 };
+
+
+exports.parseBody = (payload) => {
+  const body = Object.keys(payload).map((k) => {
+    if (k === 'order_date') {
+      return `Pickup/delivery date: ` + new Date(payload[k]).toDateString();
+    }
+    if (k === 'order_time') {
+      return `Pickup/delivery time: ${payload[k].hour}: ${payload[k].minute}`;
+    }
+    if (k === 'order' && typeof payload[k] === 'object') {
+      return '<ul>' + payload[k].map((order) => `<li>${order.quantity} ${order.product.name} ${order.sku.name}</li>`) + '</ul>'
+        + `<br />`;
+    }
+    if (k === 'possibleDates') {
+      return '';
+    }
+    if (k === 'pickupLocation') {
+      return 'Pick up location: ' + payload[k].name + '<br />';
+    }
+    return `${k}: ${payload[k]}`
+  }).join("<br/>");
+  return body;
+}
+

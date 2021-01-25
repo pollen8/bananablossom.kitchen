@@ -1,0 +1,16 @@
+{
+  "extension": [
+    "ts",
+    "tsx"
+  ],
+  "spec": [
+    "./src/**/*.spec.ts",
+    "./src/**/*.spec.tsx",
+    "./test/**/*.spec.ts"
+  ],
+  "bail": true,
+  "exit": true,
+  "require": [
+    "test/babel-register.js"
+  ]
+}
