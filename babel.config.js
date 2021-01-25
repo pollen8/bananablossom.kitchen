@@ -15,5 +15,5 @@ module.exports = (api) => {
     "@babel/preset-react",
   ];
 
-  return { presets };
+  return { presets, plugins: ['macros', "@babel/plugin-proposal-class-properties"], };
 };

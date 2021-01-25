@@ -56,6 +56,7 @@
     "validate-promise": "^3.6.0"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.12.1",
     "@babel/register": "^7.12.10",
     "@types/axios": "^0.14.0",
     "@types/chai": "^4.2.14",
