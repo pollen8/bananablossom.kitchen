@@ -13,7 +13,7 @@ exports.handler = async (event) => {
   try {
     body = parseBody(payload);
   } catch (e) {
-    body = 'failed to parse message - please check admin site orders';
+    body = 'failed to parse message - please check admin site orders<br>' + JSON.stringify(e);
   }
   const msg = {
     to: ['bananablossom.kitchen@gmail.com', 'fabrikar@gmail.com'],
