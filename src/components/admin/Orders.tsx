@@ -120,6 +120,11 @@ const Orders: FC = () => {
       <Stack reverse>
         <Card>
           <CardBody>
+            <Button onClick={async () => {
+              await axios.post("/.netlify/functions/sendmail", {
+                ...orders.data[0],
+              })
+            }}>Test email</Button>
             <Table style={{ backgroundColor: '#fff' }}>
               <thead>
                 <tr>
