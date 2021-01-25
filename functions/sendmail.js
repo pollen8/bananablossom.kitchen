@@ -2,6 +2,31 @@ const sgMail = require('@sendgrid/mail')
 
 const { SENDGRID_API_KEY } = process.env
 
+
+const parseBody = (payload) => {
+  const body = Object.keys(payload).map((k) => {
+    if (k === 'order_date') {
+      return `Pickup/delivery date: ` + new Date(payload[k]).toDateString();
+    }
+    if (k === 'order_time') {
+      return `Pickup/delivery time: ${payload[k].hour}: ${payload[k].minute}`;
+    }
+    if (k === 'order' && typeof payload[k] === 'object') {
+      return '<ul>' + payload[k].map((order) => `<li>${order.quantity} ${order.product.name} ${order.sku.name}</li>`) + '</ul>'
+        + `<br />`;
+    }
+    if (k === 'possibleDates') {
+      return '';
+    }
+    if (k === 'pickupLocation') {
+      return 'Pick up location: ' + payload[k].name + '<br />';
+    }
+    return `${k}: ${payload[k]}`
+  }).join("<br/>");
+  return body;
+}
+exports.parseBody = parseBody;
+
 exports.handler = async (event) => {
 
   const payload = JSON.parse(event.body)
@@ -35,27 +60,4 @@ exports.handler = async (event) => {
   }
 };
 
-
-exports.parseBody = (payload) => {
-  const body = Object.keys(payload).map((k) => {
-    if (k === 'order_date') {
-      return `Pickup/delivery date: ` + new Date(payload[k]).toDateString();
-    }
-    if (k === 'order_time') {
-      return `Pickup/delivery time: ${payload[k].hour}: ${payload[k].minute}`;
-    }
-    if (k === 'order' && typeof payload[k] === 'object') {
-      return '<ul>' + payload[k].map((order) => `<li>${order.quantity} ${order.product.name} ${order.sku.name}</li>`) + '</ul>'
-        + `<br />`;
-    }
-    if (k === 'possibleDates') {
-      return '';
-    }
-    if (k === 'pickupLocation') {
-      return 'Pick up location: ' + payload[k].name + '<br />';
-    }
-    return `${k}: ${payload[k]}`
-  }).join("<br/>");
-  return body;
-}
 
