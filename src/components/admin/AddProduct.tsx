@@ -70,7 +70,7 @@ export interface IProduct {
 interface IProps {
   addProduct: any;
   cancel: () => void;
-  product: IProduct | undefined
+  product?: IProduct | undefined
 }
 
 const AddProduct: FC<IProps> = (props) => {
@@ -80,7 +80,7 @@ const AddProduct: FC<IProps> = (props) => {
     product,
     addProduct,
   } = props;
-  if (typeof product.availableDate === 'string') {
+  if (product && typeof product.availableDate === 'string') {
     product.availableDate = new Date(product.availableDate);
   }
   const [data, setData] = useState(product ?? emptyProduct);
