@@ -109,7 +109,7 @@ query {
             </CardBody>
           </Card> */}
 
-          <div style={{ display: 'flex', justifyContent: 'center', position: 'relative', minHeight: '15rem' }}>
+          {/* <div style={{ display: 'flex', justifyContent: 'center', position: 'relative', minHeight: '15rem' }}>
             <div style={{ position: 'absolute', top: 0 }}>
               <svg xmlns="http://www.w3.org/2000/svg" width="250" height="250" viewBox="0 0 500 500">
 
@@ -131,7 +131,7 @@ query {
               </Button>
             </div>
 
-          </div>
+          </div> */}
 
           <Img fixed={data.hr.childImageSharp.fixed} />
           <h1 style={{ marginTop: '1rem' }}>
