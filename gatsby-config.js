@@ -33,16 +33,16 @@ module.exports = {
         path: `${__dirname}/src/images`,
       },
     },
-    {
-      resolve: `gatsby-plugin-remote-images`,
-      options: {
-        nodeType: 'myNodes',
-        imagePath: 'imageUrl',
-        // OPTIONAL: Name you want to give new image field on the node.
-        // Defaults to 'localImage'.
-        name: 'allItemImages',
-      },
-    },
+    // {
+    //   resolve: `gatsby-plugin-remote-images`,
+    //   options: {
+    //     nodeType: 'myNodes',
+    //     imagePath: 'imageUrl',
+    //     // OPTIONAL: Name you want to give new image field on the node.
+    //     // Defaults to 'localImage'.
+    //     name: 'allItemImages',
+    //   },
+    // },
     'gatsby-plugin-styled-components',
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
