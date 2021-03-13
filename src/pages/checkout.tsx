@@ -1,6 +1,9 @@
 
 import axios from 'axios';
-import { setHours } from 'date-fns';
+import {
+  endOfToday,
+  setHours,
+} from 'date-fns';
 import addDays from 'date-fns/addDays';
 import {
   graphql,
@@ -212,6 +215,7 @@ const Checkout: FC = () => {
   });
 
   const availableDays = new Set(values.pickupLocation.daytimes.map((d) => d.day));
+  console.log('availableDays', availableDays);
   const disabledDaysOfWeek = availableDays.size > 0 ? days.filter((day) => !availableDays.has(day)) : ['Sunday'];
 
   const { stage, maxVisitedStage, changeStage } = useFormWizard({ stages });
@@ -438,7 +442,7 @@ const Checkout: FC = () => {
 
                             <Calendar
                               specialDate={specialDate}
-                              disabledRanges={holidays.concat({ start: new Date(), end: addDays(new Date(), 1) })}
+                              disabledRanges={holidays.concat({ start: new Date(), end: endOfToday() })}
 
                               orderDate={typeof values.order_date === 'string'
                                 ? new Date(values.order_date)

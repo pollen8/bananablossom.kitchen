@@ -30,7 +30,7 @@ const PickupAddress: FC<IProps> = ({
           >
           </BigCheckbox>
         </h3>
-        {location.daytimes.map((dt) => <h4>
+        {location.daytimes.map((dt) => <h4 key={dt.day}>
           {dt.day}  {
             specialDate && format(specialDate, 'dd MMMM yyyy')
           }<br /><br />
