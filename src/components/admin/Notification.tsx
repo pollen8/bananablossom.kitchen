@@ -8,7 +8,6 @@ import {
   useMutation,
   useQuery,
 } from 'react-query';
-import styled from 'styled-components';
 
 import { RouteComponentProps } from '@reach/router';
 

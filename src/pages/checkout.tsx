@@ -1,6 +1,9 @@
 
 import axios from 'axios';
-import { setHours } from 'date-fns';
+import {
+  endOfToday,
+  setHours,
+} from 'date-fns';
 import addDays from 'date-fns/addDays';
 import {
   graphql,
@@ -438,7 +441,7 @@ const Checkout: FC = () => {
 
                             <Calendar
                               specialDate={specialDate}
-                              disabledRanges={holidays.concat({ start: new Date(), end: addDays(new Date(), 1) })}
+                              disabledRanges={holidays.concat({ start: new Date(), end: endOfToday() })}
 
                               orderDate={typeof values.order_date === 'string'
                                 ? new Date(values.order_date)
