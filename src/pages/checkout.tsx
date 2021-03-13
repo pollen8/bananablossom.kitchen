@@ -215,7 +215,6 @@ const Checkout: FC = () => {
   });
 
   const availableDays = new Set(values.pickupLocation.daytimes.map((d) => d.day));
-  console.log('availableDays', availableDays);
   const disabledDaysOfWeek = availableDays.size > 0 ? days.filter((day) => !availableDays.has(day)) : ['Sunday'];
 
   const { stage, maxVisitedStage, changeStage } = useFormWizard({ stages });
