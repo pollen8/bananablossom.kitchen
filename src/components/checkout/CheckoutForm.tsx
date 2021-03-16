@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { navigate } from 'gatsby';
 import React, {
   FC,
   FormEvent,
@@ -8,7 +9,6 @@ import React, {
 import { AiOutlineLock } from 'react-icons/ai';
 import styled from 'styled-components';
 
-import { useNavigate } from '@reach/router';
 import {
   CardElement,
   CardElementProps,
@@ -94,7 +94,6 @@ const CheckoutForm: FC<IProps> = ({
   order,
 }) => {
   const stripe = useStripe();
-  const navigate = useNavigate();
   const elements = useElements();
   const [error, setError] = useState('');
   const [disabled, setDisabled] = useState(false);
@@ -194,7 +193,9 @@ const CheckoutForm: FC<IProps> = ({
             id: response.data.ref['@ref'].id,
           });
 
-          navigate('/payment-success');
+          if (typeof window !== `undefined`) {
+            navigate('/payment-success');
+          }
         }
         setDisabled(false);
       }
