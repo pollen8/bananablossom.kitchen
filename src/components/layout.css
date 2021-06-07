@@ -6,6 +6,7 @@ body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: hsl(215, 38%, 91%);
 }
 article,
 aside,

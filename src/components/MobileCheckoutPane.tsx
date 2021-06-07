@@ -1,3 +1,8 @@
+import {
+  graphql,
+  useStaticQuery,
+} from 'gatsby';
+import Img from 'gatsby-image';
 import React, {
   FC,
   useContext,
@@ -29,7 +34,6 @@ const Container = styled.div`
   }
 
 `;
-
 const Icons = styled.div`
   display: flex;
   align-content: center;
@@ -41,6 +45,17 @@ const Icons = styled.div`
 
 const MobileCheckoutPane: FC = () => {
   const { state } = useContext(store);
+  const data = useStaticQuery(graphql` 
+  query {
+    rating: file(relativePath: { eq: "fhrs_5_en-gb.jpg" }) {
+      childImageSharp {
+            fixed(width: 75) {
+            ...GatsbyImageSharpFixed
+          } 
+          }
+    }
+  }
+  `)
   return (
     <Container>
 
@@ -53,6 +68,7 @@ const MobileCheckoutPane: FC = () => {
         {
           state.items.length === 0 &&
           <Icons>
+            <Img fixed={data.rating.childImageSharp.fixed} alt="Food hygiene rating: 5" />
             <Facebook size={30} />
             <TripAdvisor size={30} />
           </Icons>

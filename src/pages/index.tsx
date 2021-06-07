@@ -1,5 +1,6 @@
 import {
   graphql,
+  Link,
   useStaticQuery,
 } from 'gatsby';
 import Img from 'gatsby-image';
@@ -12,11 +13,99 @@ import Button from '../components/Button';
 import CardBody from '../components/CardBody';
 import Layout from '../components/layout';
 import Stack from '../components/layout/Stack';
+import hrblue from '../images/hr-blue.png';
+// import banner from './banner.jpg';
+import banner from './banner2.jpg';
 
 const Ul = styled.ul`
-margin-top: 0.75rem;
-margin-left: 1.5rem;
-margin-bottom: 0.75rem;
+  margin-top: 0.75rem;
+  margin-left: 1.5rem;
+  margin-bottom: 0.75rem;
+`;
+
+export const Grid = styled.div<{ columnCount?: number }>`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 350px);
+  grid-template-rows: auto;
+  grid-column-gap: 0rem;
+  margin: 0;
+  grid-row-gap: 1rem;
+`;
+
+export const Bg = styled.div`
+  width: 100%;
+  background-image:url(${banner});
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding: 5rem 0;
+
+  @media (max-width: 640px){ 
+    padding: 1rem 0;
+  }
+`;
+
+export const InsetBox = styled.div`
+  background: hsla(215, 38%, 96%, 90%);
+  max-width: 60rem;
+  padding: 2rem;
+  margin: 1rem auto;
+
+  position: relative;
+  overflow: hidden;
+
+  h2 {
+
+    line-height: 2rem;
+    color:  hsl(215, 38%, 26%);
+  }
+
+  h3, h1 {
+    color:  hsl(215, 38%, 26%);
+  }
+  > * {
+    text-align: left;
+  }
+
+  a {
+    color:  hsl(215, 38%, 26%);
+    text-decoration-style: dotted;
+  }
+  
+  &:after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    bottom: -20%;
+    right: -70%;
+    z-index: 1;
+    background: transparent no-repeat url(${hrblue});
+    background-size: 40%;
+    transform: rotate(-30deg);
+  }
+`;
+
+const H1 = styled.h1`
+font-size: 3rem;
+`;
+
+const InsetGrid = styled.div`
+display: grid;
+grid-template-columns: 25rem 1fr;
+
+@media (max-width: 640px){ 
+  grid-template-columns:  1fr;
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  div {
+    text-align: center;
+  }
+}
+
 `;
 
 const Info = () => {
@@ -26,7 +115,7 @@ const Info = () => {
 query {
   sign: file(relativePath: { eq: "sign.png" }) {
     childImageSharp {
-          fixed(width: 570) {
+          fixed(width: 470) {
           ...GatsbyImageSharpFixed
         } 
         }
@@ -65,141 +154,79 @@ query {
 
   rating: file(relativePath: { eq: "fhrs_5_en-gb.jpg" }) {
     childImageSharp {
-          fixed(width: 200) {
+          fixed(width: 100) {
           ...GatsbyImageSharpFixed
         } 
         }
   }
+  
+  hrblue: file(relativePath: { eq: "hr-blue.png" }) {
+    childImageSharp {fixed(width: 350) {...GatsbyImageSharpFixed}  }}
+  food1: file(relativePath: { eq: "food/Linh Food Website ratio (3.60 x3.00)-1.jpg" }) {
+    childImageSharp {fixed(width: 350) {...GatsbyImageSharpFixed}  }}
+    food17: file(relativePath: { eq: "food/Linh Food Website ratio (3.60 x3.00)-17.jpg" }) {
+    childImageSharp {fixed(width: 350) {...GatsbyImageSharpFixed}  }}
+    food32: file(relativePath: { eq: "food/Linh Food Website ratio (3.60 x3.00)-32.jpg" }) {
+    childImageSharp {fixed(width: 350) {...GatsbyImageSharpFixed}  }}
+    food34: file(relativePath: { eq: "food/Linh Food Website ratio (3.60 x3.00)-34-t.png" }) {
+    childImageSharp {fixed(width: 350) {...GatsbyImageSharpFixed}  }}
+    food21: file(relativePath: { eq: "food/Linh Food Website ratio (3.60 x3.00)-21.png" }) {
+    childImageSharp {fixed(width: 350) {...GatsbyImageSharpFixed}  }}
+    banner:  file(relativePath: { eq: "banner/Linh Food Website ratio (3.60 x3.00)-39.jpg" }) {
+    childImageSharp {fixed(width: 1080) {...GatsbyImageSharpFixed}  }}
+ 
+    
 }
 `)
 
   return (
     <Layout>
       <Stack>
-        <CardBody style={{ textAlign: 'center' }}>
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <Img
-              fixed={data.sign.childImageSharp.fixed} alt="Authentic Vietnamese Cuisine in Basingstoke" />
-          </div>
+        <CardBody style={{ textAlign: 'center', padding: 0, margin: 0 }}>
+          <Bg>
 
-          {/* <Card style={{ marginTop: '2rem', marginBottom: '3rem', textAlign: 'left', maxWidth: '60rem', margin: 'auto', backgroundColor: 'rgb(253, 237, 240)' }}>
-            <CardBody>
-              <h1>Special Bún bò Huế night, Thursday 7th January</h1>
-              <hr />
-              <FlexRow>
-                <div>
-                  <div style={{ fontSize: '1.0rem' }}> <p>It's a beef noodle soup originating from the Huế region, a central province of Vietnam.</p>
-                    <p>This noodle soup is beefy, spicy &amp; has a robust broth.
-                If you love Pho and you love a bit of spice then definitely give Bun Bo Hue a try.</p> </div>
-                  <p>(Gluten free)</p>
-                </div>
-                <div style={{ marginLeft: '2rem' }}>
-                  <div style={{ fontSize: '1.1rem' }}>&pound;10.00</div>
-                  Only
-                </div>
-              </FlexRow>
-              <p>Our kitchen will be opened for <strong>collection</strong> and <strong>delivery</strong>
-              &nbsp; on the 7th of January from 5:30pm to 8pm. <br />
-              Free delivery is available with orders starting from 3 portions. Please contact us to make sure
-              that you are in free delivery zone.</p>
-              <p>Pre-order is essential by 11pm Tuesday 5th of January via <a href="https://www.facebook.com/bananablossom.kitchen">Messenger on our Facebook page</a>.
-              The payment link will be sent when you place your order.</p>
-
-              <a style={{ fontWeight: 'bold' }} href="https://www.facebook.com/bananablossom.kitchen">Order now, via Messenger on our Facebook page</a>
-            </CardBody>
-          </Card> */}
-
-          {/* <div style={{ display: 'flex', justifyContent: 'center', position: 'relative', minHeight: '15rem' }}>
-            <div style={{ position: 'absolute', top: 0 }}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="250" height="250" viewBox="0 0 500 500">
-
-                <path fill="rgba(227, 84, 114, 0.7)" fillRule="evenodd" d="M243.228,189.969C163.1-66.868-232.649,82.624,229.3,414.543c5.97,32.482,55.026,33.695,38.468-3.02C237.394,344.185,417.15,272.9,464.785,226.194c81.993-80.4-47.6-301.836-221.557-36.225h0ZM228.3,206.694c-70.254-222.522-369.864-78.282-.091,192.3,8.011-63.325,151.775-109.5,201.866-171.819,42.194-52.485-14.312-152.292-102.946-85.444C299.558,162.506,269.711,200,247.291,268.716c-9.265,24.042-67.056,8.336-18.994-62.022h0Z" />
-              </svg>
-            </div>
-            <div style={{ marginTop: '1rem', position: 'absolute', top: '5rem' }}>
-              <h1 style={{ fontSize: '2rem', }}>
-                Special Valentine's Day Meal
-                </h1>
-              <Button
-                onClick={() => navigate('/specials')}
-                color="primary" style={{ width: '10rem', margin: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 500 500">
-
-                  <path fill="#fff" fillRule="evenodd" d="M243.228,189.969C163.1-66.868-232.649,82.624,229.3,414.543c5.97,32.482,55.026,33.695,38.468-3.02C237.394,344.185,417.15,272.9,464.785,226.194c81.993-80.4-47.6-301.836-221.557-36.225h0ZM228.3,206.694c-70.254-222.522-369.864-78.282-.091,192.3,8.011-63.325,151.775-109.5,201.866-171.819,42.194-52.485-14.312-152.292-102.946-85.444C299.558,162.506,269.711,200,247.291,268.716c-9.265,24.042-67.056,8.336-18.994-62.022h0Z" />
-                </svg>
-                <div>Order Now</div>
-              </Button>
-            </div>
-
-          </div> */}
-
-          <Img fixed={data.hr.childImageSharp.fixed} />
-          <h1 style={{ marginTop: '1rem' }}>
-            Find us at our local Hampshire markets.
-          </h1>
-          <p>Sample our freshly made home cooked Vietnamese cuisine.</p>
-          <Stack style={{ maxWidth: '60rem', margin: 'auto' }}>
-
-
-            <div>
-              <Stack>
-
+            <InsetBox>
+              <InsetGrid>
                 <div>
                   <a href="https://www.portsmoutharmshatchwarren.co.uk/">
-                    <Img style={{ clipPath: 'circle(100px at center)' }}
-                      alt="Vietnamese market in Basingstoke"
-                      fixed={data.baobun.childImageSharp.fixed} />
+                    <Img fixed={data.food21.childImageSharp.fixed} alt="Vietnamese market in Basingstoke" />
                   </a>
-                  <h3>The Portsmouth Arms</h3>
-                  <p>Hatch Warren, every Saturday 11am - 4pm</p>
                 </div>
-                {/* <div>
-                  <Img style={{ clipPath: 'circle(100px at center)' }}
-                    alt="Vietnamese market in Basingstoke"
-                    fixed={data.springroll.childImageSharp.fixed} />
-                  <h3>Basingstoke Top of Town</h3>
-                  <p>Every Wednesday 11am - 4pm</p>
-                </div> */}
-              </Stack>
-              <Img fixed={data.hr.childImageSharp.fixed} />
-              <h4 style={{ marginTop: '2rem' }}>Example menu</h4>
-              <Ul>
-                <li>2 Chicken spring rolls and a pork bao bun £6.00</li>
-                <li>2 vegetable spring rolls and a veg bao bun £5.00</li>
-              </Ul>
+                <div>
+                  <H1>Authentic Vietnamese Home Cooking</H1>
+                  <h2>
+                    Find us at our local Hampshire market
+                  </h2>
 
-              <h5>
-                Crispy spring rolls
-                  </h5>
+                  <h3>
+                    <a href="https://www.portsmoutharmshatchwarren.co.uk/">
+                      The Portsmouth Arms Market
+                   </a>
+                  </h3>
+                  <p>Hatch Warren, every Saturday 10am - 2pm</p>
+                </div>
+              </InsetGrid>
+            </InsetBox>
 
-              <Ul>
-                <li>3 x chicken (gluten free)  £4.50</li>
-                <li>3 x vegetable (vegan) (gluten free) £3.50</li>
-              </Ul>
-              <h5>
-                Bao Bun
-                  </h5>
-              <Ul>
-                <li>Steamed pork bao bun: £3.50 </li>
-                <li>Steamed vegetables bao bun (vegan) £3.00</li>
-              </Ul>
-              <h5>Vietnamese sandwich (bánh mì)</h5>
-              <p>Homemade bread garnished with cucumber, spring onion, coriander, fresh chilli,
-                   pickled carrot and its own sauce.<br /></p>
+            <InsetBox>
+              <InsetGrid>
+                <div>
+                  <Link to="/thursday-take-away">
+                    <Img fixed={data.food34.childImageSharp.fixed} alt="Vietnamese market in Basingstoke" />
+                  </Link>
+                </div>
+                <div>
+                  <h2><Link to="/thursday-take-away">Thursdays are take-away days</Link></h2>
 
-              <Ul>
-                <li>Vietnamese pulled pork £7.00 </li>
-                <li>Braised duck eggs £6.00</li>
-              </Ul>
+                  <p>Discover our rotating menu of authentic Vietnamese food, freshly prepared every Thursday.</p>
+                  <p>Our kitchen will be opened for collection on Thursdays from 5:30pm to 8pm.</p>
+                  <p>Orders accepted up until 12pm on Wednesday.</p>
 
-            </div>
-          </Stack>
-          <div>
-            <Img fixed={data.hr.childImageSharp.fixed} />
-          </div>
-          <div style={{ marginTop: '2rem' }}>
-            <Img fixed={data.rating.childImageSharp.fixed} alt="Food hygiene rating: 5" />
-          </div>
+                </div>
+              </InsetGrid>
+            </InsetBox>
+          </Bg>
+
         </CardBody>
       </Stack>
     </Layout>

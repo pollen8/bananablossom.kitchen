@@ -87,7 +87,7 @@ flex: 0 0 auto;
   background-color: #dcdcdc;
   `;
 
-const Layout: FC = ({ children }) => {
+const Layout: FC = ({ children, ...rest }) => {
   useEffect(() => {
     Fonts();
   }, []);
@@ -102,7 +102,7 @@ const Layout: FC = ({ children }) => {
       {/* <PageHeader> */}
       <TopMenu />
       {/* </PageHeader> */}
-      <PageContent>
+      <PageContent  {...rest}>
         {children}
       </PageContent>
       <PageFooter>

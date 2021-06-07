@@ -10,6 +10,10 @@ import CardBody from '../components/CardBody';
 import Layout from '../components/layout';
 import Stack from '../components/layout/Stack';
 import { OpeningTimes } from '../components/OpeningTimes';
+import {
+  Bg,
+  InsetBox,
+} from './';
 
 const Info = () => {
   const now = new Date();
@@ -33,8 +37,8 @@ query {
 `)
   return (
     <Layout>
-      <Stack>
-        <CardBody>
+      <Bg>
+        <InsetBox>
           <Stack>
             <div>
 
@@ -76,13 +80,14 @@ query {
             </div>
 
           </Stack>
-        </CardBody>
+        </InsetBox>
         {/* <div style={{ minWidth: '30rem' }}>
           <CardBody>
             <OpeningTimes />
           </CardBody>
         </div> */}
-      </Stack>
+
+      </Bg>
     </Layout>
   )
 }
