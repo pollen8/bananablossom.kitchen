@@ -5,10 +5,9 @@ import {
 } from 'gatsby';
 import Img from 'gatsby-image';
 import React from 'react';
+import styled from 'styled-components';
 
-import CardBody from '../components/CardBody';
 import Layout from '../components/layout';
-import { Grid } from '../components/layout/Grid';
 import { Spacer } from '../components/layout/Spacer';
 import Stack from '../components/layout/Stack';
 import {
@@ -16,6 +15,18 @@ import {
   InsetBox,
 } from './';
 
+const Grid = styled.div`
+grid-template auto auto / 350px 1fr;
+display: grid;
+grid-column-gap: 1rem;
+@media (max-width: 640px){ 
+  grid-template: 1fr / 1fr;
+  > div:first-child  .gatsby-image-wrapper:first-child {
+    display: none !important;
+  }
+}
+
+`;
 const Catering = () => {
 
   const data = useStaticQuery(graphql` 
@@ -37,7 +48,7 @@ const Catering = () => {
               <h2>
                 Catering
               </h2>
-              <Grid gridTemplate="auto auto / 350px 1fr" columnGap="1rem">
+              <Grid>
                 <div>
                   <Img fixed={data.food1.childImageSharp.fixed} alt="Vietnamese market in Basingstoke" />
                   <Img fixed={data.food17.childImageSharp.fixed} alt="Vietnamese market in Basingstoke" />
