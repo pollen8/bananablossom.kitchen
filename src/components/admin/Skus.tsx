@@ -47,7 +47,7 @@ const Skus: FC<IProps> = ({
             onToggle(true);
           }}>
           Add
-      </Button>
+        </Button>
         <table>
           <thead>
             <tr>
@@ -83,7 +83,7 @@ const Skus: FC<IProps> = ({
                     }}
                   >
                     Delete
-                </Button>
+                  </Button>
                 </td>
               </Tr>)
             }
@@ -93,7 +93,7 @@ const Skus: FC<IProps> = ({
           onClose={() => onToggle(false)}
           center
         >
-          <h2>Add SKU</h2>
+          <h2>{selected.id !== '' ? 'Edit' : 'Add'} SKU</h2>
           <AddSku
             selected={selected}
             close={() => onToggle(false)}
@@ -119,7 +119,7 @@ const Skus: FC<IProps> = ({
                 onClick={() => onToggleDelete(false)}
               >
                 Cancel
-            </Button>
+              </Button>
               <Button
                 type="button"
                 color="danger"
@@ -129,7 +129,7 @@ const Skus: FC<IProps> = ({
                 }}
               >
                 Delete
-          </Button>
+              </Button>
             </FormGroup>
           </CardBody>
         </Modal>

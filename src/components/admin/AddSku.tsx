@@ -5,11 +5,13 @@ import React, {
   useState,
 } from 'react';
 
+import { allergens } from '../../data/allergens';
 import Button from '../Button';
 import FormGroup from '../FormGroup';
 import Input from '../Input';
 import Label from '../Label';
 import Stack from '../layout/Stack';
+import { ModalFooter } from '../ui/ModalFooter';
 import { ISku } from './AddProduct';
 import ImageUpload from './ImageUpload';
 
@@ -58,38 +60,17 @@ const AddSku: FC<IProps> = ({
           </FormGroup>
         </div>
         <div>
-          <FormGroup>
-            <Label>Options</Label>
-            <label>
-              <input type="checkbox"
-                checked={sku.vegetarian}
-                onChange={(e) => setData({ ...sku, vegetarian: e.target.checked })} />
-              {' '}vegetarian</label>
-          </FormGroup>
-
-          <FormGroup>
-            <label>
-              <input type="checkbox"
-                checked={sku.vegan}
-                onChange={(e) => setData({ ...sku, vegan: e.target.checked })} />
-              {' '}vegan</label>
-          </FormGroup>
-
-          <FormGroup>
-            <label>
-              <input type="checkbox"
-                checked={sku.glutenFree}
-                onChange={(e) => setData({ ...sku, glutenFree: e.target.checked })} />
-              {' '}gluten free</label>
-          </FormGroup>
-
-          <FormGroup>
-            <label>
-              <input type="checkbox"
-                checked={sku.nuts}
-                onChange={(e) => setData({ ...sku, nuts: e.target.checked })} />
-              {' '}may contain nuts</label>
-          </FormGroup>
+          <Label>Options</Label>
+          {
+            allergens.map((allergen) => <FormGroup key={allergen.id}>
+              <label>
+                <input type="checkbox"
+                  checked={sku[allergen.id]}
+                  onChange={(e) => setData({ ...sku, [allergen.id]: e.target.checked })} />
+                {' '}{allergen.label}</label>
+            </FormGroup>
+            )
+          }
         </div>
       </Stack>
 
@@ -110,7 +91,7 @@ const AddSku: FC<IProps> = ({
           {' '}Unavailable (check to not show on site)</label>
       </FormGroup>
 
-      <FormGroup>
+      <ModalFooter>
         <Button
           outline
           onClick={close}>
@@ -124,7 +105,7 @@ const AddSku: FC<IProps> = ({
         >
           Save
         </Button>
-      </FormGroup>
+      </ModalFooter>
     </>
   )
 }

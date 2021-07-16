@@ -1,42 +1,34 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
 
+import {
+  allergens,
+  IAllergen,
+} from '../../data/allergens';
 import { ISku } from '../admin/AddProduct';
 
-const Info = styled.span`
-  color: rgb(69, 178, 74);
+const Info = styled.span<IAllergen>`
+  color:${(props) => props.color};
   font-weight: 600;
   font-size: 0.6rem;
   padding: 0 0.1rem;
-`;
-
-const Nuts = styled(Info)`
-  color: rgb(200, 100, 100);
-`;
-
-const Gluten = styled(Info)`
-  color: ${(props) => props.theme.colors.blue500};
 `;
 
 interface IProps {
   sku: ISku;
 }
 const FoodInfo: FC<IProps> = ({ sku }) => {
+  console.log('sku', sku);
   return (
-    <Info>
+    <>
       {
-        (sku.vegetarian && !sku.vegan) && <Info title="Suitable for vegetarian">V</Info>
+        allergens.map((allergen) => sku[allergen.id] && <Info
+          {...allergen}
+          title={allergen.label}>
+          {allergen.symbol}
+        </Info>)
       }
-      {
-        sku.vegan && <Info title="Suitable for vegetarians and vegan">VE</Info>
-      }
-      {
-        sku.glutenFree && <Gluten title="Gluten free">GF</Gluten>
-      }
-      {
-        sku.nuts && <Nuts title="May contain nuts">N</Nuts>
-      }
-    </Info>
+    </>
   )
 }
 

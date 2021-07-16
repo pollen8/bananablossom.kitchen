@@ -6,6 +6,7 @@ import React, {
 } from 'react';
 import useTraceUpdate from 'use-trace-update';
 
+import { DaysOfWeek } from '../../plugins/orderDates/daysOfWeek/DaysOfWeek';
 import Button from '../Button';
 import Card from '../Card';
 import CardBody from '../CardBody';
@@ -87,7 +88,6 @@ const AddProduct: FC<IProps> = (props) => {
   useEffect(() => {
     setData(product ?? emptyProduct);
   }, [product]);
-  console.log('product', data);
   return (
     <Card>
       <CardBody>
@@ -101,7 +101,7 @@ const AddProduct: FC<IProps> = (props) => {
             <FormGroup>
               <Label htmlFor="code">
                 Name
-            </Label>
+              </Label>
               <Input
                 id="code"
                 size={40}
@@ -137,25 +137,10 @@ const AddProduct: FC<IProps> = (props) => {
         </Stack>
         <Stack>
           <div>
-            <FormGroup>
-              <Label>Only available on</Label>
-              {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map((day) => <FormGroup key={day} check>
-                <input
-                  type="checkbox"
-                  id={`menu-${day}`}
-                  checked={(data.availableDays ?? []).includes(day)}
-                  name={`sku-name[]`}
-                  onChange={(e) => {
-                    const availableDays = e.target.checked
-                      ? [...(data.availableDays ?? []), day]
-                      : (data.availableDays ?? []).filter((d) => d !== day);
-                    setData({ ...data, availableDays, availableDate: null })
-                  }} />
-                <Label check htmlFor={`menu-${day}`}>
-                  {day}
-                </Label>
-              </FormGroup>)}
-            </FormGroup>
+            <DaysOfWeek
+              handleUpdate={(update: Partial<IProduct>) => setData({ ...data, ...update })}
+              data={data} />
+
             <FormGroup>
               <Label>Or exact date</Label>
               <DatePicker value={data.availableDate === undefined ? null : data.availableDate}
@@ -212,7 +197,7 @@ const AddProduct: FC<IProps> = (props) => {
             }}
             color="primary">
             Submit
-      </Button>
+          </Button>
         </FormFooter>
       </CardBody>
     </Card>
