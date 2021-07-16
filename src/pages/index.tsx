@@ -13,6 +13,7 @@ import Button from '../components/Button';
 import CardBody from '../components/CardBody';
 import Layout from '../components/layout';
 import Stack from '../components/layout/Stack';
+import { FlexRow } from '../components/MealListItemDetails';
 import hrblue from '../images/hr-blue.png';
 // import banner from './banner.jpg';
 import banner from './banner2.jpg';
@@ -220,9 +221,10 @@ query {
                   <h2><Link to="/thursday-take-away">Thursdays are take-away days</Link></h2>
 
                   <p>Discover our rotating menu of authentic Vietnamese food, freshly prepared every Thursday.</p>
+                  <p>The last Thursday of every month with be our special Phở night.</p>
                   <p>Our kitchen will be opened for collection on Thursdays from 5:30pm to 8pm.</p>
                   <p>Orders accepted up until 12pm on Wednesday.</p>
-
+                  <Button onClick={() => navigate("/fthursday-take-away")}>Order now</Button>
                 </div>
               </InsetGrid>
             </InsetBox>
