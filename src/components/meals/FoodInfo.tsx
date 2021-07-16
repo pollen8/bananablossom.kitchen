@@ -1,3 +1,6 @@
+import 'rc-tooltip/assets/bootstrap_white.css';
+
+import Tooltip from 'rc-tooltip';
 import React, { FC } from 'react';
 import styled from 'styled-components';
 
@@ -6,6 +9,7 @@ import {
   IAllergen,
 } from '../../data/allergens';
 import { ISku } from '../admin/AddProduct';
+import CardBody from '../CardBody';
 
 const Info = styled.span<IAllergen>`
   color:${(props) => props.color};
@@ -17,19 +21,35 @@ const Info = styled.span<IAllergen>`
 interface IProps {
   sku: ISku;
 }
-const FoodInfo: FC<IProps> = ({ sku }) => {
-  console.log('sku', sku);
+
+const TipContent: FC<IProps> = ({ sku }) => {
   return (
-    <>
-      {
-        allergens.map((allergen) => sku[allergen.id] && <Info
-          {...allergen}
-          title={allergen.label}>
-          {allergen.symbol}
-        </Info>)
-      }
-    </>
+    <CardBody>
+      <ul style={{ listStyle: 'none' }}>
+        {
+          allergens.map((allergen) => sku[allergen.id] && <li style={{ marginBottom: '0.5rem' }}>
+            {allergen.label}
+          </li>)
+        }
+      </ul>
+    </CardBody>
   )
 }
 
-export default FoodInfo;
+export const FoodInfo: FC<IProps> = ({ sku }) => {
+  return (
+    <Tooltip
+      placement="top" trigger={['click']}
+      overlay={<TipContent sku={sku} />}>
+      <div >
+        {
+          allergens.map((allergen) => sku[allergen.id] && <Info
+            {...allergen}
+            title={allergen.label}>
+            {allergen.symbol}
+          </Info>)
+        }
+      </div>
+    </Tooltip>
+  )
+}

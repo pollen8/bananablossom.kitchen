@@ -29,6 +29,11 @@ const GET_PREORDERS = graphql`{
         vegetarian
         unavailable
         nuts
+        fish
+        soy
+        lactose
+        celery
+        egg
       }
     }
   }

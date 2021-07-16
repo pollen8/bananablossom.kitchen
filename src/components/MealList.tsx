@@ -69,6 +69,11 @@ const GET_MAINS = graphql`{
         vegetarian
         unavailable
         nuts
+        fish
+        soy
+        lactose
+        celery
+        egg
       }
     }
   }

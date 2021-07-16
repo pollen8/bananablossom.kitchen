@@ -34,6 +34,7 @@ export const Grid = styled.div<{ columnCount?: number }>`
 
 export const Bg = styled.div`
   width: 100%;
+  height: 100%;
   background-image:url(${banner});
   background-position: center;
   background-repeat: no-repeat;
@@ -201,7 +202,7 @@ query {
                   <h3>
                     <a href="https://www.portsmoutharmshatchwarren.co.uk/">
                       The Portsmouth Arms Market
-                   </a>
+                    </a>
                   </h3>
                   <p>Hatch Warren, every Saturday 10am - 2pm</p>
                 </div>

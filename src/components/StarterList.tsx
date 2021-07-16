@@ -27,6 +27,11 @@ const GET_STARTERS = graphql`{
         vegetarian
         unavailable
         nuts
+        fish
+        soy
+        lactose
+        celery
+        egg
       }
     }
   }

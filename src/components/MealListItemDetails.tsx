@@ -14,7 +14,7 @@ import Button from './Button';
 import Card from './Card';
 import CardBody from './CardBody';
 import Stack from './layout/Stack';
-import FoodInfo from './meals/FoodInfo';
+import { FoodInfo } from './meals/FoodInfo';
 import Pill from './ui/Pill';
 
 export const FlexRow = styled.div<{ direction?: 'column' | 'row', justifyContent?: string }>`
@@ -152,7 +152,7 @@ const MealListItemDetails: FC<IProps> = ({
                 onClick={() => {
                   onToggle(true);
                 }}>Order now
-            </Button>
+              </Button>
             </CardBody>
           </Stack>
         </CardBody>

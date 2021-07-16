@@ -14,7 +14,7 @@ import Button from './Button';
 import Card from './Card';
 import CardBody from './CardBody';
 import CardFooter from './CardFooter';
-import FoodInfo from './meals/FoodInfo';
+import { FoodInfo } from './meals/FoodInfo';
 import Pill from './ui/Pill';
 
 const MealImage = styled(Image)`
@@ -165,7 +165,7 @@ const MealListItem: FC<IProps> = ({
             onClick={() => {
               onToggle(true);
             }}>Order now
-            </Button>
+          </Button>
         </CardFooter>
       </MealCard>
       <AddItemForm

@@ -27,6 +27,11 @@ const GET_SIDES = graphql`{
         vegetarian
         unavailable
         nuts
+        fish
+        soy
+        lactose
+        celery
+        egg
       }
     }
   }

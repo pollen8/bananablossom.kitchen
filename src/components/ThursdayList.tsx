@@ -29,6 +29,11 @@ const GET_PREORDERS = graphql`{
         vegetarian
         unavailable
         nuts
+        fish
+        soy
+        lactose
+        celery
+        egg
       }
     }
   }
@@ -49,7 +54,6 @@ const ThursdayList = () => {
     .filter((node) => node.id !== 'f44dee22-3c27-5989-9e59-b47824973209')
     .filter((node) => node.availableDate === null)
     .map(mergeImages(allCloudinaryMedia));
-  console.log('products', products);
   return (
     <>
       <Grid>

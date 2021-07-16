@@ -38,6 +38,7 @@
     "gatsby-source-faunadb": "^1.0.0",
     "gatsby-source-stripe": "^3.2.2",
     "gatsby-transformer-sharp": "^3.0.0",
+    "rc-tooltip": "^5.1.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-dropzone": "^11.2.4",
