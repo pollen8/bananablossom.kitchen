@@ -17,8 +17,10 @@ const Fonts = () => {
 
     const changa = new FontFaceObserver(font.name)
 
-    changa.load().then(() => {
+    changa.load(null, 5000).then(() => {
       document.documentElement.classList.add(font.name)
+    }, function () {
+      console.log(`font ${link} not loaded`);
     })
   })
 }
