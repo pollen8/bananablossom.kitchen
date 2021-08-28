@@ -1,7 +1,7 @@
 import React from 'react';
 import { useIdentityContext } from 'react-netlify-identity-widget';
 
-import Availability from '../../components/admin/Availability';
+import Events from '../../components/admin/Events';
 import AdminLayout from '../../components/AdminLayout';
 
 export default () => {
@@ -15,7 +15,7 @@ export default () => {
     <AdminLayout>
       {
         isLoggedIn && isAdmin &&
-        <Availability />
+        <Events />
       }
     </AdminLayout>
   );

@@ -65,11 +65,18 @@ const Layout: FC = ({ children }) => {
         {
           isLoggedIn && isAdmin && <>
 
-            <Link to="/admin/products">Products</Link> |
-            <Link to="/admin/promotions">Promotions</Link> |
-            <Link to="/admin/orders">Orders</Link> |
-            <Link to="/admin/availability">Availability</Link> |
+            <Link to="/admin/products">Products</Link>
+            <MenuSeparator />
+            <Link to="/admin/promotions">Promotions</Link>
+            <MenuSeparator />
+            <Link to="/admin/orders">Orders</Link>
+            <MenuSeparator />
+            <Link to="/admin/availability">Availability</Link>
+            <MenuSeparator />
             <Link to="/admin/notification">Notifications</Link>
+            <MenuSeparator />
+            <Link to="/admin/events">Events</Link>
+
             <img src="https://api.netlify.com/api/v1/badges/bc1199da-4265-4a8f-8bb6-5c84bba2a6bf/deploy-status" />
           </>
         }
@@ -86,5 +93,7 @@ const Layout: FC = ({ children }) => {
     </>
   );
 }
+
+const MenuSeparator = () => <div style={{ display: 'inline-block', margin: '0.3rem' }}>|</div>
 
 export default Layout;

@@ -11,6 +11,7 @@ import { useNavigate } from '@reach/router';
 
 import Button from '../components/Button';
 import CardBody from '../components/CardBody';
+import EventsList from '../components/EventsList';
 import Layout from '../components/layout';
 import Stack from '../components/layout/Stack';
 import { FlexRow } from '../components/MealListItemDetails';
@@ -95,7 +96,7 @@ font-size: 3rem;
 const InsetGrid = styled.div`
 display: grid;
 grid-template-columns: 25rem 1fr;
-
+column-gap: 2rem;
 @media (max-width: 640px){ 
   grid-template-columns:  1fr;
 
@@ -213,18 +214,22 @@ query {
             <InsetBox>
               <InsetGrid>
                 <div>
+                  <h2><Link to="/thursday-take-away">Thursdays are take-away days</Link></h2>
+
                   <Link to="/thursday-take-away">
                     <Img fixed={data.food34.childImageSharp.fixed} alt="Vietnamese market in Basingstoke" />
                   </Link>
-                </div>
-                <div>
-                  <h2><Link to="/thursday-take-away">Thursdays are take-away days</Link></h2>
 
                   <p>Discover our rotating menu of authentic Vietnamese food, freshly prepared every Thursday.</p>
                   <p>The last Thursday of every month with be our special Phở night.</p>
                   <p>Our kitchen will be opened for collection on Thursdays from 5:30pm to 8pm.</p>
                   <p>Orders accepted up until 12pm on Wednesday.</p>
                   <Button onClick={() => navigate("/fthursday-take-away")}>Order now</Button>
+                </div>
+
+                <div>
+                  <h2>Upcoming Events</h2>
+                  <EventsList />
                 </div>
               </InsetGrid>
             </InsetBox>

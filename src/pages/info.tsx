@@ -5,11 +5,8 @@ import {
 import Img from 'gatsby-image';
 import React from 'react';
 
-import Card from '../components/Card';
-import CardBody from '../components/CardBody';
 import Layout from '../components/layout';
 import Stack from '../components/layout/Stack';
-import { OpeningTimes } from '../components/OpeningTimes';
 import {
   Bg,
   InsetBox,
@@ -44,7 +41,7 @@ query {
 
               <h2>
                 Banana Blossom offers authentic home cooked vietnamese food, one of the healthiest cuisines in the world.
-                </h2>
+              </h2>
               {/* <h6>
                   Order our food and make your lunchtime a memorable experience!
                 </h6> */}
@@ -57,26 +54,26 @@ query {
                 As with many Vietnamese street vendors they specialise in a particular dish.
                 In this case this is Cơm tấm - grilled pork, shredded pork, pork skin,
                 fried egg, pork meatloaf, pickled carrot, and sliced cucumber.
-                </p>
+              </p>
               <p>At the age of 18 Linh moved to La Rochelle, France.
-              After having completed her initial studies in French, Linh worked
+                After having completed her initial studies in French, Linh worked
                 for <a href="http://planetesesame.com/">Planète Sésame</a>,
-                  a charity whose aim is to aid female immigrants to get their first job in a kitchen. This experience gave
-                  Linh a veritable introduction into world cuisine, especially those originating from North Africa.
-</p>
+                a charity whose aim is to aid female immigrants to get their first job in a kitchen. This experience gave
+                Linh a veritable introduction into world cuisine, especially those originating from North Africa.
+              </p>
               <p>Then in 2012 she attended <a href="https://www.apprentissage.cma17.fr/">CFA De Lagord</a> where she obtained a
-                    Baccalauréat Professionnel in cuisine, whilst working
-                    as the second chef at <a href="https://le-bistrot-dla-chaine.business.site/">La Bistro de La Chaine</a>.
-                </p>
+                Baccalauréat Professionnel in cuisine, whilst working
+                as the second chef at <a href="https://le-bistrot-dla-chaine.business.site/">La Bistro de La Chaine</a>.
+              </p>
               <p>Linh has been living and working in England for the last 4 years, where she was a chef de partie at
-                  the <a href="https://www.whitehartoverton.co.uk">White Hart Overton</a> and
-                  at the<a href="https://www.fourseasons.com/hampshire"> Four Seasons Hotel</a> where she was responsible for
-                  creating their Café Santé asian fusion menus.</p>
+                the <a href="https://www.whitehartoverton.co.uk">White Hart Overton</a> and
+                at the<a href="https://www.fourseasons.com/hampshire"> Four Seasons Hotel</a> where she was responsible for
+                creating their Café Santé asian fusion menus.</p>
 
               <p>In 2020 Linh decided to start Banana Blossom with the aim of providing high quality authentic
-              Vietnamese cuisine, encapsulating and transcribing her family's wealth of culinary knowledge for your
-              tasting pleasure.
-                  </p>
+                Vietnamese cuisine, encapsulating and transcribing her family's wealth of culinary knowledge for your
+                tasting pleasure.
+              </p>
             </div>
 
           </Stack>

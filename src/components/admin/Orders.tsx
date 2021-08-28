@@ -85,7 +85,7 @@ const Orders: FC = () => {
       }
     },
   });
-  console.log('orders', orders);
+
   useEffect(() => {
 
     (async function () {

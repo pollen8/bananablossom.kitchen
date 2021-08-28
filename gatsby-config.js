@@ -33,6 +33,13 @@ module.exports = {
         path: `${__dirname}/src/images`,
       },
     },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `plugins`,
+        path: `${__dirname}/src/plugins`,
+      },
+    },
     // {
     //   resolve: `gatsby-plugin-remote-images`,
     //   options: {
@@ -80,6 +87,15 @@ module.exports = {
         secret: process.env.FAUNADB_SECRET,
         index: `all_holiday`,
         type: "faunaHoliday",
+      },
+    },
+    {
+      resolve: `gatsby-source-faunadb`,
+      options: {
+
+        secret: process.env.FAUNADB_SECRET,
+        index: `all_events`,
+        type: "faunaEvents",
       },
     },
     {

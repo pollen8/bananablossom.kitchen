@@ -56,12 +56,12 @@ const StarterListDetails: FC<Props> = ({
   const products = allFaunaProduct.nodes
     .filter((node) => Array.isArray(node.skus))
     .map(mergeImages(allCloudinaryMedia));
-  console.log('products', products);
+
   const details = products.find((p) => p.id === id);
   if (!details) {
     return null;
   }
-  console.log('details', details);
+
   const rest = products.filter((p) => p.id !== id);
   return (
     <>

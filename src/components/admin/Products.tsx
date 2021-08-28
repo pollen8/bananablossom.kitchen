@@ -81,6 +81,7 @@ const Products: FC<RouteComponentProps> = () => {
   if (products.status === 'error') {
     return <span>Error: {products.error.message}</span>
   }
+
   return (
     <>
       <h1>Products</h1>

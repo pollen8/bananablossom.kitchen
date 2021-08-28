@@ -132,7 +132,6 @@ const DatePicker: FC<IProps> = ({
   const days = Array.from(Array(daysInMonth).keys());
   const firstDateOfMonth = startOfMonth(now);
   const firstDays = Array.from(Array(getDay(firstDateOfMonth)).keys());
-
   return (
     <Container width={width}
       id={id}
@@ -146,12 +145,12 @@ const DatePicker: FC<IProps> = ({
             type="button"
             title="Previous month"
             onClick={() => setNow(subMonths(now, 1))}> &lt;
-    </button>
+          </button>
           <button
             type="button"
             title="Next month"
             onClick={() => setNow(addMonths(now, 1))}> &gt;
-    </button>
+          </button>
         </Controls>
       </Header>
       <Grid columns={7}>
@@ -169,7 +168,7 @@ const DatePicker: FC<IProps> = ({
           days.map((d) => {
             const thisDay = addDays(firstDateOfMonth, d);
             const isSelected = isDisabled(thisDay, selectedRanges);
-            const disabled = (specialDate !== null && !isSameDay(thisDay, specialDate))
+            const disabled = (specialDate !== null && specialDate !== undefined && !isSameDay(thisDay, specialDate))
               || isDisabled(thisDay, disabledRanges) || isDisabledDayOfWeek(thisDay, disabledDaysOfWeek) || isPast(thisDay);
             const isActive = isSameDay(thisDay, now);
             return <Cell
