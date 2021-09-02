@@ -62,7 +62,7 @@ export const pickupLocations: IPickupLocation[] = [
     specialDate: false,
     daytimes: [
       {
-        day: 'Thursday', time: { start: { hour: 17, minute: 30 }, end: { hour: 20, minute: 0 } },
+        day: 'Thursday', time: { start: { hour: 17, minute: 0 }, end: { hour: 19, minute: 0 } },
       },
     ],
   },
