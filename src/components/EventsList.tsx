@@ -55,7 +55,7 @@ const EventsList = () => {
               <a href={event.url}>{event.name}</a>
             </h4>
             <h5 style={{ marginBottom: '0.5rem' }}>
-              {format(new Date(event.date), 'EEEE io MMMM yyyy')} - {event.time}
+              {format(new Date(event.date), 'EEEE do MMMM yyyy')} - {event.time}
             </h5>
             <div className="p-location">
               {event.location}
