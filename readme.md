@@ -6,14 +6,45 @@ The local site will be available at:
 
 http://localhost:8888/
 
-#TODO
+API endpoints can be called via urls such as 
+
+http://localhost:8888/.netlify/functions/event-list
+
+## Generating schema
+
+* data-model.gql - defines the schema we will upload to fauna db's graphql UI
+* `npm run faunasdk-gen` - queries the schema from Fauna db and creates the typescript client in /generated/sdk.ts
+
+## TODO events
+
+admin form add saleEndData date picker
+
+hide events after saleEndData
+payment - success increment number of tickets sold in placesSold column
+
+nice to have - list event attendees in event details
+admin - sales list - update to show its a ticket (hide delivery etc)
+admin - email - update email template to show its a ticket sale (hide delivery etc)
+customer - dont think they get a confirmation yet
+
+## Done Events
+admin: delete 
+events details page
+payment - put through cart
+admin: create new
+admin: update 
+event homepage entry
+
+## TODO
+
+* Move all things into a graphQL schema
 
 * Allow ordering of products (move frozen to end of list)
 * look up product skus in backend and get prices from there - don't send total from front end
 * set up staging site
 * family meals
 * Testimonials
-* Homepage design
+
 * Special requests
   - intro 
   * Time picker allows you to select 2:15 which is grey'd out AND clicking 15h errors
@@ -28,6 +59,7 @@ Nice to have
 
 Done:
 * Mobile cart page
+* Homepage design
 * Mobile checkout pages
 * Persist cart in session storage
 * Web hook to update static menus (stripe test env)

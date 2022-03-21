@@ -1,30 +1,29 @@
 const faunadb = require('faunadb');
+const query = require("./utilities/query");
 
-/* configure faunaDB Client with our secret */
-const q = faunadb.query
-const client = new faunadb.Client({
-  secret: process.env.FAUNADB_SECRET
-})
-
-exports.handler = async (event) => {
-  const data = JSON.parse(event.body)
-  console.log("Function `event-create` invoked", data)
-  const order = {
-    data: data
+const CREATE_EVENT = `
+  mutation($event: EventInput! ) {
+    createEvent(data: $event) {
+      name
+      published
+    }
   }
-  try {
-    response = await client.query(q.Create(q.Ref("classes/event"), order));
-    console.log("success", response)
+`;
 
+exports.handler = async event => {
+  const foo = JSON.parse(event.body);
+
+  const { data, errors } = await query(  CREATE_EVENT, { event: foo });
+
+  if (errors) {
     return {
-      statusCode: 200,
-      body: JSON.stringify(response)
-    };
-  } catch (error) {
-    console.log("error", error)
-    return {
-      statusCode: 400,
-      body: JSON.stringify(error)
+      statusCode: 500,
+      body: JSON.stringify(errors)
     };
   }
-}
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify({ testimonial: data.createMessage })
+  };
+};

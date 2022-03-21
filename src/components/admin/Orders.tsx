@@ -111,7 +111,7 @@ const Orders: FC = () => {
   }
 
   if (orders.status === 'error') {
-    return <span>Error: {orders.error?.message}</span>
+    return <span>Error: {orders.error}</span>
   }
 
   return (
@@ -219,6 +219,7 @@ const Orders: FC = () => {
 
                     <Map
                       center={latlon}
+                      markers={[]}
                       googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyDjdFEZgu3s8slEPabzamBDEjIP6pU1OSU&libraries=places"
                       loadingElement={<div style={{ height: `100%` }} />}
                       containerElement={<div style={{ height: `300px` }} />}

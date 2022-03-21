@@ -1,27 +1,26 @@
-const faunadb = require('faunadb');
-const { rebuildSite } = require('./utilities/rebuild');
+const query = require("./utilities/query");
 
-/* configure faunaDB Client with our secret */
-const q = faunadb.query
-const client = new faunadb.Client({
-  secret: process.env.FAUNADB_SECRET
-});
-
-exports.handler = async (event) => {
-  const data = JSON.parse(event.body)
-  try {
-    const response = await Promise.all(
-      data.ids.map((id) => client.query(q.Delete(q.Ref(q.Collection('event'), id))))
-    );
-    await rebuildSite();
-    return {
-      statusCode: 200,
-      body: JSON.stringify(response)
-    }
-  } catch (error) {
-    return {
-      statusCode: 400,
-      body: JSON.stringify(error)
-    }
+const DELETE_EVENT = `
+mutation ($id: ID!) {
+  deleteEvent(id: $id) {
+    name
   }
 }
+`;
+
+exports.handler = async event => {
+  const { ids } = JSON.parse(event.body);
+  const all = await Promise.all((ids.map((id) => query(DELETE_EVENT, { id }))));
+  const errors = all.filter((r) => r.hasOwnProperty('errors')).map((r) => r.errors);
+  if (errors.length > 0) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify(errors)
+    };
+  }
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify({ ids })
+  };
+};

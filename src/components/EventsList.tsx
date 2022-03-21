@@ -1,12 +1,10 @@
+import axios from 'axios';
 import { format } from 'date-fns';
-import {
-  graphql,
-  useStaticQuery,
-} from 'gatsby';
 import React from 'react';
+import { useQuery } from 'react-query';
 import styled from 'styled-components';
 
-import { IEvent } from './admin/Events';
+import { Event } from '../../generated/sdk';
 
 export const Grid = styled.div<{ columnCount?: number }>`
   display: grid;
@@ -22,35 +20,32 @@ export const Grid = styled.div<{ columnCount?: number }>`
   }
 `;
 
-export interface ISkuNodes {
-  allFaunaEvents: {
-    nodes: IEvent[]
-  },
-
-}
-const GET_EVENTS = graphql`{
-  allFaunaEvents {
-    nodes {
-      date
-      location
-      name
-      time
-      url
-      id: _id
-    }
+const fetchEvents = async () => {
+  try {
+    const res = await axios.post("/.netlify/functions/event-published-list");
+    return res.data.data;
+  } catch (e) {
+    return [];
   }
+}
 
-}`;
 const EventsList = () => {
-  const { allFaunaEvents } = useStaticQuery<ISkuNodes>(GET_EVENTS);
-  const events = allFaunaEvents.nodes
+  const res = useQuery<Event[], 'events'>('events', fetchEvents);
 
+  if (res.isLoading) {
+    return null;
+  }
+  const events = res?.data ?? [];
+  if (events.length === 0) {
+    return <p>We've not got any upcoming events planned at the moment.</p>
+  } 
   return (
     <>
       {
         events.map((event) =>
-          // <Card key={event.id} className="h-event">
-          <div style={{ marginTop: '1rem', marginBottom: '2rem' }}>
+          <div
+          key={event._id}
+          style={{ marginTop: '1rem', marginBottom: '2rem' }}>
             <h4 className="p-name">
               <a href={event.url}>{event.name}</a>
             </h4>
@@ -60,7 +55,7 @@ const EventsList = () => {
             <div className="p-location">
               {event.location}
             </div>
-
+            <a href={`/events#event_${event._id}`}>details &amp; tickets</a>
           </div>
         )
       }

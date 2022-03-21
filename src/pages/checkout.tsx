@@ -24,6 +24,7 @@ import {
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 
+import { IProduct } from '../components/admin/AddProduct';
 import { IHoliday } from '../components/admin/Availability';
 import Alert from '../components/Alert';
 import Button from '../components/Button';
@@ -56,6 +57,7 @@ import Stack from '../components/layout/Stack';
 import TextArea from '../components/TextArea';
 import {
   ICartContext,
+  isProduct,
   store,
 } from '../context/cartContext';
 import { useFormWizard } from '../hooks/formWizard';
@@ -95,10 +97,15 @@ export const checkoutConfig: ICheckoutConfig = {
   pickupLocations: pickupLocations,
 };
 
-const stages = [
+const productStages = [
   'details',
   'deliveryChoice',
   'deliveryOptions',
+  'info',
+]
+
+const ticketStages = [
+  'details',
   'info',
 ]
 
@@ -178,7 +185,11 @@ const Checkout: FC = () => {
 
   const holidays: IHoliday[] = allFaunaHoliday.nodes.map((n) => ({ start: new Date(n.start), end: setHours(new Date(n.end), 24) }))
 
-  let specialDate: Date | null | string = state.items.find((i) => i.product.availableDate !== null)?.product?.availableDate ?? null;
+  let specialDate: Date | null | string = (state.items
+    .map((i) => i.product)
+    .filter((product) => isProduct(product))
+    .find((product: IProduct) => product.availableDate !== null) as IProduct)?.availableDate ?? null;
+    
   if (typeof specialDate === 'string') {
     specialDate = new Date(specialDate);
   }
@@ -217,7 +228,11 @@ const Checkout: FC = () => {
   const availableDays = new Set(values.pickupLocation.daytimes.map((d) => d.day));
   const disabledDaysOfWeek = availableDays.size > 0 ? days.filter((day) => !availableDays.has(day)) : ['Sunday'];
 
-  const { stage, maxVisitedStage, changeStage } = useFormWizard({ stages });
+  const productTypes = state.items.reduce((prev, next) =>  prev.add(isProduct(next.product) ? 'product' : 'ticket'), new Set<string>());
+  const onlyTickets = productTypes.has('ticket') && Array.from(productTypes).length === 1;
+
+const stages = onlyTickets ? ticketStages : productStages;
+  const { stage, maxVisitedStage, changeStage, nextStage } = useFormWizard({ stages });
   const discountedTotal = getCartTotal(state.items);
 
   if (state.items.length === 0) {
@@ -296,8 +311,8 @@ const Checkout: FC = () => {
                       </Fieldset>
                       {
                         intentError !== '' && <Alert color="danger">Sorry we're having some trouble with our payment gateway.
-                      <br />Please contact us on  07904 139992 to fullfil your order
-                     <br /> <small>{intentError}</small></Alert>
+                          <br />Please contact us on  07904 139992 to fullfil your order
+                          <br /> <small>{intentError}</small></Alert>
                       }
                       <FormFooter>
                         <Button
@@ -318,7 +333,7 @@ const Checkout: FC = () => {
                                 setIntentError(res.data.message);
                               } else {
                                 setClientSecret(res.data.client_secret);
-                                changeStage('deliveryChoice');
+                                nextStage();
                               }
                             } catch (e) {
                               console.log('ERROR', e, res);
@@ -351,7 +366,8 @@ const Checkout: FC = () => {
                         </Label>
                         <Delivery
                           days={state.items.reduce((p, n) => {
-                            return [...p, ...n.product.availableDays];
+                            const productDays = isProduct(n.product) ? n.product.availableDays : [] as string[];
+                            return [...p, ...productDays];
                           }, [] as string[])}
                           specialDate={specialDate}
                           checkoutConfig={checkoutConfig}
@@ -372,7 +388,7 @@ const Checkout: FC = () => {
                           onClick={() => changeStage('deliveryOptions')}
                           color="primary"
                         >Continue
-                      </Button>
+                        </Button>
                       </FormFooter>
                     </>
                   }
@@ -462,7 +478,7 @@ const Checkout: FC = () => {
                           onClick={() => changeStage('info')}
                           color="primary"
                         >Continue
-                      </Button>
+                        </Button>
                       </FormFooter>
                     </>
                   }
@@ -473,14 +489,16 @@ const Checkout: FC = () => {
                         <CartContent
                           readonly
                         />
-                        <DeliverySummary order={values} />
+                        {
+                          !onlyTickets && <DeliverySummary order={values} />
+                        }
                       </Fieldset>
                       <Fieldset>
                         <legend>Additional Info</legend>
                         <FormGroup>
                           <Label htmlFor="additional_info">
                             Let us know about any additional information regarding your order
-                            </Label>
+                          </Label>
                           <TextArea name="additional_info"
                             id="additional_info"
                             onBlur={(e) => handleInputChange('additional_info', e.target.value)}

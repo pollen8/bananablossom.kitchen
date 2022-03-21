@@ -9,12 +9,12 @@ import { v4 as uuidv4 } from 'uuid';
 import Button from '../Button';
 import CardBody from '../CardBody';
 import FormGroup from '../FormGroup';
+import { Tr } from '../layout/Tr';
 import {
   IProduct,
   ISku,
 } from './AddProduct';
 import AddSku, { blankSku } from './AddSku';
-import { Tr } from './Products';
 
 interface IProps {
   product: IProduct;

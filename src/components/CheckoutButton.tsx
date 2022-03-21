@@ -5,7 +5,10 @@ import React, {
 } from 'react';
 import styled from 'styled-components';
 
-import { store } from '../context/cartContext';
+import {
+  isProduct,
+  store,
+} from '../context/cartContext';
 import { formatter } from '../lib/formatter';
 import Button from './Button';
 import { getCartTotal } from './CartContent';
@@ -27,27 +30,32 @@ background-color: ${(props) => props.theme.colors.pink500};
 
 interface IProps {
   to?: string;
+  size?: 'sm' | 'md' | 'lg';
 }
 const CheckoutButton: FC<IProps> = ({
-  to = '/cart'
+  to = '/cart',
+  size = 'lg',
 }) => {
   const { state } = useContext(store);
 
   const availableDays = new Set<string>();
   state.items.forEach((item) => {
+    if (isProduct(item.product)) {
     (item.product.availableDays ?? []).forEach((d) => availableDays.add(d));
+  }
   })
+const Btn = size === 'lg' ? LargeButton  : Button;
   return (
 
     <Link to={to} style={{ textDecoration: 'none' }}>
-      <LargeButton
+      <Btn
         color="primary"
-        size="lg"
+        size={size}
         disabled={availableDays.size > 1}>
         <div style={{ marginRight: '0.3rem', display: 'inline-block' }}>
           {formatter.format(getCartTotal(state.items))}
         </div>{' '}Checkout
-      </LargeButton>
+      </Btn>
     </Link>
 
   )

@@ -72,3 +72,4 @@ yarn-error.log
 .netlify
 
 logos_posters
+codegen.yaml

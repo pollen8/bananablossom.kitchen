@@ -7,6 +7,7 @@ import styled from 'styled-components';
 
 import {
   ICartItem,
+  isProduct,
   store,
 } from '../context/cartContext';
 import { formatter } from '../lib/formatter';
@@ -37,8 +38,15 @@ const CartItem: FC<IProps> = ({
     <tr>
       <td>{item.product.name}{' '}
         {
-          (item.product.availableDays ?? []).map((d) => <Pill key={d} background="blue800"
-            color="grey200">{d}</Pill>)
+           (isProduct(item.product)) && <>
+           {
+                (item.product.availableDays ?? []).map(
+                  (d) => <Pill 
+                  key={d} 
+                  background="blue800"
+                  color="grey200">{d}</Pill>)
+           }
+           </>
         }
         <div><small>
           {name}
