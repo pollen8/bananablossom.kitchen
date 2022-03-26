@@ -17,18 +17,13 @@ import Button from '../Button';
 import Card from '../Card';
 import CardBody from '../CardBody';
 import Stack from '../layout/Stack';
+import { Tr } from '../layout/Tr';
 import AddProduct, { IProduct } from './AddProduct';
 
 const getId = (item: any) => {
   return item['@ref'].id
 }
 
-export const Tr = styled.tr`
-cursor: pointer;
- &:hover {
-   background-color: ${(props) => props.theme.colors.blue900};
- }
-`;
 export const flatten = (d: { data: IProduct, ts: number, ref: any }) => ({
   ...d.data,
   ts: d.ts,
@@ -79,7 +74,7 @@ const Products: FC<RouteComponentProps> = () => {
   }
 
   if (products.status === 'error') {
-    return <span>Error: {products.error.message}</span>
+    return <span>Error: {products.error}</span>
   }
 
   return (

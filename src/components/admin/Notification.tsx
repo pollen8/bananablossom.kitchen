@@ -17,11 +17,11 @@ import CardBody from '../CardBody';
 import FormGroup from '../FormGroup';
 import Label from '../Label';
 import Stack from '../layout/Stack';
+import { Tr } from '../layout/Tr';
 import TextArea from '../TextArea';
 import {
   flatten,
   Table,
-  Tr,
 } from './Products';
 
 export interface INotification {
@@ -62,7 +62,7 @@ const Availability: FC<RouteComponentProps> = () => {
   }
 
   if (notifications.status === 'error') {
-    return <span>Error: {notifications.error.message}</span>
+    return <span>Error: {notifications.error}</span>
   }
   return (
     <>

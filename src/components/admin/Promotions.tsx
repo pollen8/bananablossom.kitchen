@@ -69,7 +69,7 @@ const Promotion: FC = () => {
   }
 
   if (products.status === 'error' || promotions.status === 'error') {
-    return <span>Error: {products.error.message}</span>
+    return <span>Error: {products.error}</span>
   }
   const productOptions = [{ value: '', label: 'any' }].concat(products.data.map((p) => ({ value: p.id, label: p.name })));
   return (

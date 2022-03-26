@@ -224,7 +224,7 @@ query {
                   <p>The last Thursday of every month with be our special Phở night.</p>
                   <p>Our kitchen will be opened for collection on Thursdays from 5pm to 7:30pm.</p>
                   <p>Orders accepted up until 12pm on Wednesday.</p>
-                  <Button onClick={() => navigate("/fthursday-take-away")}>Order now</Button>
+                  <Button onClick={() => navigate("/thursday-take-away")}>Order now</Button>
                 </div>
 
                 <div>

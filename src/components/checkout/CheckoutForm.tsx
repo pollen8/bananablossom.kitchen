@@ -48,6 +48,7 @@ const CARD_ELEMENT_OPTIONS: CardElementProps['options'] = {
 
 interface IProps {
   clientSecret: string;
+  onlyTickets: boolean;
   discountedTotal: number;
   order: IOrder;
 }
@@ -91,6 +92,7 @@ export interface IStoredOrder {
 const CheckoutForm: FC<IProps> = ({
   clientSecret,
   discountedTotal,
+  onlyTickets,
   order,
 }) => {
   const stripe = useStripe();
@@ -118,7 +120,7 @@ const CheckoutForm: FC<IProps> = ({
         const sku = item.sku;
         return {
           product: item.product.name + ': ' + sku.name,
-          price: sku.price,
+          price: String(sku.price),
           quantity: item.quantity,
         }
       }),
@@ -143,7 +145,7 @@ const CheckoutForm: FC<IProps> = ({
           },
         }
       });
-      console.log(result);
+      
       if (result.error) {
         setDisabled(false);
 
@@ -177,12 +179,24 @@ const CheckoutForm: FC<IProps> = ({
           // payment_intent.succeeded event that handles any business critical
           // post-payment actions.
           try {
+            await axios.post("/.netlify/functions/send-receipt.js", {
+              ...order, 
+              order: state.items,
+              onlyTickets,
+            })
+          } catch (e) {
+            // swallow...
+          }
+          try {
             await axios.post("/.netlify/functions/sendmail", {
-              ...order, order: state.items
+              ...order, 
+              order: state.items,
+              onlyTickets,
             })
           } catch (e) {
             // swallow....
           }
+          
           dispatch({ type: 'CART_CLEAR' });
 
           await axios.post("/.netlify/functions/order-update", {

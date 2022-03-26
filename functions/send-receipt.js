@@ -27,7 +27,7 @@ const parseBody = (payload) => {
 }
 
 const parseTicketBody = (payload) => {
-  return '<h1>Event order</h1>' 
+  return '<h1>Event confirmation</h1>' 
   + `<p>Additional info: ${payload?.additional_info ?? 'none'}<p>`
   + `<p>Email: ${payload?.email ?? ''}<p>`
   + `<p>Name: ${payload?.name ?? ''}<p>`
@@ -40,18 +40,18 @@ const parseTicketBody = (payload) => {
 exports.parseBody = parseBody;
 
 exports.handler = async (event) => {
-  const payload = JSON.parse(event.body)
-  const { email, onlyTickets, subject } = payload
+  const payload = JSON.parse(event.body);
+  const { email, subject, onlyTickets } = payload;
   sgMail.setApiKey(SENDGRID_API_KEY);
-
+console.log('send customer email to', email);
   try {
     const body = onlyTickets ? parseTicketBody(payload) : parseBody(payload);
-
     const msg = {
-      to: ['bananablossom.kitchen@gmail.com', 'fabrikar@gmail.com'],
+      to: [email],
+      bcc: ['bananablossom.kitchen@gmail.com', 'fabrikar@gmail.com'],
       from: 'bananablossom.kitchen@gmail.com',
-      subject: subject ? subject : `banana-blossom.kitchen: ${onlyTickets ? 'Event sign up' : 'Order'}`,
-      html: `email from: ${email}<br /><br /> ${body}`,
+      subject: subject ? subject : 'banana-blossom.kitchen: Order confirmation',
+      html: `${body}`,
     };
 
     await sgMail.send(msg)
@@ -61,6 +61,7 @@ exports.handler = async (event) => {
       body: "Message sent: " + body
     }
   } catch (e) {
+    console.log(e);
     return {
       statusCode: e.code,
       body: e.message

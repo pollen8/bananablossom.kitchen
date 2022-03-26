@@ -4,7 +4,10 @@ import React, {
 } from 'react';
 import styled from 'styled-components';
 
-import { store } from '../context/cartContext';
+import {
+  isProduct,
+  store,
+} from '../context/cartContext';
 import Alert from './Alert';
 import CartContent from './CartContent';
 import PromotionCode from './checkout/PromotionCode';
@@ -36,7 +39,9 @@ const Cart: FC<IProps> = ({
 
   const availableDays = new Set<string>();
   state.items.forEach((item) => {
-    (item.product.availableDays ?? []).forEach((d) => availableDays.add(d));
+    if (isProduct(item.product)) {
+      (item.product.availableDays ?? []).forEach((d) => availableDays.add(d));
+    }
   })
   return (
     <>

@@ -12,7 +12,7 @@ const EmptyCart = () => {
       <Card>
         <CardBody>
           <h1>Nothing to buy</h1>
-          <Link to="meals">
+          <Link to="thursday-take-away">
             <Button>Order some
             </Button>
           </Link>

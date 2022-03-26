@@ -26,9 +26,19 @@ export const useFormWizard = (props: IProps) => {
     scrollTop();
     setStage(stage);
   }
+
+  const nextStage= () =>{
+    const currentIndex = stages.findIndex((s) => s === stage);
+    if (currentIndex > maxVisitedStage) {
+      setMaxVisitedStage(currentIndex);
+    }
+    scrollTop();
+    setStage(stages?.[currentIndex + 1] ?? stages[currentIndex]);
+  }
   return {
     stage,
     maxVisitedStage,
     changeStage,
+    nextStage,
   }
 };

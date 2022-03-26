@@ -1,30 +1,42 @@
-const faunadb = require('faunadb');
+const query = require("./utilities/query");
 
-const q = faunadb.query
-const client = new faunadb.Client({
-  secret: process.env.FAUNADB_SECRET
-})
+ const GET_EVENTS = `
+     query {
+      allEvents {
+        data {
+          _id
+          date
+          time
+          name
+          location
+          url
+          tickets {
+            data{
+              _id
+              name
+              description
+              price
+            }
+          }
+          published
+          }
+        
+          }
+      }
+ `;
 
-exports.handler = async (event) => {
-  try {
-    // const response = await client.query(q.Paginate(q.Match(q.Ref("indexes/all_events_by_date"))));
-    const response = await client.query(q.Paginate(q.Match(q.Ref("indexes/all_events_by_date"))));
-    const refs = response.data;
+  exports.handler = async () => {
+     const { data, errors } = await query(GET_EVENTS);
 
-    // create new query out of promotion refs. http://bit.ly/2LG3MLg
+     if (errors) {
+        return {
+          statusCode: 500,
+          body: JSON.stringify(errors)
+        };
+     }
 
-    // create new query out of promotion refs. http://bit.ly/2LG3MLg
-
-    const getAllEventsData = refs.map((ref) => q.Get(ref[1]));
-    const ret = await client.query(getAllEventsData);
-    return {
-      statusCode: 200,
-      body: JSON.stringify(ret)
-    };
-  } catch (error) {
-    return {
-      statusCode: 400,
-      body: JSON.stringify(error)
-    }
-  }
-}
+     return {
+       statusCode: 200,
+       body: JSON.stringify({ data: data.allEvents.data })
+     };
+   };

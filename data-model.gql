@@ -1,0 +1,26 @@
+// Our local design schema to paste into Fauna's control panel
+type Event {
+  date: Date!
+  time: String!
+  name: String!
+  location: String
+  url: String
+  description: String
+  published: Boolean!
+  places: Int
+  placesSold: Int
+  saleEndData: Date
+  tickets: [Ticket] @relation
+
+}
+
+type Ticket {
+  name: String!
+  event: Event
+  price: Float
+}
+
+type Query {
+   allEvents: [Event!]
+   eventsByPublished(published: Boolean!): [Event!]
+}

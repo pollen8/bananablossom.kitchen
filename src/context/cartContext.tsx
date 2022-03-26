@@ -4,10 +4,16 @@ import React, {
 } from 'react';
 
 import {
+  Event,
+  Ticket,
+} from '../../generated/sdk';
+import {
   IProduct,
   ISku,
 } from '../components/admin/AddProduct';
 import { IPromotion } from '../components/admin/Promotions';
+
+export const isProduct = (toCheck: any): toCheck is IProduct => toCheck.hasOwnProperty('availableDays');
 
 export interface IState {
   items: ICartItem[];
@@ -21,14 +27,17 @@ const initialState: IState = typeof window === 'undefined' || sessionStorage.get
   }
   : JSON.parse(sessionStorage.getItem('cart'));
 
+type IEvent = Event & { id: string };
+type ITicket = Ticket & { id: string };
+
 export interface ICartItem {
-  product: IProduct,
+  product: IProduct | IEvent,
   quantity: number;
-  sku: ISku;
+  sku: ISku | ITicket;
   discounted: number;
 }
 
-const calcDiscounted = (item: ICartItem, discount: number) => {
+export const calcDiscounted = (item: ICartItem, discount: number) => {
   const price = item.quantity * Number(item.sku.price);
   return discount === 0
     ? 0
@@ -55,12 +64,10 @@ const StateProvider = ({ children }) => {
       }
       return state;
     };
-
     switch (action.type) {
       case 'CART_ADD':
         const { items, promotion } = state;
         const i = items.findIndex((item) => item.sku.id === action.item.sku.id);
-
         let discount = 0;
         // promotion
         if (promotion.percentage !== 0) {
