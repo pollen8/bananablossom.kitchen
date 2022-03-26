@@ -511,6 +511,7 @@ const stages = onlyTickets ? ticketStages : productStages;
 
                         <Elements stripe={stripePromise}>
                           <CheckoutForm clientSecret={clientSecret}
+                            onlyTickets={onlyTickets}
                             discountedTotal={discountedTotal}
                             order={values} />
                         </Elements>
