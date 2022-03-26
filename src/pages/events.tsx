@@ -69,7 +69,8 @@ export default () => {
                       <h2>
                         {event.name}
                       </h2>
-                      <div>Places: {event.places}</div>
+                      {event.places && <div>Places: {event.places}</div>}
+                      
 
                       <p>{event.description}</p>
                       <div style={{ display: 'grid', rowGap: '1rem', gridTemplateColumns: '1fr 1fr', justifyContent: "space-between" }}>
