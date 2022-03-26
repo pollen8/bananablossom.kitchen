@@ -206,7 +206,7 @@ query {
                       The Portsmouth Arms Market
                     </a>
                   </h3>
-                  <p>Hatch Warren, every Saturday 10am - 2pm</p>
+                  <p>Hatch Warren, the first Saturday of every month10am - 2pm</p>
                 </div>
               </InsetGrid>
             </InsetBox>

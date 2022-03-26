@@ -37,20 +37,20 @@ export const pickupLocations: IPickupLocation[] = [
   //     day: 'Thursday', time: { start: { hour: 18, minute: 0 }, end: { hour: 21, minute: 0 } },
   //   }],
   // },
-  {
-    name: 'Portsmouth Arms',
-    address: {
-      'p-street-address': 'Hatch Warren Lane',
-      'p-extended-address': 'Hatch Warren',
-      'p-locality': 'Basingstoke',
-      'p-postal-code': ' RG22 4RA',
-    },
-    specialDate: false,
-    position: { lat: 51.2339256, lng: -1.1178977 },
-    daytimes: [{
-      day: 'Saturday', time: { start: { hour: 10, minute: 0 }, end: { hour: 13, minute: 0 } },
-    }],
-  },
+  // {
+  //   name: 'Portsmouth Arms',
+  //   address: {
+  //     'p-street-address': 'Hatch Warren Lane',
+  //     'p-extended-address': 'Hatch Warren',
+  //     'p-locality': 'Basingstoke',
+  //     'p-postal-code': ' RG22 4RA',
+  //   },
+  //   specialDate: false,
+  //   position: { lat: 51.2339256, lng: -1.1178977 },
+  //   daytimes: [{
+  //     day: 'Saturday', time: { start: { hour: 10, minute: 0 }, end: { hour: 13, minute: 0 } },
+  //   }],
+  // },
   {
     name: 'Banana Blossom',
     address: {
